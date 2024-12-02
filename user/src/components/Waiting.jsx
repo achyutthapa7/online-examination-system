@@ -1,12 +1,9 @@
 import React, { useEffect, useState } from "react";
 import { checkVerificationStatus } from "../utils/checkVerificationStatus";
 import { useNavigate } from "react-router-dom";
-// import { loginTeacher } from "../../../backend/controllers/auth.controller";
 
 const Waiting = () => {
   const [registeredUser, setRegisteredUser] = useState(() => {
-    // console.log(registeredUser + " l;m");
-
     return JSON.parse(localStorage.getItem("user")) || null;
   });
   const [isVerified, setIsVerified] = useState(false);

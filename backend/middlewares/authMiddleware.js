@@ -1,6 +1,6 @@
 const jwt = require("jsonwebtoken");
-const teacherModel = require("../models/teacher.model");
 const studentModel = require("../models/student.model");
+const teacherModel = require("../models/teacher.model");
 
 const authMiddleware = async (req, res, next) => {
   const token = req.cookies?.login_token;
@@ -20,6 +20,7 @@ const authMiddleware = async (req, res, next) => {
     const rootUser = teacher || student;
     req.rootUser = rootUser;
     next();
+    return rootUser;
   } catch (err) {
     res.status(400).json({ message: "Invalid token." });
   }

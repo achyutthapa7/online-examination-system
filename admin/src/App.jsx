@@ -33,6 +33,7 @@ const App = () => {
           <Route path="update-user-password" element={<UpdateUserPassword />} />
           <Route path="notify-user" element={<NotifyUser />} />
           <Route path="add-teacher" element={<AddTeachers />} />
+
         </Route>
 
         <Route path="*" element={<Notfound />} />

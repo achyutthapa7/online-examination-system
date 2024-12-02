@@ -21,11 +21,12 @@ const registerStudent = async (req, res) => {
       return res.status(400).json({ message: "Invalid year or semester" });
     }
 
-    const existingStudent = await studentModel.findOne({
-      userName,
-    });
-    if (existingStudent) {
-      return res.status(409).json({ message: "Email already in use" });
+    const [existingStudent, existingTeacher] = await Promise.all([
+      studentModel.findOne({ userName }),
+      teacherModel.findOne({ userName }),
+    ]);
+    if (existingStudent || existingTeacher) {
+      return res.status(409).json({ message: "username is already taken" });
     }
 
     const newStudent = new studentModel({
@@ -56,62 +57,37 @@ const registerStudent = async (req, res) => {
   }
 };
 
-const loginStudent = async (req, res) => {
+const loginUser = async (req, res) => {
   try {
-    const { userName, password } = req.body;
-
-    if (!userName || !password) {
+    const { userName, password, role } = req.body;
+    if (!userName || !password || !role) {
       return res.status(400).json({ message: "Missing required fields" });
     }
-
-    const student = await studentModel.findOne({ userName });
-    if (!student || student.password != password) {
-      return res.status(401).json({ message: "Invalid email or password" });
+    const [teacher, student] = await Promise.all([
+      teacherModel.findOne({ userName, role }),
+      studentModel.findOne({ userName, role }),
+    ]);
+    const rootUser = teacher || student;
+    if (!rootUser) {
+      return res.status(401).json({ message: "User is not found" });
     }
-    const token = await jwt.sign({ _id: student._id }, process.env.SECRET_KEY);
+    if (role === "Student" && !rootUser.isVerified) {
+      return res.status(402).json({ message: "User is not verified" });
+    }
+
+    if (rootUser.password != password) {
+      return res.status(403).json({ message: "Invalid email or password" });
+    }
+    const token = await jwt.sign({ _id: rootUser._id }, process.env.SECRET_KEY);
     res.cookie("login_token", token);
-    const studentWithoutPassword = await studentModel
-      .findOne({ userName })
-      .select("-password");
-    res.json({
-      message: "Logged in successfully",
-      token,
-      student: studentWithoutPassword,
-    });
-  } catch (error) {
-    handleError(res, error);
-  }
-};
-
-// auth for teacher
-
-const loginTeacher = async (req, res) => {
-  try {
-    const { userName, password } = req.body;
-
-    if (!userName || !password) {
-      return res.status(400).json({ message: "Missing required fields" });
-    }
-
-    const teacher = await teacherModel.findOne({ userName });
-    if (!teacher || teacher.password != password) {
-      return res.status(401).json({ message: "Invalid email or password" });
-    }
-    // if (!teacher.isAssigned) {
-    //   return res
-    //     .status(403)
-    //     .json({ message: "Teacher is not assigned to a class" });
-    // }
-    const token = await jwt.sign({ _id: teacher._id }, process.env.SECRET_KEY);
-    res.cookie("login_token", token);
-    const teacherWithoutPassword = await teacherModel
-      .findOne({ userName })
-      .select("-password");
-    res.json({
-      message: "Logged in successfully",
-      token,
-      teacher: teacherWithoutPassword,
-    });
+    res
+      .status(200)
+      .json({
+        message: "login successfull",
+        token,
+        role: rootUser.role,
+        userName: rootUser.userName,
+      });
   } catch (error) {
     handleError(res, error);
   }
@@ -162,11 +138,11 @@ const getUserVerificationStatus = async (req, res) => {
     res.status(500).json({ message: "Server Error", error: error.message });
   }
 };
+
 module.exports = {
   registerStudent,
-  loginStudent,
-  loginTeacher,
   loginAdmin,
   logout,
   getUserVerificationStatus,
+  loginUser,
 };

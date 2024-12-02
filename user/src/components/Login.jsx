@@ -5,16 +5,25 @@ import { login } from "../utils/api";
 
 const Login = () => {
   const registeredUser = JSON.parse(localStorage.getItem("user"));
+  const login_token = localStorage.getItem("login_token");
+  const role = localStorage.getItem("role");
+  useEffect(() => {
+    if (login_token) {
+      if (role === "Teacher") window.location.href = "/dashboard/teacher";
+    } else if (login_token) {
+      if (role === "Student") window.location.href = "/dashboard/student";
+    }
+  }, [login_token, role]);
   const navigate = useNavigate();
   const data = useLocation();
-  console.log(data);
+
   useEffect(() => {
     const checkVerification = async () => {
       try {
-        const res = await checkVerificationStatus(registeredUser._id);
+        const res = await checkVerificationStatus(registeredUser?._id);
         if (res.ok) {
           const data = await res.json();
-          if (data && data.user.role === "Student" && !data.user.isVerified) {
+          if (data?.user.role === "Student" && !data.user.isVerified) {
             navigate("/verifying");
           }
         } else {
@@ -24,14 +33,18 @@ const Login = () => {
         console.error("Error checking verification status:", error);
       }
     };
-    checkVerification();
+    if (registeredUser) {
+      checkVerification();
+    }
   }, [registeredUser, navigate]);
 
   const [credentials, setCredentials] = useState({
     userName: data.state?.userName || "",
     password: "",
+    role: "Student",
   });
   const [error, setError] = useState("");
+
   const handleInputChange = (e) => {
     const { name, value } = e.target;
     setCredentials((prev) => ({ ...prev, [name]: value }));
@@ -40,29 +53,39 @@ const Login = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    const { userName, password } = credentials;
+    const { userName, password, role } = credentials;
     try {
-      if (!userName || !password) {
-        alert("Both fields are required.");
+      if (!userName || !password || !role) {
+        alert("All fields are required.");
         return;
       }
-      const res = await login(userName, password, registeredUser?.role);
+      const res = await login(userName, password, role);
 
-      if (res.statusText) {
-        alert("login successfull");
+      if (res.status === 200) {
+        alert("Login successful");
         localStorage.removeItem("registration_token");
-        const { student, teacher } = res.data;
-        if (student?.role === "Student") {
-          window.location.href = "/student-dashboard";
-        } else if (teacher?.role === "Teacher") {
-          window.location.href = "/teacher-dashboard";
-        } else {
-          alert("Invalid role");
-          return;
-        }
+        localStorage.removeItem("user");
+        localStorage.setItem("login_token", res.data.token);
+        localStorage.setItem("username", res.data.userName);
+        localStorage.setItem("role", res.data.role);
+        window.location.href =
+          res.data.role === "Teacher"
+            ? "/dashboard/teacher"
+            : "/dashboard/student";
+      } else if (res.status === 401) {
+        alert("User is not found");
+      } else if (res.status === 402) {
+        alert("User is not verified");
+      } else if (res.status === 403) {
+        alert("Invalid password");
+      } else {
+        alert(
+          "Something went wrong, please try again or check the credentials"
+        );
       }
     } catch (error) {
       console.error("Error logging in:", error);
+      alert("There was an error please try again later.");
     }
   };
 
@@ -73,13 +96,13 @@ const Login = () => {
           Login
         </h2>
         <form onSubmit={handleSubmit}>
-          {/* userName */}
+          {/* Username */}
           <div className="mb-4">
             <label
               htmlFor="userName"
               className="block text-sm font-semibold text-gray-700 mb-2"
             >
-              userName
+              Username
             </label>
             <input
               disabled={data.state ? true : false}
@@ -89,7 +112,7 @@ const Login = () => {
               value={credentials.userName}
               onChange={handleInputChange}
               className="w-full border border-gray-300 px-4 py-2 rounded focus:outline-none focus:ring-2 focus:ring-blue-400"
-              placeholder="Enter your userName"
+              placeholder="Enter your username"
             />
           </div>
 
@@ -110,6 +133,26 @@ const Login = () => {
               className="w-full border border-gray-300 px-4 py-2 rounded focus:outline-none focus:ring-2 focus:ring-blue-400"
               placeholder="Enter your password"
             />
+          </div>
+
+          {/* Role Dropdown */}
+          <div className="mb-4">
+            <label
+              htmlFor="role"
+              className="block text-sm font-semibold text-gray-700 mb-2"
+            >
+              Role
+            </label>
+            <select
+              id="role"
+              name="role"
+              value={credentials.role}
+              onChange={handleInputChange}
+              className="w-full border border-gray-300 px-4 py-2 rounded focus:outline-none focus:ring-2 focus:ring-blue-400"
+            >
+              <option value="Student">Student</option>
+              <option value="Teacher">Teacher</option>
+            </select>
           </div>
 
           {/* Error Message */}
