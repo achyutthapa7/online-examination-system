@@ -64,7 +64,7 @@ const loginUser = async (req, res) => {
       return res.status(400).json({ message: "Missing required fields" });
     }
     const [teacher, student] = await Promise.all([
-      teacherModel.findOne({ userName, role }),
+      teacherModel.findOne({ emailAddress: userName, role }),
       studentModel.findOne({ userName, role }),
     ]);
     const rootUser = teacher || student;
@@ -80,14 +80,12 @@ const loginUser = async (req, res) => {
     }
     const token = await jwt.sign({ _id: rootUser._id }, process.env.SECRET_KEY);
     res.cookie("login_token", token);
-    res
-      .status(200)
-      .json({
-        message: "login successfull",
-        token,
-        role: rootUser.role,
-        userName: rootUser.userName,
-      });
+    res.status(200).json({
+      message: "login successfull",
+      token,
+      role: rootUser.role,
+      userName: rootUser.userName,
+    });
   } catch (error) {
     handleError(res, error);
   }
@@ -108,7 +106,7 @@ const loginAdmin = async (req, res) => {
       { _id: `admin${Math.random() * 10000}` },
       process.env.SECRET_KEY
     );
-    res.cookie("login_token", token);
+    res.cookie("admin_token", token);
     res.json({
       message: "Logged in successfully",
       token,
@@ -119,6 +117,7 @@ const loginAdmin = async (req, res) => {
 };
 
 const logout = async (req, res) => {
+  
   try {
     res.clearCookie("token");
     res.json({ message: "Logged out successfully", currentUser: req.rootUser });

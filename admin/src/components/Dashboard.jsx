@@ -12,12 +12,13 @@ import {
   FaBell,
   FaPlus,
   FaSignOutAlt,
+  FaClipboardList,
 } from "react-icons/fa";
 import { Tooltip as ReactTooltip } from "react-tooltip"; // Importing Tooltip correctly
 
 const SidebarItem = ({ icon: Icon, label, onClick, isExpanded }) => (
   <button
-    className="flex items-center w-full px-4 py-3 hover:bg-gray-700 focus:bg-gray-700 transition text-gray-300 relative"
+    className="relative flex items-center w-full px-4 py-3 text-gray-300 transition hover:bg-gray-700 focus:bg-gray-700"
     onClick={onClick}
     data-tip={label} // Tooltip text
     data-place="right" // Tooltip position
@@ -44,9 +45,8 @@ const DashboardLayout = () => {
 
   return (
     <div className="flex min-h-screen bg-gray-100">
-      {/* Sidebar */}
       <aside
-        className={`bg-gray-800 text-white ${
+        className={`bg-gray-800  text-white ${
           isSidebarOpen ? "w-64" : "w-16"
         } transition-all duration-300 ease-in-out`}
       >
@@ -59,14 +59,14 @@ const DashboardLayout = () => {
           {isSidebarOpen && (
             <h2
               onClick={() => navigate("/admin/dashboard")}
-              className="text-2xl font-bold cursor-pointer transition-opacity duration-300"
+              className="text-2xl font-bold transition-opacity duration-300 cursor-pointer"
             >
               Admin
             </h2>
           )}
           <button
             onClick={() => setIsSidebarOpen(!isSidebarOpen)}
-            className="text-white text-2xl focus:outline-none"
+            className="text-2xl text-white focus:outline-none"
             data-tip={isSidebarOpen ? "Collapse" : "Expand"} // Tooltip for sidebar toggle
           >
             <FaBars />
@@ -124,6 +124,15 @@ const DashboardLayout = () => {
                 isExpanded={isSidebarOpen}
               />
             </li>
+
+            <li>
+              <SidebarItem
+                icon={FaClipboardList}
+                label="View Exams"
+                onClick={() => navigate("/admin/view-exams")}
+                isExpanded={isSidebarOpen}
+              />
+            </li>
           </ul>
         </nav>
 
@@ -134,12 +143,12 @@ const DashboardLayout = () => {
             className={`w-full py-2 rounded-md hover:bg-red-700 transition flex items-center justify-center ${
               isSidebarOpen ? "bg-red-600 text-white" : "bg-red-600"
             }`}
-            data-tip="Logout" // Tooltip for logout button
+            data-tip="Logout"
           >
             {isSidebarOpen ? (
               <span className="text-white">Logout</span>
             ) : (
-              <FaSignOutAlt className="text-white text-xl" />
+              <FaSignOutAlt className="text-xl text-white" />
             )}
           </button>
         </div>

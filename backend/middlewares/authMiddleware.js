@@ -4,6 +4,7 @@ const teacherModel = require("../models/teacher.model");
 
 const authMiddleware = async (req, res, next) => {
   const token = req.cookies?.login_token;
+
   if (!token)
     return res
       .status(401)

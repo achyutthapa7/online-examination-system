@@ -12,6 +12,8 @@ import DeleteUsers from "./components/DeleteUsers";
 import UpdateUserPassword from "./components/UpdateUserPassword";
 import NotifyUser from "./components/NotifyUser";
 import AddTeachers from "./components/AddTeachers";
+import ViewExams from "./components/ViewExams";
+import ExamDetails from "./components/ExamDetails";
 const App = () => {
   return (
     <div>
@@ -33,9 +35,9 @@ const App = () => {
           <Route path="update-user-password" element={<UpdateUserPassword />} />
           <Route path="notify-user" element={<NotifyUser />} />
           <Route path="add-teacher" element={<AddTeachers />} />
-
+          <Route path="view-exams" element={<ViewExams />} />
+          <Route path="/admin/view-exams/:examId" element={<ExamDetails />} />
         </Route>
-
         <Route path="*" element={<Notfound />} />
       </Routes>
     </div>

@@ -13,11 +13,13 @@ const examSchema = new mongoose.Schema({
   semester: { type: Number, enum: [1, 2, 3, 4, 5, 6, 7, 8] },
   questions: [questionSchema],
   timeLimit: { type: Number, required: true }, // In minutes
+
   createdBy: {
     type: mongoose.Schema.Types.ObjectId,
     ref: "Teachers",
     required: true,
   },
+  isApproved: { type: Boolean, default: false },
   submissions: [
     {
       student: { type: mongoose.Schema.Types.ObjectId, ref: "Students" },

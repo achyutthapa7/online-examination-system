@@ -23,7 +23,7 @@ export const login = async (userName, password) => {
 
 export const getAllTeachers = async () => {
   try {
-    const response = axios.get(`${API_URL}/admin/getTeacher`, {
+    const response = await axios.get(`${API_URL}/admin/getTeacher`, {
       withCredentials: true,
       headers: {
         "Content-Type": "application/json",
@@ -164,9 +164,42 @@ export const notifyUsers = async (message) => {
         },
       }
     );
+
     return response;
   } catch (error) {
     console.error("Error during notifying users:", error);
+    throw error;
+  }
+};
+
+export const allExams = async () => {
+  try {
+    const response = axios.get(`${API_URL}/admin/viewExams`, {
+      withCredentials: true,
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
+    // console.log("res : ", response);
+    return response;
+  } catch (error) {
+    // console.error("Error during fetching exams:", error);
+    throw error;
+  }
+};
+
+export const startExam = async (examId) => {
+  try {
+    const response = axios.patch(`${API_URL}/admin/startExam/${examId}`, {
+      withCredentials: true,
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
+    // console.log(response);
+    return response;
+  } catch (error) {
+    console.error("Error during starting exam:", error);
     throw error;
   }
 };

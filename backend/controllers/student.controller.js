@@ -6,28 +6,45 @@ const handleError = require("../utils/handleError");
 const getExams = async (req, res) => {
   try {
     const exams = await examModel.find({});
+
     const availableExams = exams.filter((exam) => {
-      return !exam.submissions.some((submission) =>
-        submission.student.equals(req.user._id)
+      const isApproved = exam.isApproved;
+      const isYearAndSemesterMatch =
+        exam.year === req.rootUser.year &&
+        exam.semester === req.rootUser.semester;
+      const isNotSubmitted = !exam.submissions.some((submission) =>
+        submission.student.equals(req.rootUser._id)
       );
+      return isYearAndSemesterMatch && isNotSubmitted && isApproved;
     });
 
     if (availableExams.length === 0) {
-      return res
-        .status(403)
-        .json({ message: "No available exams for you to take" });
+      return res.json({ message: "No available exams for you to take" });
     }
-    if (req.rootUser.role != "Teacher")
-      res.status(200).json({ exams: availableExams });
-    else res.status(500).json({ message: "unauthorized access" });
+    res.json({ exams });
   } catch (error) {
     handleError(res, error);
   }
 };
 
+const getUpcomingExams = async (req, res) => {
+  const exams = await examModel.find({});
+  const upcomingExams = exams.filter((exam) => {
+    const isApproved = !exam.isApproved;
+    const isYearAndSemesterMatch =
+      exam.year === req.rootUser.year &&
+      exam.semester === req.rootUser.semester;
+    return isApproved && isYearAndSemesterMatch;
+  });
+  if (upcomingExams.length === 0) {
+    return res.status(200).json({ message: "No upcoming exams" });
+  }
+  res.json({ exams: upcomingExams });
+};
+
 const submitExam = async (req, res) => {
   const { examId } = req.params;
-  const { answers } = req.body; // Array of answers
+  const { answers } = req.body;
 
   try {
     const exam = await examModel.findById(examId);
@@ -88,5 +105,16 @@ const submitExam = async (req, res) => {
     res.status(500).json({ message: "Server Error", error: error.message });
   }
 };
+const getExamQuestion = async (req, res) => {
+  const { examId } = req.params;
 
-module.exports = { getExams, submitExam };
+  try {
+    const exam = await examModel.findById(examId);
+    // console.log(exam, examId);
+    res.json({ exam });
+  } catch (e) {
+    console.error(e);
+  }
+};
+
+module.exports = { getExams, submitExam, getUpcomingExams, getExamQuestion };

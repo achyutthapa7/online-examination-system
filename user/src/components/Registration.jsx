@@ -86,15 +86,15 @@ const Registration = () => {
   };
   if (loading) {
     return (
-      <div className="min-h-screen flex items-center justify-center bg-gray-100">
+      <div className="flex items-center justify-center min-h-screen bg-gray-100">
         <p className="text-gray-700">Redirecting...</p>
       </div>
     );
   }
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gray-100 p-6">
-      <div className="w-full max-w-md bg-white rounded-lg shadow-md p-8">
-        <h2 className="text-2xl font-bold text-gray-800 mb-6 text-center">
+    <div className="flex items-center justify-center min-h-screen p-6 bg-gray-100">
+      <div className="w-full max-w-md p-8 bg-white rounded-lg shadow-md">
+        <h2 className="mb-6 text-2xl font-bold text-center text-gray-800">
           Registration
         </h2>
         <form onSubmit={handleSubmit}>
@@ -102,7 +102,7 @@ const Registration = () => {
           <div className="mb-4">
             <label
               htmlFor="fullName"
-              className="block text-sm font-semibold text-gray-700 mb-2"
+              className="block mb-2 text-sm font-semibold text-gray-700"
             >
               Full Name
             </label>
@@ -112,7 +112,7 @@ const Registration = () => {
               name="fullName"
               value={formData.fullName}
               onChange={handleInputChange}
-              className="w-full border border-gray-300 px-4 py-2 rounded focus:outline-none focus:ring-2 focus:ring-blue-400"
+              className="w-full px-4 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-400"
               placeholder="Enter full name"
             />
           </div>
@@ -121,7 +121,7 @@ const Registration = () => {
           <div className="mb-4">
             <label
               htmlFor="userName"
-              className="block text-sm font-semibold text-gray-700 mb-2"
+              className="block mb-2 text-sm font-semibold text-gray-700"
             >
               User Name
             </label>
@@ -131,7 +131,7 @@ const Registration = () => {
               name="userName"
               value={formData.userName}
               onChange={handleInputChange}
-              className="w-full border border-gray-300 px-4 py-2 rounded focus:outline-none focus:ring-2 focus:ring-blue-400"
+              className="w-full px-4 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-400"
               placeholder="Enter username"
             />
           </div>
@@ -140,7 +140,7 @@ const Registration = () => {
           <div className="mb-4">
             <label
               htmlFor="password"
-              className="block text-sm font-semibold text-gray-700 mb-2"
+              className="block mb-2 text-sm font-semibold text-gray-700"
             >
               Password
             </label>
@@ -150,7 +150,7 @@ const Registration = () => {
               name="password"
               value={formData.password}
               onChange={handleInputChange}
-              className="w-full border border-gray-300 px-4 py-2 rounded focus:outline-none focus:ring-2 focus:ring-blue-400"
+              className="w-full px-4 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-400"
               placeholder="Enter password"
             />
           </div>
@@ -159,7 +159,7 @@ const Registration = () => {
           <div className="mb-4">
             <label
               htmlFor="year"
-              className="block text-sm font-semibold text-gray-700 mb-2"
+              className="block mb-2 text-sm font-semibold text-gray-700"
             >
               Year
             </label>
@@ -168,7 +168,7 @@ const Registration = () => {
               name="year"
               value={formData.year}
               onChange={handleInputChange}
-              className="w-full border border-gray-300 px-4 py-2 rounded focus:outline-none focus:ring-2 focus:ring-blue-400"
+              className="w-full px-4 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-400"
             >
               <option value="">Select Year</option>
               {[1, 2, 3, 4].map((year) => (
@@ -183,7 +183,7 @@ const Registration = () => {
           <div className="mb-4">
             <label
               htmlFor="semester"
-              className="block text-sm font-semibold text-gray-700 mb-2"
+              className="block mb-2 text-sm font-semibold text-gray-700"
             >
               Semester
             </label>
@@ -192,7 +192,7 @@ const Registration = () => {
               name="semester"
               value={formData.semester}
               onChange={handleInputChange}
-              className="w-full border border-gray-300 px-4 py-2 rounded focus:outline-none focus:ring-2 focus:ring-blue-400"
+              className="w-full px-4 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-400"
               disabled={!availableSemesters.length}
             >
               <option value="">Select Semester</option>
@@ -207,7 +207,7 @@ const Registration = () => {
           {/* Submit Button */}
           <button
             type="submit"
-            className="w-full bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-400 font-semibold"
+            className="w-full px-4 py-2 font-semibold text-white bg-blue-500 rounded hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-400"
           >
             Register
           </button>

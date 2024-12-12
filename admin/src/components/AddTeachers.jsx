@@ -41,6 +41,7 @@ const AddTeachers = () => {
           fullName: "",
         });
       }
+
       if (res.status === 400) {
         alert("Teacher already exist");
       }

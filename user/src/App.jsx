@@ -12,6 +12,8 @@ import CreateExam from "./components/teacher/CreateExam";
 import TakeExam from "./components/student/TakeExam";
 import CreateExamBySubject from "./components/teacher/CreateExamBySubject";
 import ViewExams from "./components/teacher/ViewExams";
+import Results from "./components/student/Results";
+import ExamPage from "./components/student/ExamPage";
 const App = () => {
   return (
     <div>
@@ -33,8 +35,12 @@ const App = () => {
 
         <Route path="/dashboard/student" element={<StudentDashboard />}>
           <Route path="take-exam" element={<TakeExam />} />
+          <Route path="results" element={<Results />} />
         </Route>
-
+        <Route
+          path="/dashboard/student/take-exam/:examId"
+          element={<ExamPage />}
+        />
         <Route path="*" element={<Notfound />} />
       </Routes>
     </div>

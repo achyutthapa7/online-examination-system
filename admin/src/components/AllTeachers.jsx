@@ -119,7 +119,7 @@ const AllTeachers = () => {
 
   return (
     <div className="p-8">
-      <h1 className="text-3xl font-bold mb-6">All Teachers</h1>
+      <h1 className="mb-6 text-3xl font-bold">All Teachers</h1>
 
       {teachers.length === 0 ? (
         <p className="text-xl text-gray-600">No teachers available</p>
@@ -127,7 +127,7 @@ const AllTeachers = () => {
         teachers.map((teacher) => (
           <div
             key={teacher._id}
-            className="flex flex-col md:flex-row items-start mb-8 bg-white p-4 rounded-lg shadow-md"
+            className="flex flex-col items-start p-4 mb-8 bg-white rounded-lg shadow-md md:flex-row"
           >
             {/* Teacher Info */}
             <div className="flex-1 mb-4 md:mb-0">
@@ -139,13 +139,13 @@ const AllTeachers = () => {
               </div>
               <div className="text-sm text-gray-600">Role: {teacher.role}</div>
               <button
-                className="mt-4 bg-red-500 text-white px-4 py-2 rounded hover:bg-red-600"
+                className="px-4 py-2 mt-4 text-white bg-red-500 rounded hover:bg-red-600"
                 onClick={() => handleDelete(teacher._id)}
               >
                 Delete
               </button>
               <button
-                className="mt-4 ml-2 bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600"
+                className="px-4 py-2 mt-4 ml-2 text-white bg-blue-500 rounded hover:bg-blue-600"
                 onClick={() => setSelectedTeacher(teacher)}
               >
                 Assign Subject
@@ -154,7 +154,7 @@ const AllTeachers = () => {
 
             {/* Assigned Subjects */}
             <div className="flex-1">
-              <h3 className="text-lg font-semibold text-gray-700 mb-2">
+              <h3 className="mb-2 text-lg font-semibold text-gray-700">
                 Assigned Subjects
               </h3>
               {teacher.assignedSubjects &&
@@ -177,13 +177,13 @@ const AllTeachers = () => {
 
       {/* Modal */}
       {selectedTeacher && (
-        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
-          <div className="bg-white p-6 rounded shadow-lg">
-            <h2 className="text-2xl font-bold mb-4">Assign Subject</h2>
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50">
+          <div className="w-1/4 p-6 bg-white rounded shadow-lg">
+            <h2 className="mb-4 text-2xl font-bold">Assign Subject</h2>
             <div className="mb-4">
-              <label className="block font-semibold mb-2">Year</label>
+              <label className="block mb-2 font-semibold">Year</label>
               <select
-                className="w-full border px-4 py-2 rounded"
+                className="w-full px-4 py-2 border rounded"
                 value={subjectData.year}
                 onChange={handleYearChange}
               >
@@ -197,9 +197,9 @@ const AllTeachers = () => {
             </div>
 
             <div className="mb-4">
-              <label className="block font-semibold mb-2">Semester</label>
+              <label className="block mb-2 font-semibold">Semester</label>
               <select
-                className="w-full border px-4 py-2 rounded"
+                className="w-full px-4 py-2 border rounded"
                 value={subjectData.semester}
                 onChange={handleSemesterChange}
                 disabled={!subjectData.year}
@@ -214,9 +214,9 @@ const AllTeachers = () => {
             </div>
 
             <div className="mb-4">
-              <label className="block font-semibold mb-2">Subject</label>
+              <label className="block mb-2 font-semibold">Subject</label>
               <select
-                className="w-full border px-4 py-2 rounded"
+                className="w-full px-4 py-2 border rounded"
                 value={subjectData.subject}
                 onChange={handleSubjectChange}
                 disabled={!subjectData.semester}
@@ -232,13 +232,13 @@ const AllTeachers = () => {
 
             <div className="flex justify-end">
               <button
-                className="bg-gray-300 text-gray-800 px-4 py-2 rounded hover:bg-gray-400 mr-2"
+                className="px-4 py-2 mr-2 text-gray-800 bg-gray-300 rounded hover:bg-gray-400"
                 onClick={() => setSelectedTeacher(null)}
               >
                 Cancel
               </button>
               <button
-                className="bg-green-500 text-white px-4 py-2 rounded hover:bg-green-600"
+                className="px-4 py-2 text-white bg-green-500 rounded hover:bg-green-600"
                 onClick={handleAssignSubject}
               >
                 {isLoading ? "Loading" : "Assign"}

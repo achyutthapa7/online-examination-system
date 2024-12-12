@@ -24,7 +24,7 @@ const NotifyUser = () => {
     try {
       setLoading(true);
       const response = await notifyUsers(message);
-      console.log(response);
+      // console.log(response);
       if (response.status === 200) {
         setSuccessMessage("Users notified successfully!");
         setMessage("");
@@ -38,9 +38,9 @@ const NotifyUser = () => {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gray-100 p-6">
-      <div className="w-full max-w-md bg-white rounded-lg shadow-md p-8">
-        <h2 className="text-2xl font-bold text-gray-800 mb-6 text-center">
+    <div className="flex items-center justify-center min-h-screen p-6 bg-gray-100">
+      <div className="w-full max-w-md p-8 bg-white rounded-lg shadow-md">
+        <h2 className="mb-6 text-2xl font-bold text-center text-gray-800">
           Notify Users
         </h2>
         <form onSubmit={handleNotifyUsers}>
@@ -48,7 +48,7 @@ const NotifyUser = () => {
           <div className="mb-4">
             <label
               htmlFor="message"
-              className="block text-sm font-semibold text-gray-700 mb-2"
+              className="block mb-2 text-sm font-semibold text-gray-700"
             >
               Notification Message
             </label>
@@ -57,19 +57,19 @@ const NotifyUser = () => {
               value={message}
               onChange={handleMessageChange}
               rows={4}
-              className="w-full border border-gray-300 px-4 py-2 rounded focus:outline-none focus:ring-2 focus:ring-blue-400"
+              className="w-full px-4 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-400"
               placeholder="Enter the notification message here"
             ></textarea>
           </div>
 
           {/* Success and Error Messages */}
           {successMessage && (
-            <div className="mb-4 text-green-600 text-sm font-semibold">
+            <div className="mb-4 text-sm font-semibold text-green-600">
               {successMessage}
             </div>
           )}
           {errorMessage && (
-            <div className="mb-4 text-red-600 text-sm font-semibold">
+            <div className="mb-4 text-sm font-semibold text-red-600">
               {errorMessage}
             </div>
           )}

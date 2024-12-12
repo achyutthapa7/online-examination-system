@@ -23,7 +23,7 @@ const AllStudents = () => {
   };
   return (
     <div className="p-8">
-      <h1 className="text-3xl font-bold mb-6">All Students</h1>
+      <h1 className="mb-6 text-3xl font-bold">All Students</h1>
 
       {students.length === 0 ? (
         <p className="text-xl text-gray-600">No students available</p>
@@ -32,19 +32,19 @@ const AllStudents = () => {
           <table className="min-w-full table-auto">
             <thead className="bg-gray-100">
               <tr>
-                <th className="py-3 px-4 text-left text-sm font-semibold text-gray-600">
+                <th className="px-4 py-3 text-sm font-semibold text-left text-gray-600">
                   Full Name
                 </th>
-                <th className="py-3 px-4 text-left text-sm font-semibold text-gray-600">
+                <th className="px-4 py-3 text-sm font-semibold text-left text-gray-600">
                   Email
                 </th>
-                <th className="py-3 px-4 text-left text-sm font-semibold text-gray-600">
+                <th className="px-4 py-3 text-sm font-semibold text-left text-gray-600">
                   Year
                 </th>
-                <th className="py-3 px-4 text-left text-sm font-semibold text-gray-600">
+                <th className="px-4 py-3 text-sm font-semibold text-left text-gray-600">
                   Semester
                 </th>
-                <th className="py-3 px-4 text-left text-sm font-semibold text-gray-600">
+                <th className="px-4 py-3 text-sm font-semibold text-left text-gray-600">
                   Actions
                 </th>
               </tr>
@@ -52,31 +52,32 @@ const AllStudents = () => {
             <tbody>
               {students.map((student) => (
                 <tr key={student._id} className="border-b hover:bg-gray-50">
-                  <td className="py-3 px-4 text-sm text-gray-800">
+                  <td className="px-4 py-3 text-sm text-gray-800">
                     {student.fullName}
                   </td>
-                  <td className="py-3 px-4 text-sm text-gray-800">
-                    {student.emailAddress}
+                  <td className="px-4 py-3 text-sm text-gray-800">
+                    {student.userName}
                   </td>
-                  <td className="py-3 px-4 text-sm text-gray-800">
+                  <td className="px-4 py-3 text-sm text-gray-800">
                     {student.year}
                   </td>
-                  <td className="py-3 px-4 text-sm text-gray-800">
+                  <td className="px-4 py-3 text-sm text-gray-800">
                     {student.semester}
                   </td>
-                  <td className="py-3 px-4 text-sm text-gray-800">
+                  <td className="px-4 py-3 text-sm text-gray-800">
                     {student.isVerified ? (
                       <button
-                        className="bg-red-500 text-white px-4 py-2 rounded hover:bg-red-600"
+                        className="px-4 py-2 text-white bg-red-500 rounded hover:bg-red-600"
                         onClick={() => {
-                          handleDelete(student._id);
+                          if (window.confirm("Do you want to delete the user?"))
+                            handleDelete(student._id);
                         }}
                       >
                         Delete
                       </button>
                     ) : (
                       <button
-                        className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600"
+                        className="px-4 py-2 text-white bg-blue-500 rounded hover:bg-blue-600"
                         onClick={() => handleVerify(student._id)}
                       >
                         Verify

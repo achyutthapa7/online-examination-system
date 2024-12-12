@@ -1,4 +1,5 @@
 const assignsubjectModel = require("../models/assignsubject.model");
+const examModel = require("../models/exam.model");
 const studentModel = require("../models/student.model");
 const teacherModel = require("../models/teacher.model");
 const handleError = require("../utils/handleError");
@@ -7,6 +8,11 @@ const sendMail = require("../utils/sendMail");
 
 const addTeacher = async (req, res) => {
   try {
+    // if (!req.admin) {
+    //   return res
+    //     .status(403)
+    //     .json({ message: "Access denied. You are not admin." });
+    // }
     const { emailAddress, userName, password, fullName } = req.body;
     if (!emailAddress || !userName || !password || !fullName) {
       return res.status(400).json({ message: "Missing required fields" });
@@ -171,6 +177,48 @@ const notifyUsersForExam = async (req, res) => {
   }
 };
 
+const viewExams = async (req, res) => {
+  try {
+    const exams = await examModel.find({});
+    res.json(exams);
+  } catch (error) {
+    handleError(res, error);
+  }
+};
+
+// const setDateAndTimeForExams = async (req, res) => {
+//   try {
+//     const { examId } = req.params;
+//     const { day, time } = req.body;
+//     if (!examId || !day || !time) {
+//       return res.status(400).json({ message: "Missing required fields" });
+//     }
+//     const exam = await examModel.findByIdAndUpdate(
+//       examId,
+//       { $set: { day, time } },
+//       { new: true }
+//     );
+//     if (!exam) return res.status(404).json({ message: "Exam not found" });
+//     res.json(exam);
+//   } catch (error) {
+//     handleError(res, error);
+//   }
+// };
+
+const startExam = async (req, res) => {
+  try {
+    const { examId } = req.params;
+    const exam = await examModel.findByIdAndUpdate(
+      examId,
+      { $set: { isApproved: true } },
+      { new: true }
+    );
+    if (!exam) return res.status(404).json({ message: "Exam not found" });
+    res.json(exam);
+  } catch (error) {
+    handleError(res, error);
+  }
+};
 module.exports = {
   getAllRegisteredTeachers,
   getAllRegisteredStudent,
@@ -180,4 +228,7 @@ module.exports = {
   updateUserPassword,
   notifyUsersForExam,
   addTeacher,
+  viewExams,
+  // setDateAndTimeForExams,
+  startExam,
 };
