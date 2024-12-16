@@ -157,6 +157,8 @@ const AllTeachers = () => {
               <h3 className="mb-2 text-lg font-semibold text-gray-700">
                 Assigned Subjects
               </h3>
+              <button>Edit Subjects</button>
+
               {teacher.assignedSubjects &&
               teacher.assignedSubjects.length > 0 ? (
                 <ul className="list-disc list-inside">

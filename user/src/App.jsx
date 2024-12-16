@@ -14,6 +14,7 @@ import CreateExamBySubject from "./components/teacher/CreateExamBySubject";
 import ViewExams from "./components/teacher/ViewExams";
 import Results from "./components/student/Results";
 import ExamPage from "./components/student/ExamPage";
+import Courses from "./components/student/Courses";
 const App = () => {
   return (
     <div>
@@ -32,8 +33,8 @@ const App = () => {
           path="/dashboard/teacher/create-exam/:subject"
           element={<CreateExamBySubject />}
         />
-
         <Route path="/dashboard/student" element={<StudentDashboard />}>
+          <Route path="/dashboard/student/courses" element={<Courses />} />
           <Route path="take-exam" element={<TakeExam />} />
           <Route path="results" element={<Results />} />
         </Route>
@@ -48,3 +49,77 @@ const App = () => {
 };
 
 export default App;
+
+// import React, { useEffect, useState } from "react";
+
+// const App = () => {
+//   const [questions, setQuestions] = useState(["A", "B", "C", "D"]);
+//   const [question, setQuestion] = useState(questions[0]);
+//   const [index, setIndex] = useState(0);
+//   const length = questions.length;
+
+//   useEffect(() => {
+//     if (length > index) {
+//       setQuestion(questions[index]);
+//       console.log(questions[index]);
+//     }
+//   }, [index]);
+//   const handleNext = () => {
+//     setIndex((index) => index + 1);
+//   };
+//   return (
+//     <div>
+//       {/* <div className="border-2 w-80 h-40 bg-black"></div> */}
+//       {question}
+//       <button onClick={handleNext}>next</button>
+//     </div>
+//   );
+// };
+
+// export default App;
+
+// import React, { useState, useEffect } from "react";
+
+// const itemsPerPage = 5;
+
+// const PaginatedList = ({ data }) => {
+//   const [currentPage, setCurrentPage] = useState(1);
+
+//   // Calculate the index range for the current page
+//   const indexOfLastItem = currentPage * itemsPerPage;
+//   const indexOfFirstItem = indexOfLastItem - itemsPerPage;
+//   const currentItems = data.slice(indexOfFirstItem, indexOfLastItem);
+
+//   const totalPages = Math.ceil(data.length / itemsPerPage);
+
+//   // Handle page changes
+//   const paginate = (pageNumber) => setCurrentPage(pageNumber);
+
+//   return (
+//     <div>
+//       <h2>Paginated List</h2>
+//       <ul>
+//         {currentItems.map((item, index) => (
+//           <li key={index}>{item}</li>
+//         ))}
+//       </ul>
+
+//       <div>
+//         {Array.from({ length: totalPages }, (_, i) => (
+//           <button
+//             key={i + 1}
+//             onClick={() => paginate(i + 1)}
+//             style={{
+//               margin: "0 5px",
+//               backgroundColor: currentPage === i + 1 ? "#4CAF50" : "",
+//             }}
+//           >
+//             {i + 1}
+//           </button>
+//         ))}
+//       </div>
+//     </div>
+//   );
+// };
+
+// export default PaginatedList;

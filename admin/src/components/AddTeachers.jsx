@@ -74,8 +74,8 @@ const AddTeachers = () => {
   //   setFormData((prevData) => ({ ...prevData, subject: value }));
   // };
   return (
-    <div className="max-w-xl mx-auto p-6 bg-white shadow-lg rounded-lg">
-      <h2 className="text-2xl font-semibold text-center mb-6">Add Teacher</h2>
+    <div className="max-w-xl p-6 mx-auto bg-white rounded-lg shadow-lg">
+      <h2 className="mb-6 text-2xl font-semibold text-center ">Add Teacher</h2>
       <form onSubmit={handleSubmit}>
         <div className="mb-4">
           <label
@@ -90,7 +90,7 @@ const AddTeachers = () => {
             name="emailAddress"
             value={formData.emailAddress}
             onChange={handleChange}
-            className="mt-2 w-full p-3 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+            className="w-full p-3 mt-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
             placeholder="Enter email address"
           />
         </div>
@@ -108,7 +108,7 @@ const AddTeachers = () => {
             name="userName"
             value={formData.userName}
             onChange={handleChange}
-            className="mt-2 w-full p-3 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+            className="w-full p-3 mt-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
             placeholder="Enter user name"
           />
         </div>
@@ -126,7 +126,7 @@ const AddTeachers = () => {
             name="password"
             value={formData.password}
             onChange={handleChange}
-            className="mt-2 w-full p-3 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+            className="w-full p-3 mt-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
             placeholder="Enter password"
           />
         </div>
@@ -144,7 +144,7 @@ const AddTeachers = () => {
             name="fullName"
             value={formData.fullName}
             onChange={handleChange}
-            className="mt-2 w-full p-3 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+            className="w-full p-3 mt-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
             placeholder="Enter full name"
           />
         </div>
@@ -161,7 +161,7 @@ const AddTeachers = () => {
             name="year"
             value={formData.year}
             onChange={handleChange}
-            className="mt-2 w-full p-3 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+            className="w-full p-3 mt-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
           >
             <option value="">Select year</option>
             {[1, 2, 3, 4].map((year) => (
@@ -184,7 +184,7 @@ const AddTeachers = () => {
             name="semester"
             value={formData.semester}
             onChange={handleChange}
-            className="mt-2 w-full p-3 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+            className="w-full p-3 mt-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
             disabled={!formData.year}
           >
             <option value="">Select semester</option>
@@ -201,7 +201,7 @@ const AddTeachers = () => {
           <label className="block text-sm font-medium text-gray-700">
             Subjects
           </label>
-          <div className="mt-2 p-3 border border-gray-300 rounded-md shadow-sm">
+          <div className="p-3 mt-2 border border-gray-300 rounded-md shadow-sm">
             <div className="flex flex-wrap gap-4">
               {getSubjectsForYearAndSemester(
                 formData.year,
@@ -226,7 +226,7 @@ const AddTeachers = () => {
         <div className="mb-4">
           <button
             type="submit"
-            className="w-full p-3 bg-blue-600 text-white rounded-md shadow-sm hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500"
+            className="w-full p-3 text-white bg-blue-600 rounded-md shadow-sm hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500"
           >
             Add Teacher
           </button>

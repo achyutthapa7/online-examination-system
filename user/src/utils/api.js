@@ -124,7 +124,7 @@ export const getStudentExams = async () => {
         "Content-Type": "application/json",
       },
     });
-    // console.log(response);
+    console.log(response);
     return response;
   } catch (error) {
     // console.error("Error during fetching exams:", error);
@@ -177,6 +177,23 @@ export const getExamQuestion = async (examId) => {
     return response;
   } catch (error) {
     console.error("Error during getting exam:", error);
+    throw error;
+  }
+};
+
+export const getYearAndSemester = async (subject) => {
+  try {
+    const response = axios.post(`${API_URL}/student/getYearAndSemester`, {
+      withCredentials: true,
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body:{subject:subject}
+    });
+
+    return response;
+  } catch (error) {
+    console.error("Error during fetching courses:", error);
     throw error;
   }
 };

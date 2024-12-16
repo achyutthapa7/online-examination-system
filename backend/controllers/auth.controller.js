@@ -64,7 +64,7 @@ const loginUser = async (req, res) => {
       return res.status(400).json({ message: "Missing required fields" });
     }
     const [teacher, student] = await Promise.all([
-      teacherModel.findOne({ emailAddress: userName, role }),
+      teacherModel.findOne({ userName, role }),
       studentModel.findOne({ userName, role }),
     ]);
     const rootUser = teacher || student;
@@ -117,7 +117,6 @@ const loginAdmin = async (req, res) => {
 };
 
 const logout = async (req, res) => {
-  
   try {
     res.clearCookie("token");
     res.json({ message: "Logged out successfully", currentUser: req.rootUser });

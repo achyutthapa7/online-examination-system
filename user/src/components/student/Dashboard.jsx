@@ -6,7 +6,7 @@ import { Tooltip as ReactTooltip } from "react-tooltip";
 const SidebarItem = ({ icon: Icon, label, link, isExpanded }) => (
   <Link
     to={link}
-    className="flex items-center px-4 py-3 hover:bg-green-600 focus:bg-green-600 transition text-gray-200 w-full"
+    className="flex items-center w-full px-4 py-3 text-gray-200 transition hover:bg-green-600 focus:bg-green-600"
     data-tip={label}
     data-place="right"
   >
@@ -62,7 +62,7 @@ const StudentDashboard = () => {
           )}
           <button
             onClick={() => setIsSidebarOpen(!isSidebarOpen)}
-            className="text-white text-2xl focus:outline-none"
+            className="text-2xl text-white focus:outline-none"
             data-tip={isSidebarOpen ? "Collapse" : "Expand"}
           >
             <FaBars />
@@ -83,13 +83,19 @@ const StudentDashboard = () => {
             link="results"
             isExpanded={isSidebarOpen}
           />
+          <SidebarItem
+            icon={FaInfoCircle}
+            label="Courses"
+            link="courses"
+            isExpanded={isSidebarOpen}
+          />
         </nav>
 
         {/* Sidebar Footer */}
-        <div className="mt-auto p-4">
+        <div className="p-4 mt-auto">
           <button
             onClick={handleLogout}
-            className="w-full py-2 rounded-md hover:bg-red-700 transition flex items-center justify-center bg-red-600 text-white"
+            className="flex items-center justify-center w-full py-2 text-white transition bg-red-600 rounded-md hover:bg-red-700"
             data-tip="Logout"
           >
             <FaSignOutAlt className="text-xl" />
@@ -100,15 +106,15 @@ const StudentDashboard = () => {
 
       {/* Main Content */}
       <main className="flex-1 p-8">
-        <h1 className="text-3xl font-semibold text-green-700 mb-6">
+        <h1 className="mb-6 text-3xl font-semibold text-green-700">
           Welcome to the Student Dashboard
         </h1>
-        <p className="text-lg text-gray-700 mb-6">
+        <p className="mb-6 text-lg text-gray-700">
           Access your exams and view your results from the sidebar.
         </p>
 
         {/* Content Outlet */}
-        <div className="bg-white p-6 shadow-lg rounded-lg">
+        <div className="p-6 bg-white rounded-lg shadow-lg ">
           <Outlet />
         </div>
       </main>

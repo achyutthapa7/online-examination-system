@@ -15,13 +15,15 @@ const getExams = async (req, res) => {
       const isNotSubmitted = !exam.submissions.some((submission) =>
         submission.student.equals(req.rootUser._id)
       );
+      console.log(isYearAndSemesterMatch, isNotSubmitted, isApproved);
+
       return isYearAndSemesterMatch && isNotSubmitted && isApproved;
     });
-
+    console.log({ availableExams });
     if (availableExams.length === 0) {
       return res.json({ message: "No available exams for you to take" });
     }
-    res.json({ exams });
+    res.json({ exams: availableExams });
   } catch (error) {
     handleError(res, error);
   }
@@ -40,6 +42,21 @@ const getUpcomingExams = async (req, res) => {
     return res.status(200).json({ message: "No upcoming exams" });
   }
   res.json({ exams: upcomingExams });
+};
+
+const getYearAndSemester = async (req, res) => {
+  const student = await studentModel.findOne({
+    userName: req.rootUser.userName,
+  });
+
+  const subject = await examModel.findOne({
+    subject: req.body.subject,
+  });
+  res.json({
+    subjectId: subject._id,
+    year: student.year,
+    semester: student.semester,
+  });
 };
 
 const submitExam = async (req, res) => {
@@ -117,4 +134,10 @@ const getExamQuestion = async (req, res) => {
   }
 };
 
-module.exports = { getExams, submitExam, getUpcomingExams, getExamQuestion };
+module.exports = {
+  getExams,
+  submitExam,
+  getUpcomingExams,
+  getExamQuestion,
+  getYearAndSemester,
+};

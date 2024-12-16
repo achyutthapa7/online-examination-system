@@ -3,6 +3,7 @@ const {
   submitExam,
   getUpcomingExams,
   getExamQuestion,
+  getYearAndSemester,
 } = require("../controllers/student.controller");
 const authMiddleware = require("../middlewares/authMiddleware");
 
@@ -12,5 +13,6 @@ router.get("/getExams", authMiddleware, getExams);
 router.get("/getUpcomingExams", authMiddleware, getUpcomingExams);
 router.get("/getExamQuestion/:examId", authMiddleware, getExamQuestion);
 router.post("/submitExam/:examId", authMiddleware, submitExam);
+router.post("/getYearAndSemester", authMiddleware, getYearAndSemester);
 
 module.exports = router;
