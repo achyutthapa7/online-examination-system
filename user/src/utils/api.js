@@ -124,7 +124,7 @@ export const getStudentExams = async () => {
         "Content-Type": "application/json",
       },
     });
-    console.log(response);
+    // console.log(response);
     return response;
   } catch (error) {
     // console.error("Error during fetching exams:", error);

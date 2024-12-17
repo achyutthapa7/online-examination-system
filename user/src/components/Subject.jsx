@@ -1,18 +1,13 @@
 import React from "react";
-<<<<<<< HEAD
+
 import { useNavigate } from "react-router-dom";
 
 const Subject = ({ subject }) => {
   const navigate = useNavigate();
   const examId = "675fde6b1c5ea5f765d0c9ff";
 
-  // console.log(subject, "subject");
-
-=======
-
-const Subject = ({ subject }) => {
   console.log(subject, "subject");
->>>>>>> 7de29b5 (Setting Up Some Structures)
+
   return (
     <div className="gap-3 p-4 bg-red-500 border-2 border-green-700 rounded-lg h-[200px] items-between justify-between flex flex-col   ">
       <h2 className="mb-2 text-2xl font-semibold text-green-700 ">
@@ -29,14 +24,9 @@ const Subject = ({ subject }) => {
       </p> */}
       <button
         className="px-4 py-2 w-1/2 mt-4 text-white transition bg-green-600 rounded hover:bg-green-700"
-<<<<<<< HEAD
+
         // onClick={() => navigate(`/dashboard/student/take-exam/${examId}`)}
         // onClick={jpaitei}
-=======
-        onClick={() => {
-          console.log(subject);
-        }}
->>>>>>> 7de29b5 (Setting Up Some Structures)
       >
         Start Exam
       </button>

@@ -117,10 +117,14 @@ const getExamQuestion = async (req, res) => {
   }
 };
 
+const getYearAndSemester = async (req, res) => {
+  res.send("here");
+};
+
 module.exports = {
   getExams,
   submitExam,
   getUpcomingExams,
   getExamQuestion,
-  // getYearAndSemester,
+  getYearAndSemester,
 };

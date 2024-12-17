@@ -12,7 +12,7 @@ const TakeExam = () => {
   const getExams = async () => {
     try {
       const response = await getStudentExams();
-      console.log(response);
+      // console.log(response);
       setExams(Array.isArray(response.data.exams) ? response.data.exams : []);
     } catch (error) {
       // console.error("Failed to fetch exams:", error);
@@ -47,13 +47,9 @@ const TakeExam = () => {
 
   return (
     <div className="min-h-screen p-8 bg-gray-100">
-<<<<<<< HEAD
-      <h1 className="">Available Exams</h1>
-=======
-      <h1 className="">
+      <h1 className="mb-6 text-4xl font-bold text-green-700">
         Available Exams
       </h1>
->>>>>>> 7de29b5 (Setting Up Some Structures)
 
       {loading ? (
         <div className="text-center text-gray-600">Loading exams...</div>
@@ -90,7 +86,7 @@ const TakeExam = () => {
         </div>
       )}
 
-      <h1 className="mb-6 text-4xl font-bold text-blue-700">Upcomin Exams</h1>
+      <h1 className="mb-6 text-4xl font-bold text-blue-700">Upcoming Exams</h1>
 
       {upcomingExams.length === 0 ? (
         <div className="text-center text-gray-600">No upcoming exams.</div>

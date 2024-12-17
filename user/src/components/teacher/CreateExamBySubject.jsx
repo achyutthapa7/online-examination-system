@@ -19,7 +19,7 @@ const CreateExamBySubject = () => {
   const { subject } = useParams();
   const location = useLocation();
   const navigate = useNavigate();
-  console.log(location.state._id);
+  // console.log(location.state._id);
   const [examData, setExamData] = useState({
     title: "",
     timeLimit: 0,
