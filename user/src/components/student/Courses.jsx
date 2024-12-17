@@ -16,18 +16,17 @@ const Courses = () => {
   const token = localStorage.getItem("login_token");
   useEffect(() => {
     // console.log(localStorage.getItem("username"));
-
     const getStudent = async () => {
       const response = await getYearAndSemester(
         localStorage.getItem("username")
       );
-      // console.log(response.data, "data");
-      // console.log(response.data, "respsaonse");
+      console.log(response.data, "data");
+      // console.log(response.data, "response");
       const subjects = subjectsData.filter(
         (subject) =>
           subject.year === response.data.year &&
           subject.semester === response.data.semester
-        // console.log(subject, "subjsect")
+
         // subject._id === response.data.subjectId
       );
       console.log(subjects, "subjectsas");

@@ -3,8 +3,10 @@ import { getExamQuestion, submitExams } from "../../utils/api";
 import { useNavigate } from "react-router-dom";
 
 const ExamPage = () => {
+  const [index, setIndex] = useState(0);
   const navigate = useNavigate();
-  const [isButtonEnabled, setIsButtonEnabled] = useState(true);
+  const [questionOnPage, setQuestionOnPage] = useState({});
+  const [isButtonEnabled, setIsButtonEnabled] = useState(false);
   const [submitted, setSubmitted] = useState(false);
   const [selectedAnswers, setSelectedAnswers] = useState([]);
   const [correctAnswers, setCorrectAnswers] = useState(0);
@@ -23,10 +25,10 @@ const ExamPage = () => {
       const exam = response.data.exam;
       setExamDetails({
         title: exam.title,
-        timeLimit: exam.timeLimit * 60, // Convert minutes to seconds
+        timeLimit: exam.timeLimit * 60,
         questions: exam.questions,
       });
-      setTimeLeft(exam.timeLimit * 60); // Set initial time left
+      setTimeLeft(exam.timeLimit * 60);
     } catch (error) {
       console.error("Error fetching exam:", error);
       alert("Failed to load exam details");
@@ -37,7 +39,6 @@ const ExamPage = () => {
     fetchExam();
   }, []);
 
-  // Shuffle questions once when component mounts
   useEffect(() => {
     if (examDetails.questions.length > 0) {
       const shuffled = [...examDetails.questions]
@@ -46,6 +47,12 @@ const ExamPage = () => {
       setShuffledQuestions(shuffled);
     }
   }, [examDetails.questions]);
+
+  useEffect(() => {
+    if (shuffledQuestions.length > 0) {
+      setQuestionOnPage(shuffledQuestions[index]);
+    }
+  }, [index, shuffledQuestions]);
 
   useEffect(() => {
     if (timeLeft === null) return;
@@ -89,9 +96,8 @@ const ExamPage = () => {
   };
 
   const handleSubmit = async () => {
-    if (!submitted && isButtonEnabled) {
+    if (!submitted) {
       try {
-        // Prepare answers array matching backend expectation
         const answers = shuffledQuestions.map(
           (question, index) => selectedAnswers[index] || null
         );
@@ -102,12 +108,6 @@ const ExamPage = () => {
         setCorrectAnswers(score);
         setTimeLeft(null);
         setSubmitted(true);
-        setIsButtonEnabled(false);
-
-        // Optional: Show server-side score if needed
-        if (response.data.score !== undefined) {
-          console.log("Server-side score:", response.data.score);
-        }
       } catch (error) {
         console.error("Error submitting exam:", error);
         alert("Failed to submit exam");
@@ -115,7 +115,13 @@ const ExamPage = () => {
     }
   };
 
-  // Rest of the component remains the same as in the previous implementation
+  const handleNextQuestion = () => {
+    if (index < shuffledQuestions.length - 1) {
+      setIndex((prev) => prev + 1);
+      setIsButtonEnabled(false);
+    }
+  };
+
   return (
     <div className="min-h-screen px-4 py-8 bg-gray-100 sm:px-6 lg:px-8">
       <div className="max-w-4xl mx-auto overflow-hidden bg-white rounded-lg shadow-lg">
@@ -161,25 +167,29 @@ const ExamPage = () => {
 
           {examDetails && (
             <div className="space-y-8">
-              <h2 className="pb-4 text-2xl font-semibold text-gray-800 border-b">
-                {examDetails.title}
-              </h2>
+              <h2 className="pb-4 flex justify-between  w-full  text-2xl font-semibold text-gray-800 border-b">
+                <span> {examDetails.title}</span>
 
-              <div className="space-y-6">
+                <span>{index + 1 + " out of " + shuffledQuestions.length}</span>
+              </h2>
+              {/*
+               <div className="space-y-6">
                 {shuffledQuestions.map((question, index) => (
                   <div key={question.id} className="p-6 rounded-lg bg-gray-50">
-                    <h3 className="mb-4 text-lg font-medium text-gray-900">
-                      Question {index + 1}
-                    </h3>
-                    <p className="mb-4 text-gray-700">{question.question}</p>
-                    <div className="space-y-3">
+                    <div className="flex gap-12  items-center">
+                      <span className="mb-4 text-lg font-medium text-gray-900">
+                        {question.questionText}
+                      </span>
                       {!submitted &&
                         !selectedAnswers[index] &&
                         timeLeft !== 0 && (
-                          <div className="mb-2 text-sm text-red-500">
+                          <span className="mb-3  text-sm font-medium text-red-500">
                             Please select an answer for this question
-                          </div>
+                          </span>
                         )}
+                    </div>
+                    <p className="mb-4 text-gray-700">{question.question}</p>
+                    <div className="space-y-3">
                       {question.options.map((option, optIndex) => (
                         <div key={optIndex} className="flex items-center">
                           <input
@@ -193,6 +203,62 @@ const ExamPage = () => {
                               const selectedAnswer = e.target.value;
                               const answers = [...selectedAnswers];
                               answers[index] = selectedAnswer;
+                              setSelectedAnswers(answers);
+                            }}
+                            className="w-4 h-4 text-blue-600 border-gray-300 focus:ring-blue-500"
+                          />
+                          <label
+                            htmlFor={`q${index}-opt${optIndex}`}
+                            className={`block ml-3 ${
+                              submitted || timeLeft === 0
+                                ? "text-gray-500"
+                                : "text-gray-700"
+                            }`}
+                          >
+                            {option}
+                          </label>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                ))}
+              </div> 
+              */}
+
+              <div className="space-y-6">
+                {shuffledQuestions.slice(index, index + 1).map((question) => (
+                  <div key={question.id} className="p-6 rounded-lg bg-gray-50">
+                    <div className="flex w-full   items-center">
+                      <span className="text-lg  font-medium mr-2  text-gray-900">
+                        {question.questionText}
+                      </span>
+
+                      {!submitted && timeLeft !== 0 && (
+                        <sup className=" text-[12px] font-medium text-red-500">
+                          * Please select an answer for this question
+                        </sup>
+                      )}
+                    </div>
+                    <p className="mb-4 text-gray-700">{question.question}</p>
+                    <div className="space-y-3">
+                      {question.options.map((option, optIndex) => (
+                        <div key={optIndex} className="flex items-center">
+                          <input
+                            type="radio"
+                            id={`q${index}-opt${optIndex}`}
+                            name={`question-${index}`}
+                            value={option}
+                            checked={selectedAnswers[index] === option}
+                            disabled={submitted || timeLeft === 0}
+                            onChange={(e) => {
+                              setIsButtonEnabled(true);
+                              const selectedAnswer = e.target.value;
+
+                              const answers = [...selectedAnswers];
+                              console.log(answers);
+                              answers[index] = selectedAnswer;
+
+                              console.log(answers, "Answer");
                               setSelectedAnswers(answers);
                             }}
                             className="w-4 h-4 text-blue-600 border-gray-300 focus:ring-blue-500"
@@ -250,7 +316,7 @@ const ExamPage = () => {
                       <div className="flex items-start justify-between">
                         <div>
                           <h4 className="mb-2 font-medium text-gray-900">
-                            Question {index + 1}
+                            {question.questionText}
                           </h4>
                           <p className="mb-2 text-gray-700">
                             {question.question}
@@ -288,26 +354,37 @@ const ExamPage = () => {
           )}
 
           <div className="flex justify-center mt-8">
-            <button
-              onClick={handleSubmit}
-              disabled={
-                !isButtonEnabled ||
-                submitted ||
-                selectedAnswers.length !== shuffledQuestions.length
-              }
-              className={`
-                px-6 py-3 rounded-md text-white font-medium
-                ${
-                  isButtonEnabled &&
-                  !submitted &&
-                  selectedAnswers.length === shuffledQuestions.length
-                    ? "bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
-                    : "bg-gray-400 cursor-not-allowed"
-                }
-              `}
-            >
-              {submitted ? "Exam Submitted" : "Submit Exam"}
-            </button>
+            {index === shuffledQuestions.length - 1 ? (
+              <button
+                onClick={handleSubmit}
+                disabled={!isButtonEnabled || submitted}
+                className={`
+                  px-6 py-3 rounded-md text-white font-medium
+                  ${
+                    !submitted
+                      ? "bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
+                      : "bg-gray-400 cursor-not-allowed"
+                  }
+                `}
+              >
+                {submitted ? "Exam Submitted" : "Submit Exam"}
+              </button>
+            ) : (
+              <button
+                onClick={handleNextQuestion}
+                disabled={!isButtonEnabled}
+                className={`
+                  px-6 py-3 rounded-md text-white font-medium
+                  ${
+                    isButtonEnabled
+                      ? "bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
+                      : "bg-gray-400 cursor-not-allowed"
+                  }
+                `}
+              >
+                Next Question
+              </button>
+            )}
           </div>
         </div>
       </div>

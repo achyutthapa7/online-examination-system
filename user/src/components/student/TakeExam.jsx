@@ -12,10 +12,9 @@ const TakeExam = () => {
   const getExams = async () => {
     try {
       const response = await getStudentExams();
-      // console.log(response);
       setExams(Array.isArray(response.data.exams) ? response.data.exams : []);
     } catch (error) {
-      // console.error("Failed to fetch exams:", error);
+      console.error("Failed to fetch exams:", error);
     } finally {
       setLoading(false);
     }
