@@ -2,8 +2,9 @@ const {
   getExams,
   submitExam,
   getUpcomingExams,
-  getExamQuestion,
-  getYearAndSemester,
+  submitIndividualAnswer,
+  getAllAnswersForRespectedExam,
+  calculateExamScore,
 } = require("../controllers/student.controller");
 const authMiddleware = require("../middlewares/authMiddleware");
 
@@ -11,8 +12,17 @@ const router = require("express").Router();
 
 router.get("/getExams", authMiddleware, getExams);
 router.get("/getUpcomingExams", authMiddleware, getUpcomingExams);
-router.get("/getExamQuestion/:examId", authMiddleware, getExamQuestion);
-router.post("/submitExam/:examId", authMiddleware, submitExam);
-router.post("/getYearAndSemester", authMiddleware, getYearAndSemester);
+router.post(
+  "/submitIndividualAnswer/:questionId",
+  authMiddleware,
+  submitIndividualAnswer
+);
+router.get(
+  "/getAllAnswersForRespectedExam/:examId",
+  authMiddleware,
+  getAllAnswersForRespectedExam
+);
 
+router.get("/calculateExamScore/:examId", authMiddleware, calculateExamScore);
+router.post("/submitExam/:examId", authMiddleware, submitExam);
 module.exports = router;
