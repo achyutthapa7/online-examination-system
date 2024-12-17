@@ -122,5 +122,5 @@ module.exports = {
   submitExam,
   getUpcomingExams,
   getExamQuestion,
-  getYearAndSemester,
+  // getYearAndSemester,
 };
