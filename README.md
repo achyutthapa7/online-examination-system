@@ -117,7 +117,7 @@ Once the application is running, you can:
 
 ---
 
-## Author
+## Authors
 
 - **Achyut Thapa** – [achyutthapa7](https://github.com/achyutthapa7)
 - **Sarthak GC** – [sarthak-gc](https://github.com/sarthak-gc)
