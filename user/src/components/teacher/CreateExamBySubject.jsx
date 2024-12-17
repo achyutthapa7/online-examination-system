@@ -108,7 +108,8 @@ const CreateExamBySubject = () => {
         <Card key={index} sx={{ marginBottom: "20px" }}>
           <CardContent>
             <Typography variant="subtitle1" mb={2}>
-              Question {index + 1}
+              {question.questionText}
+              {/* Question {index + 1} */}
             </Typography>
             <TextField
               fullWidth

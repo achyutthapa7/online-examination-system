@@ -118,7 +118,13 @@ const getExamQuestion = async (req, res) => {
 };
 
 const getYearAndSemester = async (req, res) => {
-  res.send("here");
+  const student = await studentModel.findOne({ userName: req.body.username });
+
+  console.log(student?.userName);
+  res.json({
+    year: student?.year,
+    semester: student?.semester,
+  });
 };
 
 module.exports = {

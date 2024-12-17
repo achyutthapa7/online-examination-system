@@ -181,14 +181,14 @@ export const getExamQuestion = async (examId) => {
   }
 };
 
-export const getYearAndSemester = async (subject) => {
+export const getYearAndSemester = async (username) => {
   try {
     const response = axios.post(`${API_URL}/student/getYearAndSemester`, {
       withCredentials: true,
       headers: {
         "Content-Type": "application/json",
       },
-      body: { subject: subject },
+      username,
     });
 
     return response;
