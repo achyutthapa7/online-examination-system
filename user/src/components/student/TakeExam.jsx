@@ -47,7 +47,13 @@ const TakeExam = () => {
 
   return (
     <div className="min-h-screen p-8 bg-gray-100">
+<<<<<<< HEAD
       <h1 className="">Available Exams</h1>
+=======
+      <h1 className="">
+        Available Exams
+      </h1>
+>>>>>>> 7de29b5 (Setting Up Some Structures)
 
       {loading ? (
         <div className="text-center text-gray-600">Loading exams...</div>

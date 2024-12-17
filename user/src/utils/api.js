@@ -181,14 +181,23 @@ export const getExamQuestion = async (examId) => {
   }
 };
 
+<<<<<<< HEAD
 export const getYearAndSemester = async (subject) => {
   try {
     const response = axios.post(`${API_URL}/student/getYearAndSemester`, {
+=======
+export const getYearAndSemester = async () => {
+  try {
+    const response = axios.get(`${API_URL}/student/getYearAndSemester`, {
+>>>>>>> 7de29b5 (Setting Up Some Structures)
       withCredentials: true,
       headers: {
         "Content-Type": "application/json",
       },
+<<<<<<< HEAD
       body:{subject:subject}
+=======
+>>>>>>> 7de29b5 (Setting Up Some Structures)
     });
 
     return response;
