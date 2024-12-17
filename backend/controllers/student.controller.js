@@ -66,7 +66,6 @@ const submitIndividualAnswer = async (req, res) => {
         { questionId, studentId: req.rootUser._id },
         { $set: { selectedOption } }
       );
-
       return res.status(200).json({ message: "Answer updated successfully" });
     } else {
       const newAnswer = new answerModel({
