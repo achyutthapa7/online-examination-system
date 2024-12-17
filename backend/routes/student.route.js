@@ -1,4 +1,5 @@
 const {
+  getYearAndSemester,
   getExams,
   submitExam,
   getUpcomingExams,

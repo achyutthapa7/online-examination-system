@@ -66,7 +66,6 @@ const submitIndividualAnswer = async (req, res) => {
         { questionId, studentId: req.rootUser._id },
         { $set: { selectedOption } }
       );
-
       return res.status(200).json({ message: "Answer updated successfully" });
     } else {
       const newAnswer = new answerModel({
@@ -81,57 +80,6 @@ const submitIndividualAnswer = async (req, res) => {
         .status(201)
         .json({ message: "Answer submitted successfully", newAnswer });
     }
-<<<<<<< HEAD
-    if (!answers) {
-      return res.status(400).json({ message: "Answers array is required" });
-    }
-    if (answers.length < 0) {
-      return res.status(400).json({ message: "Answers array is empty" });
-    }
-
-    let score = 0;
-    exam.questions.forEach((question, index) => {
-      const correctAnswer = question.options[question.correctAnswer - 1];
-      console.log(typeof answers[index], "answers[index] : ", answers[index]);
-      console.log(typeof correctAnswer, "correctAnswer : ", correctAnswer);
-
-      console.log(answers[index], "your-answer : ");
-      console.log(correctAnswer, "correctAnswer : ");
-
-      if (correctAnswer === answers[index]) {
-        score += 1;
-      }
-      console.log(score);
-    });
-
-    await examModel.findOneAndUpdate(
-      { _id: examId },
-      {
-        $push: {
-          submissions: {
-            student: req.rootUser._id, // Student's ID from JWT
-            answers,
-            score,
-          },
-        },
-      }
-    );
-    await studentModel.findOneAndUpdate(
-      { _id: req.rootUser._id },
-      {
-        $push: { completedExams: { exam: exam._id, score } },
-      }
-    );
-    const newResult = new resultModel({
-      student: req.rootUser._id, // Student's ID from JWT
-      exam: exam._id,
-      score,
-    });
-
-    await newResult.save();
-    res.status(200).json({ message: "Exam submitted successfully", score });
-=======
->>>>>>> origin/test
   } catch (error) {
     res.status(500).json({ message: "Server Error", error: error.message });
   }
@@ -246,7 +194,6 @@ const getAllAnswersForRespectedExam = async (req, res) => {
   }
 };
 
-<<<<<<< HEAD
 const getYearAndSemester = async (req, res) => {
   const student = await studentModel.findOne({ userName: req.body.username });
 
@@ -255,7 +202,8 @@ const getYearAndSemester = async (req, res) => {
     year: student?.year,
     semester: student?.semester,
   });
-=======
+};
+
 const calculateExamScore = async (req, res) => {
   // const { examId } = req.params;
   // try {
@@ -291,10 +239,10 @@ const calculateExamScore = async (req, res) => {
   // } catch (error) {
   //   res.status(500).json({ message: "Server Error", error: error.message });
   // }
->>>>>>> origin/test
 };
 
 module.exports = {
+  getYearAndSemester,
   getExams,
   submitIndividualAnswer,
   getUpcomingExams,
