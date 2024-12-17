@@ -11,7 +11,12 @@ const cookieParser = require("cookie-parser");
 const PORT = process.env.PORT || 4000;
 dotenv.config();
 connectDB();
-app.use(cors());
+app.use(
+  cors({
+    credentials: true,
+    origin: ["http://localhost:5173", "http://localhost:5174"],
+  })
+);
 
 app.get("/hello", (req, res) => {
   res.send("Hello World!");
