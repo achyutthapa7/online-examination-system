@@ -70,9 +70,16 @@ const submitExam = async (req, res) => {
     let score = 0;
     exam.questions.forEach((question, index) => {
       const correctAnswer = question.options[question.correctAnswer - 1];
+      console.log(typeof answers[index], "answers[index] : ", answers[index]);
+      console.log(typeof correctAnswer, "correctAnswer : ", correctAnswer);
+
+      console.log(answers[index], "your-answer : ");
+      console.log(correctAnswer, "correctAnswer : ");
+
       if (correctAnswer === answers[index]) {
         score += 1;
       }
+      console.log(score);
     });
 
     await examModel.findOneAndUpdate(

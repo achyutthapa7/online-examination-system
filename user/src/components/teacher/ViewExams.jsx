@@ -138,6 +138,7 @@ const ViewExams = () => {
                           key={submission._id}
                           className="bg-white p-5 rounded-lg shadow-sm mb-4 transition-all duration-200 hover:shadow-lg hover:bg-gray-50"
                         >
+                          {console.log(submission, "submission")}
                           <h4 className="text-lg font-medium text-gray-800">
                             {submission.student.fullName}
                           </h4>
