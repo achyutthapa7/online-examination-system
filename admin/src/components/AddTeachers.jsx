@@ -1,9 +1,8 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { subjectsData } from "../utils/subjects";
 import { addTeacher } from "../utils/api";
 
 // Provided subjects JSON data
-
 const AddTeachers = () => {
   const [formData, setFormData] = useState({
     emailAddress: "",
@@ -21,8 +20,10 @@ const AddTeachers = () => {
       [name]: value,
     });
   };
+  const [isAdded, setIsAdded] = useState(false);
 
   const handleSubmit = async (e) => {
+    console.log("submit");
     e.preventDefault();
     if (!emailAddress || !userName || !password || !fullName) {
       alert("Please fill in all required fields");
@@ -30,6 +31,7 @@ const AddTeachers = () => {
     }
 
     try {
+      setIsAdded(true);
       const res = await addTeacher(emailAddress, userName, password, fullName);
 
       if (res.statusText) {
@@ -47,6 +49,8 @@ const AddTeachers = () => {
       }
     } catch (error) {
       console.error("Error adding teacher:", error.message);
+    } finally {
+      setIsAdded(false);
     }
   };
 
@@ -224,11 +228,15 @@ const AddTeachers = () => {
         </div> */}
 
         <div className="mb-4">
+          {console.log(isAdded)}
           <button
+            disabled={isAdded}
             type="submit"
-            className="w-full p-3 text-white bg-blue-600 rounded-md shadow-sm hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500"
+            className={`w-full p-3  text-white bg-blue-600 rounded-md shadow-sm hover:bg-blue-700 ${
+              isAdded ? "bg-gray-600 hover:bg-gray-700 cursor-not-allowed" : ""
+            }  focus:outline-none focus:ring-2 focus:ring-blue-500`}
           >
-            Add Teacher
+            {isAdded ? "Adding Teacher" : "Add Teacher"}
           </button>
         </div>
       </form>
