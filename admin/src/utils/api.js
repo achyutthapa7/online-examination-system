@@ -180,10 +180,9 @@ export const allExams = async () => {
         "Content-Type": "application/json",
       },
     });
-    // console.log("res : ", response);
+
     return response;
   } catch (error) {
-    // console.error("Error during fetching exams:", error);
     throw error;
   }
 };
@@ -196,7 +195,7 @@ export const startExam = async (examId) => {
         "Content-Type": "application/json",
       },
     });
-    // console.log(response);
+
     return response;
   } catch (error) {
     console.error("Error during starting exam:", error);

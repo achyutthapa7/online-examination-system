@@ -23,7 +23,7 @@ const AddTeachers = () => {
   const [isAdded, setIsAdded] = useState(false);
 
   const handleSubmit = async (e) => {
-    console.log("submit");
+
     e.preventDefault();
     if (!emailAddress || !userName || !password || !fullName) {
       alert("Please fill in all required fields");
@@ -228,7 +228,7 @@ const AddTeachers = () => {
         </div> */}
 
         <div className="mb-4">
-          {console.log(isAdded)}
+
           <button
             disabled={isAdded}
             type="submit"

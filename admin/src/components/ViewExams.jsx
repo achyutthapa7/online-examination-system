@@ -11,7 +11,7 @@ const ViewExams = () => {
     const getExams = async () => {
       try {
         const res = await allExams();
-        // console.log(res);
+
         setExams(res.data);
       } catch (error) {
         console.error("Error fetching exams:", error);
