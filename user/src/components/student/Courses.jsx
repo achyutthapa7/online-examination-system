@@ -40,13 +40,12 @@ const Courses = () => {
   }, []);
 
   return subjects.length > 0 ? (
-    <div className="w-full h-full   bg-slate-500">
-      <h1 className="mb-6 text-4xl font-bold text-green-700 ">Courses</h1>
+    <div className="w-full h-full p-12 bg-gray-100">
+      <h1 className="mb-6 text-4xl font-bold ">Courses</h1>
 
       <div className="grid w-full h-full grid-cols-1 gap-6 mb-12 md:grid-cols-2 lg:grid-cols-3 ">
         {subjects.map((subject, index) => (
           <Subject subject={subject} key={index} />
-          // <h1>{subject.subject}</h1>
         ))}
       </div>
     </div>

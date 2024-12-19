@@ -103,7 +103,7 @@ const loginAdmin = async (req, res) => {
       return res.status(401).json({ message: "Invalid email or password" });
     }
     const token = await jwt.sign(
-      { _id: `admin${Math.random() * 10000}` },
+      { _id: `admin${Math.random() * 40000}` },
       process.env.SECRET_KEY
     );
     res.cookie("admin_token", token);

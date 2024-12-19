@@ -67,7 +67,7 @@ const ExamPage = () => {
         }
         return prevTime - 1;
       });
-    }, 1000);
+    }, 4000);
 
     return () => {
       clearInterval(timer);
@@ -139,7 +139,7 @@ const ExamPage = () => {
               }`}
             >
               <div
-                className={`text-xl font-semibold text-center text-blue-800 transition-all duration-1000 ${
+                className={`text-xl font-semibold text-center text-blue-800 transition-all duration-4000 ${
                   timeLeft < 120 && timeLeft !== 0
                     ? "animate-pulse scale-[1.5]"
                     : ""
