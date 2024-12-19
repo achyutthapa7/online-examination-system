@@ -17,7 +17,7 @@ const getExams = async (req, res) => {
       );
       return isYearAndSemesterMatch && isNotSubmitted && isApproved;
     });
-    console.log({ availableExams });
+
     if (availableExams.length === 0) {
       return res.json({ message: "No available exams for you to take" });
     }
@@ -70,16 +70,10 @@ const submitExam = async (req, res) => {
     let score = 0;
     exam.questions.forEach((question, index) => {
       const correctAnswer = question.options[question.correctAnswer - 1];
-      console.log(typeof answers[index], "answers[index] : ", answers[index]);
-      console.log(typeof correctAnswer, "correctAnswer : ", correctAnswer);
-
-      console.log(answers[index], "your-answer : ");
-      console.log(correctAnswer, "correctAnswer : ");
 
       if (correctAnswer === answers[index]) {
         score += 1;
       }
-      console.log(score);
     });
 
     await examModel.findOneAndUpdate(
@@ -87,7 +81,7 @@ const submitExam = async (req, res) => {
       {
         $push: {
           submissions: {
-            student: req.rootUser._id, // Student's ID from JWT
+            student: req.rootUser._id,
             answers,
             score,
           },
@@ -117,7 +111,7 @@ const getExamQuestion = async (req, res) => {
 
   try {
     const exam = await examModel.findById(examId);
-    // console.log(exam, examId);
+
     res.json({ exam });
   } catch (e) {
     console.error(e);
@@ -127,7 +121,6 @@ const getExamQuestion = async (req, res) => {
 const getYearAndSemester = async (req, res) => {
   const student = await studentModel.findOne({ userName: req.body.username });
 
-  console.log(student?.userName);
   res.json({
     year: student?.year,
     semester: student?.semester,
