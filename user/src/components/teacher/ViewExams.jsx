@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { getExamsForTeacher } from "../../utils/api";
+import { deleteExam, getExamsForTeacher } from "../../utils/api";
 import { FaChevronDown, FaChevronUp } from "react-icons/fa";
 
 const ViewExams = () => {
@@ -32,7 +32,13 @@ const ViewExams = () => {
       [examId]: !prev[examId],
     }));
   };
-
+  const handleDeleteExam = async (examId) => {
+    const res = await deleteExam(examId);
+    if (res.statusText) {
+      alert("Exam deleted successfully");
+      setExams(exams.filter((e) => e._id !== examId));
+    }
+  };
   return (
     <div className="p-6">
       <h1 className="text-3xl font-semibold mb-6">View Exams</h1>
@@ -161,6 +167,14 @@ const ViewExams = () => {
                 )}
               </div>
             </div>
+
+            {/* Delete Exam Button */}
+            <button
+              onClick={() => handleDeleteExam(exam._id)}
+              className="mt-6 bg-red-500 hover:bg-red-700 text-white font-semibold py-2 px-4 rounded-lg"
+            >
+              Delete Exam
+            </button>
           </div>
         ))
       )}

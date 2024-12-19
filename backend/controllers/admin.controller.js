@@ -32,7 +32,7 @@ const addTeacher = async (req, res) => {
       fullName,
       isAssigned: false,
     });
-    await sendMail(emailAddress, password, userName);
+    // await sendMail(emailAddress, password, userName);
     await teacher.save();
     res.json({ message: "Teacher added successfully", teacher });
   } catch (error) {

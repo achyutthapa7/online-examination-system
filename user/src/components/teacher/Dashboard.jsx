@@ -104,6 +104,12 @@ const Dashboard = () => {
             link="/submissions"
             isExpanded={isSidebarOpen}
           />
+          <SidebarItem
+            icon={FaListAlt}
+            label="Saved Exam"
+            link="saved-exams"
+            isExpanded={isSidebarOpen}
+          />
         </nav>
 
         {/* Sidebar Footer */}

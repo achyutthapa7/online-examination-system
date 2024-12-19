@@ -15,6 +15,8 @@ import ViewExams from "./components/teacher/ViewExams";
 import Results from "./components/student/Results";
 import ExamPage from "./components/student/ExamPage";
 import Courses from "./components/student/Courses";
+import SavedExams from "./components/teacher/SavedExams";
+import Continue from "./components/teacher/Continue";
 const App = () => {
   return (
     <div>
@@ -28,10 +30,15 @@ const App = () => {
         <Route path="/dashboard/teacher/" element={<TeacherDashboard />}>
           <Route path="create-exam" element={<CreateExam />} />
           <Route path="view-exams" element={<ViewExams />} />
+          <Route path="saved-exams" element={<SavedExams />} />
         </Route>
         <Route
           path="/dashboard/teacher/create-exam/:subject"
           element={<CreateExamBySubject />}
+        />
+        <Route
+          path="/dashboard/teacher/saved-exams/continue"
+          element={<Continue />}
         />
         <Route path="/dashboard/student" element={<StudentDashboard />}>
           <Route path="/dashboard/student/courses" element={<Courses />} />

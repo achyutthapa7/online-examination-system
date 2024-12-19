@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { getTeacherDetails } from "../../utils/api";
+import { createExam, getTeacherDetails } from "../../utils/api";
 import { useNavigate } from "react-router-dom";
 
 const CreateExam = () => {
@@ -37,7 +37,19 @@ const CreateExam = () => {
       </div>
     );
   }
+  const handleExamCreation = async (subj) => {
+    try {
+      const res = await createExam(subj.subject);
 
+      if (res.statusText) {
+        navigate(subj.subject, { state: res.data.exam._id });
+      } else {
+        alert("Failed to create exam for this subject.");
+      }
+    } catch (error) {
+      console.error("Error starting exam:", error);
+    }
+  };
   return (
     <div className="min-h-screen bg-gray-100 py-10 px-10">
       <div className="max-w-4xl mx-auto">
@@ -50,13 +62,20 @@ const CreateExam = () => {
               <div
                 key={index}
                 className="bg-white shadow-md rounded-lg p-6 hover:shadow-lg transition cursor-pointer"
-                onClick={() => navigate(`${subj.subject}`, { state: subj })}
               >
                 <h2 className="text-xl font-semibold text-gray-800">
                   {subj.subject}
                 </h2>
                 <p className="text-gray-600">Semester: {subj.semester}</p>
                 <p className="text-gray-600">Year: {subj.year}</p>
+                <button
+                  className="mt-4 bg-gradient-to-r from-blue-500 to-blue-700 text-white font-semibold px-6 py-3 rounded-full shadow-lg transform transition-transform duration-300 hover:scale-105 hover:from-blue-600 hover:to-blue-800 focus:outline-none focus:ring-4 focus:ring-blue-300"
+                  onClick={() => {
+                    handleExamCreation(subj);
+                  }}
+                >
+                  Start Exam
+                </button>
               </div>
             ))}
           </div>
