@@ -52,39 +52,37 @@ const CreateExam = () => {
   };
   return (
     <div className="min-h-screen bg-gray-100 py-10 px-10">
-      <div className="max-w-4xl mx-auto">
-        <h1 className="text-2xl font-bold text-gray-700 mb-6">
-          Assigned Subjects
-        </h1>
-        {assignedSubjects.length > 0 ? (
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-            {assignedSubjects.map((subj, index) => (
-              <div
-                key={index}
-                className="bg-white shadow-md rounded-lg p-6 hover:shadow-lg transition cursor-pointer"
+      <h1 className="text-2xl font-bold text-gray-700 mb-6">
+        Assigned Subjects
+      </h1>
+      {assignedSubjects.length > 0 ? (
+        <div className="grid w-full h-full grid-cols-1 gap-6 mb-12 md:grid-cols-2 lg:grid-cols-3">
+          {assignedSubjects.map((subj, index) => (
+            <div
+              key={index}
+              className="flex flex-col items-start justify-between px-8 py-4 rounded-lg shadow-md bg-white min-h-[160px] transition hover:shadow-lg"
+            >
+              <h2 className="text-xl font-semibold text-gray-800">
+                {subj.subject}
+              </h2>
+              <p className="text-gray-600">Semester: {subj.semester}</p>
+              <p className="text-gray-600">Year: {subj.year}</p>
+              <button
+                className="px-4 py-2 w-1/2 mt-4 text-white transition bg-green-600 rounded hover:bg-green-700"
+                onClick={() => {
+                  handleExamCreation(subj);
+                }}
               >
-                <h2 className="text-xl font-semibold text-gray-800">
-                  {subj.subject}
-                </h2>
-                <p className="text-gray-600">Semester: {subj.semester}</p>
-                <p className="text-gray-600">Year: {subj.year}</p>
-                <button
-                  className="mt-4 bg-gradient-to-r from-blue-500 to-blue-700 text-white font-semibold px-6 py-3 rounded-full shadow-lg transform transition-transform duration-300 hover:scale-105 hover:from-blue-600 hover:to-blue-800 focus:outline-none focus:ring-4 focus:ring-blue-300"
-                  onClick={() => {
-                    handleExamCreation(subj);
-                  }}
-                >
-                  Start Exam
-                </button>
-              </div>
-            ))}
-          </div>
-        ) : (
-          <p className="text-gray-600 text-center">
-            You are not assigned to any subjects yet.
-          </p>
-        )}
-      </div>
+                Create Exam
+              </button>
+            </div>
+          ))}
+        </div>
+      ) : (
+        <p className="text-gray-600 text-center">
+          You are not assigned to any subjects yet.
+        </p>
+      )}
     </div>
   );
 };

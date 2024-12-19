@@ -204,7 +204,7 @@ const CreateExamBySubject = () => {
     <div className="relative">
       <div className="max-w-7xl mx-auto mt-10 p-8 space-x-8 flex">
         {/* Left Side - Form */}
-        <div className="flex-1 bg-white p-8 rounded-xl shadow-lg space-y-6">
+        <div className="flex-1 bg-white p-8 rounded-xl   shadow-lg space-y-6 h-fit">
           <h2 className="text-4xl font-semibold text-gray-800 text-center mb-8">
             Create Exam
           </h2>
@@ -290,12 +290,14 @@ const CreateExamBySubject = () => {
                 Correct Answer
               </label>
               <input
-                type="text"
+                type="number"
                 name="correctAnswer"
+                min="1"
+                max="4"
                 value={formData.correctAnswer}
                 onChange={handleChange}
                 className="w-full p-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500"
-                placeholder="Enter the correct answer"
+                placeholder="Enter the correct option"
                 required
               />
             </div>
@@ -320,7 +322,7 @@ const CreateExamBySubject = () => {
                 onClick={handelSave}
                 className="w-full p-3 bg-green-600 text-white rounded-md hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-green-500 transition duration-300 flex items-center justify-center"
               >
-                save Exam
+                Save Exam
               </button>
             </div>
           </form>
@@ -328,7 +330,7 @@ const CreateExamBySubject = () => {
         {/* Publish Exam Button */}
 
         {/* Right Side - Created Questions with All Details */}
-        <div className="flex-1 bg-white p-8 rounded-xl shadow-lg space-y-6">
+        <div className="flex-1 h-full overflow-scroll  bg-white p-8 rounded-xl shadow-lg space-y-6">
           <h2 className="text-4xl font-semibold text-gray-800 text-center mb-8">
             Created Questions
           </h2>
@@ -357,7 +359,15 @@ const CreateExamBySubject = () => {
                 </div>
                 <div className="mt-3 flex gap-3">
                   <button
-                    onClick={() => handleRemove(question._id)}
+                    onClick={() => {
+                      if (
+                        window.confirm(
+                          "Are you sure you want to remove this question?"
+                        )
+                      ) {
+                        handleRemove(question._id);
+                      }
+                    }}
                     className="flex items-center px-4 py-2 bg-red-600 text-white font-medium rounded-md hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-red-500 transition duration-300"
                   >
                     <FaTrashAlt className="mr-2" /> Remove
@@ -418,12 +428,12 @@ const CreateExamBySubject = () => {
             </label>
 
             {editedData.options ? (
-              <>
+              <div className="grid grid-cols-2 ">
                 {editedData.options.map((o, index) => (
-                  <>
+                  <div key={index} className=" p-2 rounded-md">
                     <input
                       type="text"
-                      className="border-2"
+                      className="border-2 px-3 py-1 w-full"
                       value={o}
                       onChange={(e) => {
                         const newOptions = [...editedData.options];
@@ -431,11 +441,11 @@ const CreateExamBySubject = () => {
                         setEditedData({ ...editedData, options: newOptions }); // Update the state
                       }}
                     />
-                  </>
+                  </div>
                 ))}
-              </>
+              </div>
             ) : (
-              <>n</>
+              <></>
             )}
 
             {errors.options && (
@@ -456,13 +466,18 @@ const CreateExamBySubject = () => {
                 setEditedData({ ...editedData, correctAnswer: e.target.value })
               }
               className="w-full p-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500"
-              placeholder="Enter the correct answer"
+              placeholder="Enter the correct optioss"
               required
             />
           </div>
-          <div className="mt-4 text-center text-gray-600">
-            <button onClick={() => handleUpdate()}>Update</button>
-            <p>Add your editing form or content here.</p>
+          <div className="mt-4 w-full  text-gray-600">
+            <button
+              className="px-4 py-2 w-full  text-white bg-green-500 rounded
+            hover:bg-green-600"
+              onClick={() => handleUpdate()}
+            >
+              Update
+            </button>
           </div>
         </div>
       </div>

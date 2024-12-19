@@ -156,6 +156,7 @@ export const createQuestion = (
   correctAnswer
 ) => {
   try {
+    console.log("here");
     const response = axios.post(
       `${API_URL}/teacher/createQuestions/${examId}`,
       { title, timeLimit, questionText, options, correctAnswer },
@@ -314,10 +315,32 @@ export const submitExams = async (answers, examId) => {
   }
 };
 
-export const getExamQuestion = async (examId) => {
+// export const getExamQuestion = async (examId) => {
+//   try {
+//     const response = await axios.get(
+//       `${API_URL}/student/getExamQuestion/${examId}`,
+//       {
+//         withCredentials: true,
+//         headers: {
+//           "Content-Type": "application/json",
+//         },
+//       }
+//     );
+
+//     return response;
+//   } catch (error) {
+//     console.error("Error during getting exam:", error);
+//     throw error;
+//   }
+// };
+
+export const getYearAndSemester = async (username) => {
   try {
-    const response = await axios.get(
-      `${API_URL}/student/getExamQuestion/${examId}`,
+    console.log("do");
+
+    const response = axios.post(
+      `${API_URL}/student/getYearAndSemester`,
+      { userName: username },
       {
         withCredentials: true,
         headers: {
@@ -325,24 +348,6 @@ export const getExamQuestion = async (examId) => {
         },
       }
     );
-
-    return response;
-  } catch (error) {
-    console.error("Error during getting exam:", error);
-    throw error;
-  }
-};
-
-export const getYearAndSemester = async (subject) => {
-  try {
-    console.log("trying");
-    const response = axios.post(`${API_URL}/student/getYearAndSemester`, {
-      withCredentials: true,
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: { subject: subject },
-    });
 
     return response;
   } catch (error) {

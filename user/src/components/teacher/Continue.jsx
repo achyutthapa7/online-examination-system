@@ -495,7 +495,7 @@ const Continue = () => {
               onChange={(e) =>
                 setEditedData({ ...editedData, questionText: e.target.value })
               }
-              className="w-full p-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500"
+              className="w-full p-3 border   border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500"
               rows="4"
               required
             />
@@ -540,7 +540,7 @@ const Continue = () => {
                 setEditedData({ ...editedData, correctAnswer: e.target.value })
               }
               className="w-full p-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500"
-              placeholder="Enter the correct answer"
+              placeholder="Enter the correct option"
               required
             />
           </div>
