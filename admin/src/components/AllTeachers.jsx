@@ -29,7 +29,7 @@ const AllTeachers = () => {
       }
     };
     getTeacher();
-  }, [teachers]);
+  }, []);
 
   const handleDelete = async (teacherId) => {
     try {

@@ -27,9 +27,9 @@ const Courses = () => {
         (subject) =>
           subject.year === response.data.year &&
           subject.semester === response.data.semester
-        // console.log(subject, "subjsect")
         // subject._id === response.data.subjectId
       );
+      console.log(subject, "subjsect");
       console.log(subjects, "subjectsas");
       setSubjects(subjects);
     };

@@ -20,13 +20,16 @@ const ExamPage = () => {
   const fetchExam = async () => {
     try {
       const response = await getExamQuestion(examId);
-      const exam = response.data.exam;
+      const exam = response.data;
+      console.log(exam[0].title, exam[0].timeLimit * 60, exam[0].questions);
+      console.log(exam);
       setExamDetails({
-        title: exam.title,
-        timeLimit: exam.timeLimit * 60, // Convert minutes to seconds
-        questions: exam.questions,
+        title: exam[0].title,
+        timeLimit: exam[0].timeLimit * 60,
+        questions: exam[0].questions,
       });
-      setTimeLeft(exam.timeLimit * 60); // Set initial time left
+
+      setTimeLeft(exam.timeLimit * 60);
     } catch (error) {
       console.error("Error fetching exam:", error);
       alert("Failed to load exam details");
@@ -180,6 +183,7 @@ const ExamPage = () => {
                             Please select an answer for this question
                           </div>
                         )}
+
                       {question.options.map((option, optIndex) => (
                         <div key={optIndex} className="flex items-center">
                           <input

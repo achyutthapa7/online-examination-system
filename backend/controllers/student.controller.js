@@ -5,6 +5,14 @@ const resultModel = require("../models/result.model");
 const studentModel = require("../models/student.model");
 const handleError = require("../utils/handleError");
 
+const getExamQuestion = async (req, res) => {
+  const { examId } = req.params;
+
+  const exams = await examModel.find({ _id: examId });
+  // res.json({ msg: "this " });
+  res.json(exams);
+};
+
 const getExams = async (req, res) => {
   try {
     const exams = await examModel.find({}).populate("questions");
@@ -238,4 +246,5 @@ module.exports = {
   calculateExamScore,
   getAllAnswersForRespectedExam,
   submitExam,
+  getExamQuestion,
 };

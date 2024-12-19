@@ -316,12 +316,16 @@ export const submitExams = async (answers, examId) => {
 
 export const getExamQuestion = async (examId) => {
   try {
-    const response = axios.get(`${API_URL}/student/getExamQuestion/${examId}`, {
-      withCredentials: true,
-      headers: {
-        "Content-Type": "application/json",
-      },
-    });
+    const response = await axios.get(
+      `${API_URL}/student/getExamQuestion/${examId}`,
+      {
+        withCredentials: true,
+        headers: {
+          "Content-Type": "application/json",
+        },
+      }
+    );
+
     return response;
   } catch (error) {
     console.error("Error during getting exam:", error);
@@ -331,6 +335,7 @@ export const getExamQuestion = async (examId) => {
 
 export const getYearAndSemester = async (subject) => {
   try {
+    console.log("trying");
     const response = axios.post(`${API_URL}/student/getYearAndSemester`, {
       withCredentials: true,
       headers: {

@@ -5,12 +5,14 @@ const {
   submitIndividualAnswer,
   getAllAnswersForRespectedExam,
   calculateExamScore,
+  getExamQuestion,
 } = require("../controllers/student.controller");
 const authMiddleware = require("../middlewares/authMiddleware");
 
 const router = require("express").Router();
 
 router.get("/getExams", authMiddleware, getExams);
+router.get("/getExamQuestion/:examId", authMiddleware, getExamQuestion);
 router.get("/getUpcomingExams", authMiddleware, getUpcomingExams);
 router.post(
   "/submitIndividualAnswer/:questionId",

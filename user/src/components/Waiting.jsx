@@ -16,7 +16,7 @@ const Waiting = () => {
     } else {
       setUsername(registeredUser.userName);
     }
-  }, [registeredUser, navigate]);
+  }, [navigate]);
 
   useEffect(() => {
     const checkVerification = async () => {
@@ -34,7 +34,7 @@ const Waiting = () => {
       }
     };
     checkVerification();
-  }, [registeredUser, isVerified, navigate]);
+  }, []);
 
   return (
     <div className="flex items-center justify-center min-h-screen bg-gray-100">

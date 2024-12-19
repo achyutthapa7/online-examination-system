@@ -10,7 +10,7 @@ const AllStudents = () => {
       setStudents(res.data);
     };
     fetchStudents();
-  }, [students]);
+  }, []);
   const handleVerify = async (studentId) => {
     const res = await verifyStudent(studentId);
     if (res.statusText) alert("User is verified");
