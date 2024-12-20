@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
-// import { getExamQuestion, submitExams } from "../../utils/api";
-import { submitExams } from "../../utils/api";
+import { getExamQuestion, submitExams } from "../../utils/api";
+
 import { useNavigate } from "react-router-dom";
 
 const ExamPage = () => {
@@ -18,24 +18,24 @@ const ExamPage = () => {
   const [timeLeft, setTimeLeft] = useState(examDetails.timeLimit || 7200);
   const examId = window.location.pathname.split("/").pop();
 
-  // const fetchExam = async () => {
-  //   try {
-  //     const response = await getExamQuestion(examId);
-  //     const exam = response.data;
-  //     console.log(exam[0].title, exam[0].timeLimit * 60, exam[0].questions);
-  //     console.log(exam);
-  //     setExamDetails({
-  //       title: exam[0].title,
-  //       timeLimit: exam[0].timeLimit * 60,
-  //       questions: exam[0].questions,
-  //     });
+  const fetchExam = async () => {
+    //   try {
+    const response = await getExamQuestion(examId);
+    const exam = response.data;
+    console.log(exam[0].title, exam[0].timeLimit * 60, exam[0].questions);
+    console.log(exam);
+    //     setExamDetails({
+    //       title: exam[0].title,
+    //       timeLimit: exam[0].timeLimit * 60,
+    //       questions: exam[0].questions,
+    //     });
 
-  //     setTimeLeft(exam.timeLimit * 60);
-  //   } catch (error) {
-  //     console.error("Error fetching exam:", error);
-  //     alert("Failed to load exam details");
-  //   }
-  // };
+    //     setTimeLeft(exam.timeLimit * 60);
+    //   } catch (error) {
+    //     console.error("Error fetching exam:", error);
+    //     alert("Failed to load exam details");
+    //   }
+  };
 
   useEffect(() => {
     fetchExam();

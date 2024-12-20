@@ -139,7 +139,11 @@ const DashboardLayout = () => {
         {/* Sidebar Footer */}
         <div className="p-4">
           <button
-            onClick={handleLogout}
+            onClick={() => {
+              if (window.confirm("Are you sure you want to logout?")) {
+                handleLogout();
+              }
+            }}
             className={`w-full py-2 rounded-md hover:bg-red-700 transition flex items-center justify-center ${
               isSidebarOpen ? "bg-red-600 text-white" : "bg-red-600"
             }`}

@@ -320,24 +320,24 @@ export const submitExams = async (answers, examId) => {
   }
 };
 
-// export const getExamQuestion = async (examId) => {
-//   try {
-//     const response = await axios.get(
-//       `${API_URL}/student/getExamQuestion/${examId}`,
-//       {
-//         withCredentials: true,
-//         headers: {
-//           "Content-Type": "application/json",
-//         },
-//       }
-//     );
+export const getExamQuestion = async (examId) => {
+  try {
+    const response = await axios.get(
+      `${API_URL}/student/getExamQuestion/${examId}`,
+      {
+        withCredentials: true,
+        headers: {
+          "Content-Type": "application/json",
+        },
+      }
+    );
 
-//     return response;
-//   } catch (error) {
-//     console.error("Error during getting exam:", error);
-//     throw error;
-//   }
-// };
+    return response;
+  } catch (error) {
+    console.error("Error during getting exam:", error);
+    throw error;
+  }
+};
 
 export const getYearAndSemester = async (username) => {
   try {

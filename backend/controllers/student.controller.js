@@ -5,13 +5,13 @@ const resultModel = require("../models/result.model");
 const studentModel = require("../models/student.model");
 const handleError = require("../utils/handleError");
 
-// const getExamQuestion = async (req, res) => {
-//   const { examId } = req.params;
+const getExamQuestion = async (req, res) => {
+  const { examId } = req.params;
 
-//   const exams = await examModel.find({ _id: examId });
-//   // res.json({ msg: "this " });
-//   res.json(exams);
-// };
+  const exams = await examModel.find({ _id: examId });
+  // res.json({ msg: "this " });
+  res.json(exams);
+};
 
 const getExams = async (req, res) => {
   try {
@@ -257,5 +257,5 @@ module.exports = {
   getAllAnswersForRespectedExam,
   submitExam,
   getYearAndSemester,
-  // getExamQuestion,
+  getExamQuestion,
 };
