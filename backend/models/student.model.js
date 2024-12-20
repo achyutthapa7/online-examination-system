@@ -51,7 +51,7 @@ const studentSchema = mongoose.Schema(
     completedExams: [
       {
         exam: { type: mongoose.Schema.Types.ObjectId, ref: "Exams" },
-        score: { type: Number },
+        score: { type: Number, default: 0 },
       },
     ],
   },
