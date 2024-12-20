@@ -52,9 +52,34 @@ const getAllRegisteredTeachers = async (req, res) => {
   }
 };
 
+const getStudentWithPasswordResetRequest = async (req, res) => {
+  try {
+    const student = await studentModel.find({
+      passwordResetRequest: true,
+    });
+    console.log(student);
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+const getTeacherWithPasswordResetRequest = async (req, res) => {
+  try {
+    const teacher = await teacherModel.find({
+      passwordResetRequest: true,
+    });
+    console.log(teacher);
+  } catch (error) {
+    console.log(error);
+  }
+};
+
 const getAllRegisteredStudent = async (req, res) => {
   try {
-    const students = await studentModel.find({}).select("-notifications");
+    const students = await studentModel
+      .find({})
+      .select("-password")
+      .select("-notification");
     res.json(students);
   } catch (error) {
     handleError(res, error);
@@ -135,7 +160,9 @@ const deleteUser = async (req, res) => {
 const updateUserPassword = async (req, res) => {
   try {
     const { userId } = req.params;
+
     const { newPassword } = req.body;
+    console.log(userId, newPassword);
     if (!userId) return res.status(404).json({ message: "User is not found " });
     const student = await studentModel.findByIdAndUpdate(
       userId,
@@ -180,10 +207,15 @@ const notifyUsersForExam = async (req, res) => {
 const viewExams = async (req, res) => {
   try {
     const exams = await examModel.find({});
+
     res.json(exams);
   } catch (error) {
     handleError(res, error);
   }
+};
+
+const viewIndividualExam = async (req, res) => {
+  res.send("here");
 };
 
 // const setDateAndTimeForExams = async (req, res) => {
@@ -231,4 +263,7 @@ module.exports = {
   viewExams,
   // setDateAndTimeForExams,
   startExam,
+  getStudentWithPasswordResetRequest,
+  viewIndividualExam,
+  getTeacherWithPasswordResetRequest,
 };

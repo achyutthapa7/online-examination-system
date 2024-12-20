@@ -22,6 +22,8 @@ const examSchema = new mongoose.Schema(
       required: true,
     },
     isApproved: { type: Boolean, default: false },
+    isPublished: { type: Boolean, default: false },
+    
     submissions: [
       {
         student: { type: mongoose.Schema.Types.ObjectId, ref: "Students" },

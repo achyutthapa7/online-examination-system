@@ -23,7 +23,7 @@ const NotifyUser = () => {
 
     try {
       setLoading(true);
-      const response = await notifyUsers(message);
+      const response = await notifyUsers(message.trim());
 
       if (response.status === 200) {
         setSuccessMessage("Users notified successfully!");

@@ -1,0 +1,931 @@
+diff --git a/add.js b/add.js
+deleted file mode 100644
+index e088f0f..0000000
+--- a/add.js
++++ /dev/null
+@@ -1,2 +0,0 @@
+-// add two number
+-const addNumbers = (a, b) => a + b;
+diff --git a/admin/src/components/AddTeachers.jsx b/admin/src/components/AddTeachers.jsx
+index ef5b59f..c5042ea 100644
+--- a/admin/src/components/AddTeachers.jsx
++++ b/admin/src/components/AddTeachers.jsx
+@@ -144,7 +144,7 @@ const AddTeachers = () => {
+             name="fullName"
+             value={formData.fullName}
+             onChange={handleChange}
+-            className="w-full p-3 mt-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
++            className="w-full p-3 mt-2 border   border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+             placeholder="Enter full name"
+           />
+         </div>
+diff --git a/admin/src/components/AllStudents.jsx b/admin/src/components/AllStudents.jsx
+index d5fe15d..c6751ba 100644
+--- a/admin/src/components/AllStudents.jsx
++++ b/admin/src/components/AllStudents.jsx
+@@ -32,11 +32,11 @@ const AllStudents = () => {
+           <table className="min-w-full table-auto">
+             <thead className="bg-gray-100">
+               <tr>
+-                <th className="px-4 py-3 text-sm font-semibold text-left text-gray-600">
++                <th className="px-4 py-3 text-sm font-semibold text-left text-gray-600 ">
+                   Full Name
+                 </th>
+                 <th className="px-4 py-3 text-sm font-semibold text-left text-gray-600">
+-                  Email
++                  Username
+                 </th>
+                 <th className="px-4 py-3 text-sm font-semibold text-left text-gray-600">
+                   Year
+@@ -52,8 +52,8 @@ const AllStudents = () => {
+             <tbody>
+               {students.map((student) => (
+                 <tr key={student._id} className="border-b hover:bg-gray-50">
+-                  <td className="px-4 py-3 text-sm text-gray-800">
+-                    {student.fullName}
++                  <td className="px-4 py-3 text-sm   text-gray-800">
++                    <span className="cursor-pointer">{student.fullName}</span>
+                   </td>
+                   <td className="px-4 py-3 text-sm text-gray-800">
+                     {student.userName}
+diff --git a/admin/src/components/ExamDetails.jsx b/admin/src/components/ExamDetails.jsx
+index 8463482..fa10261 100644
+--- a/admin/src/components/ExamDetails.jsx
++++ b/admin/src/components/ExamDetails.jsx
+@@ -1,4 +1,4 @@
+-import React, { useState } from "react";
++import React, { useState, useEffect } from "react";
+ import { useLocation, useNavigate } from "react-router-dom";
+ import { login, startExam } from "../utils/api";
+ 
+@@ -7,6 +7,8 @@ const ExamDetails = () => {
+   const navigate = useNavigate();
+   const [exam, setExam] = useState(state);
+ 
++  // useEffect(() => {}, []);
++
+   // Function to handle starting the exam
+   const handleStartExam = async () => {
+     try {
+@@ -25,10 +27,7 @@ const ExamDetails = () => {
+ 
+   return (
+     <div className="max-w-4xl p-6 mx-auto">
+-      {/* Exam Title */}
+       <h2 className="mb-6 text-3xl font-semibold text-center">{exam.title}</h2>
+-
+-      {/* Exam Details */}
+       <div className="p-6 mb-6 bg-white border border-gray-200 rounded-lg shadow-lg">
+         <p className="text-lg font-medium text-gray-700">
+           Subject: {exam.subject}
+@@ -48,8 +47,6 @@ const ExamDetails = () => {
+           Status: {exam.isApproved ? "Approved" : "Pending"}
+         </p>
+       </div>
+-
+-      {/* Start Exam Button */}
+       <div className="flex justify-center mb-6">
+         <button
+           onClick={handleStartExam}
+@@ -61,53 +58,95 @@ const ExamDetails = () => {
+           {exam.isApproved ? "Exam Already Started" : "Start Exam"}
+         </button>
+       </div>
+-
+-      {/* Questions Section */}
+       <div>
+         <h3 className="mb-4 text-2xl font-semibold">Questions</h3>
+-        <div className="space-y-6">
+-          {exam.questions.map((question, index) => (
+-            <div
+-              key={question._id}
+-              className="p-4 bg-white border border-gray-200 rounded-lg shadow-md"
+-            >
+-              <h4 className="mb-2 text-xl font-semibold">
+-                {index + 1}. {question.questionText}
+-              </h4>
+-              <div className="space-y-2">
+-                {question.options.map((option, optionIndex) => (
+-                  <div key={optionIndex} className="flex items-center">
+-                    <input
+-                      type="radio"
+-                      id={`question-${index}-option-${optionIndex}`}
+-                      name={`question-${index}`}
+-                      value={optionIndex + 1}
+-                      disabled
+-                      className="mr-2"
+-                      checked={
+-                        question.options[question.correctAnswer - 1] == option
+-                      }
+-                    />
+-
+-                    <label
+-                      htmlFor={`question-${index} option-${optionIndex}`}
+-                      className="text-gray-600"
+-                    >
+-                      {option}
+-                    </label>
+-                  </div>
+-                ))}
+-              </div>
+-              <p className="mt-4 text-sm text-gray-600">
+-                {"Correct Answer:  " +
+-                  question.options[question.correctAnswer - 1]}
+-              </p>
+-            </div>
+-          ))}
+-        </div>
+       </div>
+     </div>
+   );
+ };
+ 
+ export default ExamDetails;
++
++// <div className="max-w-4xl p-6 mx-auto">
++//   {/* Exam Title */}
++//   <h2 className="mb-6 text-3xl font-semibold text-center">{exam.title}</h2>
++
++//   {/* Exam Details */}
++//   <div className="p-6 mb-6 bg-white border border-gray-200 rounded-lg shadow-lg">
++//     <p className="text-lg font-medium text-gray-700">
++//       Subject: {exam.subject}
++//     </p>
++//     <p className="text-lg font-medium text-gray-700">Year: {exam.year}</p>
++//     <p className="text-lg font-medium text-gray-700">
++//       Semester: {exam.semester}
++//     </p>
++//     <p className="text-lg font-medium text-gray-700">
++//       Time Limit: {exam.timeLimit} minutes
++//     </p>
++//     <p
++//       className={`text-lg font-medium ${
++//         exam.isApproved ? "text-green-500" : "text-red-500"
++//       }`}
++//     >
++//       Status: {exam.isApproved ? "Approved" : "Pending"}
++//     </p>
++//   </div>
++
++//   {/* Start Exam Button */}
++//   <div className="flex justify-center mb-6">
++//     <button
++//       onClick={handleStartExam}
++//       className={`bg-blue-600 text-white py-3 px-6 rounded-lg hover:bg-blue-700 transition-colors ${
++//         exam.isApproved ? "cursor-not-allowed opacity-50" : ""
++//       }`}
++//       disabled={exam.isApproved}
++//     >
++//       {exam.isApproved ? "Exam Already Started" : "Start Exam"}
++//     </button>
++//   </div>
++
++//   {/* Questions Section */}
++//   <div>
++//     <h3 className="mb-4 text-2xl font-semibold">Questions</h3>
++//     <div className="space-y-6">
++//       {exam.questions.map((question, index) => (
++//         <div
++//           key={question._id}
++//           className="p-4 bg-white border border-gray-200 rounded-lg shadow-md"
++//         >
++//           <h4 className="mb-2 text-xl font-semibold">
++//             {index + 1}. {question.questionText}
++//           </h4>
++//           <div className="space-y-2">
++//             {question.options.map((option, optionIndex) => (
++//               <div key={optionIndex} className="flex items-center">
++//                 <input
++//                   type="radio"
++//                   id={`question-${index}-option-${optionIndex}`}
++//                   name={`question-${index}`}
++//                   value={optionIndex + 1}
++//                   disabled
++//                   className="mr-2"
++//                   checked={
++//                     question.options[question.correctAnswer - 1] == option
++//                   }
++//                 />
++
++//                 <label
++//                   htmlFor={`question-${index} option-${optionIndex}`}
++//                   className="text-gray-600"
++//                 >
++//                   {option}
++//                 </label>
++//               </div>
++//             ))}
++//           </div>
++//           <p className="mt-4 text-sm text-gray-600">
++//             {"Correct Answer:  " +
++//               question.options[question.correctAnswer - 1]}
++//           </p>
++//         </div>
++//       ))}
++//     </div>
++//   </div>
++// </div>
+diff --git a/admin/src/components/NotifyUser.jsx b/admin/src/components/NotifyUser.jsx
+index 1dda4f8..f832aad 100644
+--- a/admin/src/components/NotifyUser.jsx
++++ b/admin/src/components/NotifyUser.jsx
+@@ -23,8 +23,8 @@ const NotifyUser = () => {
+ 
+     try {
+       setLoading(true);
+-      const response = await notifyUsers(message);
+-      // console.log(response);
++      const response = await notifyUsers(message.trim());
++
+       if (response.status === 200) {
+         setSuccessMessage("Users notified successfully!");
+         setMessage("");
+diff --git a/admin/src/components/UpdateUserPassword.jsx b/admin/src/components/UpdateUserPassword.jsx
+index d9769c3..06111a3 100644
+--- a/admin/src/components/UpdateUserPassword.jsx
++++ b/admin/src/components/UpdateUserPassword.jsx
+@@ -3,6 +3,8 @@ import {
+   getAllStudents,
+   getAllTeachers,
+   updateUserPassword,
++  getStudentWithPasswordResetRequest,
++  getTeacherWithPasswordResetRequest,
+ } from "../utils/api";
+ 
+ const UpdateUserPassword = () => {
+@@ -76,7 +78,12 @@ const UpdateUserPassword = () => {
+       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+         {/* Teachers Section */}
+         <div className="bg-white rounded-lg shadow-md p-6">
+-          <h2 className="text-xl font-semibold text-gray-700 mb-4">Teachers</h2>
++          <h2
++            onClick={getTeacherWithPasswordResetRequest}
++            className="text-xl  font-semibold text-gray-700 mb-4"
++          >
++            Teachers (click here for log)
++          </h2>
+           {teachers.length === 0 ? (
+             <p className="text-gray-500">No teachers available.</p>
+           ) : (
+@@ -104,7 +111,12 @@ const UpdateUserPassword = () => {
+ 
+         {/* Students Section */}
+         <div className="bg-white rounded-lg shadow-md p-6">
+-          <h2 className="text-xl font-semibold text-gray-700 mb-4">Students</h2>
++          <h2
++            onClick={getStudentWithPasswordResetRequest}
++            className="text-xl font-semibold text-gray-700 mb-4"
++          >
++            Students (click here for log)
++          </h2>
+           {students.length === 0 ? (
+             <p className="text-gray-500">No students available.</p>
+           ) : (
+@@ -119,6 +131,7 @@ const UpdateUserPassword = () => {
+                   </p>
+                   <p className="text-gray-600 text-sm">{student.userName}</p>
+                 </div>
++
+                 <button
+                   className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600"
+                   onClick={() => setSelectedUser(student)}
+@@ -173,7 +186,11 @@ const UpdateUserPassword = () => {
+                 <button
+                   type="button"
+                   className="bg-gray-300 text-gray-800 px-4 py-2 rounded hover:bg-gray-400 mr-2"
+-                  onClick={() => setSelectedUser(null)}
++                  onClick={() => {
++                    console.log("check");
++                    setSelectedUser(null);
++                    setNewPassword("");
++                  }}
+                 >
+                   Cancel
+                 </button>
+diff --git a/admin/src/utils/api.js b/admin/src/utils/api.js
+index 654c3b8..f794e0d 100644
+--- a/admin/src/utils/api.js
++++ b/admin/src/utils/api.js
+@@ -38,12 +38,13 @@ export const getAllTeachers = async () => {
+ 
+ export const getAllStudents = async () => {
+   try {
+-    const response = axios.get(`${API_URL}/admin/getStudent`, {
++    const response = await axios.get(`${API_URL}/admin/getStudent`, {
+       withCredentials: true,
+       headers: {
+         "Content-Type": "application/json",
+       },
+     });
++
+     return response;
+   } catch (error) {
+     console.error("Error during fetching students:", error);
+@@ -51,6 +52,24 @@ export const getAllStudents = async () => {
+   }
+ };
+ 
++export const getStudentWithPasswordResetRequest = async (req, res) => {
++  try {
++    const response = await axios.get(
++      `${API_URL}/admin/getStudentWithPasswordResetRequest`
++    );
++    console.log(response);
++    return response;
++  } catch (error) {}
++};
++
++export const getTeacherWithPasswordResetRequest = async (res, req) => {
++  try {
++    const response = await axios.get(
++      `${API_URL}/admin/getTeacherWithPasswordResetRequest`
++    );
++    console.log(response);
++  } catch (error) {}
++};
+ export const assignSubjectToTeacher = async (
+   teacherId,
+   year,
+@@ -174,13 +193,13 @@ export const notifyUsers = async (message) => {
+ 
+ export const allExams = async () => {
+   try {
+-    const response = axios.get(`${API_URL}/admin/viewExams`, {
++    const response = await axios.get(`${API_URL}/admin/viewExams`, {
+       withCredentials: true,
+       headers: {
+         "Content-Type": "application/json",
+       },
+     });
+-    // console.log("res : ", response);
++
+     return response;
+   } catch (error) {
+     // console.error("Error during fetching exams:", error);
+diff --git a/backend/controllers/admin.controller.js b/backend/controllers/admin.controller.js
+index 7dcbbdc..b27f2a2 100644
+--- a/backend/controllers/admin.controller.js
++++ b/backend/controllers/admin.controller.js
+@@ -52,9 +52,34 @@ const getAllRegisteredTeachers = async (req, res) => {
+   }
+ };
+ 
++const getStudentWithPasswordResetRequest = async (req, res) => {
++  try {
++    const student = await studentModel.find({
++      passwordResetRequest: true,
++    });
++    console.log(student);
++  } catch (error) {
++    console.log(error);
++  }
++};
++
++const getTeacherWithPasswordResetRequest = async (req, res) => {
++  try {
++    const teacher = await teacherModel.find({
++      passwordResetRequest: true,
++    });
++    console.log(teacher);
++  } catch (error) {
++    console.log(error);
++  }
++};
++
+ const getAllRegisteredStudent = async (req, res) => {
+   try {
+-    const students = await studentModel.find({}).select("-notifications");
++    const students = await studentModel
++      .find({})
++      .select("-password")
++      .select("-notification");
+     res.json(students);
+   } catch (error) {
+     handleError(res, error);
+@@ -135,7 +160,9 @@ const deleteUser = async (req, res) => {
+ const updateUserPassword = async (req, res) => {
+   try {
+     const { userId } = req.params;
++
+     const { newPassword } = req.body;
++    console.log(userId, newPassword);
+     if (!userId) return res.status(404).json({ message: "User is not found " });
+     const student = await studentModel.findByIdAndUpdate(
+       userId,
+@@ -180,12 +207,17 @@ const notifyUsersForExam = async (req, res) => {
+ const viewExams = async (req, res) => {
+   try {
+     const exams = await examModel.find({});
++
+     res.json(exams);
+   } catch (error) {
+     handleError(res, error);
+   }
+ };
+ 
++const viewIndividualExam = async (req, res) => {
++  res.send("here");
++};
++
+ // const setDateAndTimeForExams = async (req, res) => {
+ //   try {
+ //     const { examId } = req.params;
+@@ -231,4 +263,7 @@ module.exports = {
+   viewExams,
+   // setDateAndTimeForExams,
+   startExam,
++  getStudentWithPasswordResetRequest,
++  viewIndividualExam,
++  getTeacherWithPasswordResetRequest,
+ };
+diff --git a/backend/controllers/teacher.controller.js b/backend/controllers/teacher.controller.js
+index 09e6424..a78886e 100644
+--- a/backend/controllers/teacher.controller.js
++++ b/backend/controllers/teacher.controller.js
+@@ -250,9 +250,11 @@ const getSavedExam = async (req, res) => {
+     const savedExam = allSavedExam.filter(
+       (exam) => exam.examId?.isPublished === false
+     );
+-    if (savedExam.length == 0) {
+-      return res.status(404).json({ message: "No saved exams found." });
+-    }
++
++    // if (savedExam.length == 0) {
++    // return res.status(404).json({ message: "No saved exams found." });
++    // }
++
+     res.json(savedExam);
+   } catch (error) {
+     handleError(res, error);
+diff --git a/backend/models/student.model.js b/backend/models/student.model.js
+index 2694d66..4c97cb8 100644
+--- a/backend/models/student.model.js
++++ b/backend/models/student.model.js
+@@ -30,6 +30,11 @@ const studentSchema = mongoose.Schema(
+       type: mongoose.Schema.Types.ObjectId,
+       ref: "Results",
+     },
++
++    passwordResetRequest: {
++      type: Boolean,
++      default: false,
++    },
+     isVerified: {
+       type: Boolean,
+       default: false,
+diff --git a/backend/models/teacher.model.js b/backend/models/teacher.model.js
+index a13a56b..92a0def 100644
+--- a/backend/models/teacher.model.js
++++ b/backend/models/teacher.model.js
+@@ -15,6 +15,11 @@ const teacherSchema = new mongoose.Schema(
+       required: true,
+       unique: true,
+     },
++    passwordResetRequest: {
++      type: Boolean,
++      default: false,
++    },
++
+     password: {
+       type: String,
+       required: true,
+@@ -33,6 +38,7 @@ const teacherSchema = new mongoose.Schema(
+       {
+         message: {
+           type: String,
++          trim: true,
+         },
+         date: {
+           type: Date,
+diff --git a/backend/routes/admin.route.js b/backend/routes/admin.route.js
+index c5bc744..84fa7ee 100644
+--- a/backend/routes/admin.route.js
++++ b/backend/routes/admin.route.js
+@@ -8,14 +8,25 @@ const {
+   notifyUsersForExam,
+   addTeacher,
+   viewExams,
+-  // setDateAndTimeForExams,
++  getStudentWithPasswordResetRequest,
++  getTeacherWithPasswordResetRequest,
+   startExam,
++  viewIndividualExam,
++  // setDateAndTimeForExams,
+ } = require("../controllers/admin.controller");
+ 
+ const router = require("express").Router();
+ 
+ router.get("/getTeacher", getAllRegisteredTeachers);
+ router.get("/getStudent", getAllRegisteredStudent);
++router.get(
++  "/getStudentWithPasswordResetRequest",
++  getStudentWithPasswordResetRequest
++);
++router.get(
++  "/getTeacherWithPasswordResetRequest",
++  getTeacherWithPasswordResetRequest
++);
+ router.post("/addTeacher", addTeacher);
+ router.patch("/assignSubjectToTeacher/:teacherId", assignSubjectToTeacher);
+ router.patch("/verifyStudent/:studentId", verifyStudent);
+@@ -23,6 +34,7 @@ router.delete("/deleteUser/:userId", deleteUser);
+ router.patch("/updateUserPassword/:userId", updateUserPassword);
+ router.patch("/notifyUsersForExam", notifyUsersForExam);
+ router.get("/viewExams", viewExams);
++router.get("/viewExams/:subjectId", viewIndividualExam);
+ // router.post("/setDateAndTimeForExams/:examId", setDateAndTimeForExams);
+ router.patch("/startExam/:examId", startExam);
+ module.exports = router;
+diff --git a/user/src/components/Subject.jsx b/user/src/components/Subject.jsx
+index 9ddd298..7fdfd57 100644
+--- a/user/src/components/Subject.jsx
++++ b/user/src/components/Subject.jsx
+@@ -6,8 +6,6 @@ const Subject = ({ subject }) => {
+   const navigate = useNavigate();
+   const examId = "675fde6b1c5ea5f765d0c9ff";
+ 
+-  console.log(subject, "subject");
+-
+   return (
+     <div className="flex flex-col items-start justify-between px-8 py-4 rounded-lg shadow-md bg-white min-h-[160px] transition hover:shadow-lg">
+       <h2 className="mb-2 text-2xl font-semibold ">{subject.subject}</h2>
+diff --git a/user/src/components/student/Courses.jsx b/user/src/components/student/Courses.jsx
+index 3dba99b..9eb9874 100644
+--- a/user/src/components/student/Courses.jsx
++++ b/user/src/components/student/Courses.jsx
+@@ -19,18 +19,14 @@ const Courses = () => {
+       const response = await getYearAndSemester(
+         localStorage.getItem("username")
+       );
+-      console.log(response, "data");
+ 
+       const subjects = subjectsData.filter((subject) => {
+-        console.log(subject, "subject");
+-
+         return (
+           subject.year === response.data.year &&
+           subject.semester === response.data.semester
+         );
+       });
+       setSubjects(subjects);
+-      console.log(setSubjects, "as");
+     };
+     getStudent();
+   }, []);
+diff --git a/user/src/components/teacher/Continue.jsx b/user/src/components/teacher/Continue.jsx
+index 4247c2f..cf4e7df 100644
+--- a/user/src/components/teacher/Continue.jsx
++++ b/user/src/components/teacher/Continue.jsx
+@@ -1,235 +1,4 @@
+-{
+-  // import React, { useState } from "react";
+-  // import { useLocation, useNavigate } from "react-router-dom";
+-  // import { createQuestion, publishExam, removeQuestions } from "../../utils/api"; // Assuming this function exists to handle API requests
+-  // const Continue = () => {
+-  //   const location = useLocation();
+-  //   const navigate = useNavigate();
+-  //   const { state } = location;
+-  //   const { timeLimit, title, questions, _id } = state;
+-  //   console.log(questions);
+-  //   const [questionData, setQuestionData] = useState({
+-  //     questionText: "",
+-  //     options: ["", "", "", ""],
+-  //     correctAnswer: "",
+-  //   });
+-  //   console.log(questions);
+-  //   // Handle form submission to save or update the question
+-  //   const handleSubmit = async (e) => {
+-  //     e.preventDefault();
+-  //     try {
+-  //       // Call the createQuestion function (assuming it returns the new question)
+-  //       const res = await createQuestion(
+-  //         _id,
+-  //         title,
+-  //         timeLimit,
+-  //         questionData.questionText,
+-  //         questionData.options,
+-  //         parseInt(questionData.correctAnswer)
+-  //       );
+-  //       const { newQuestion } = res.data;
+-  //       questions.push({
+-  //         _id: newQuestion._id,
+-  //         examId: newQuestion.examId,
+-  //         questionText: questionData.questionText,
+-  //         options: questionData.options,
+-  //         correctAnswer: parseInt(questionData.correctAnswer, 10), // Ensure the correct answer is an integer
+-  //         subject: newQuestion.subject, // Assuming subject comes from the response
+-  //         createdAt: newQuestion.createdAt,
+-  //         updatedAt: newQuestion.updatedAt,
+-  //         __v: newQuestion.__v,
+-  //       });
+-  //       setQuestionData({
+-  //         questionText: "",
+-  //         options: ["", "", "", ""],
+-  //         correctAnswer: "",
+-  //       });
+-  //       alert("Question added successfully!");
+-  //     } catch (error) {
+-  //       console.error("Error saving question:", error);
+-  //     }
+-  //   };
+-  //   const handlePublish = async () => {
+-  //     try {
+-  //       const res = await publishExam(_id);
+-  //       if (res.status === 400) {
+-  //         alert(res.data);
+-  //       }
+-  //       if (res.statusText) {
+-  //         alert("Exam published successfully");
+-  //         navigate("/dashboard/teacher");
+-  //       }
+-  //     } catch (error) {
+-  //       console.error("Error publishing exam:", error);
+-  //     }
+-  //   };
+-  //   const handleRemove = async (questionId, examId) => {
+-  //     try {
+-  //       const res = await removeQuestions(questionId, examId);
+-  //       console.log(res.data.questions);
+-  //       if (res.statusText) {
+-  //         state.questions = res.data.questions;
+-  //       }
+-  //     } catch (error) {
+-  //       console.error("Error removing question:", error);
+-  //     }
+-  //   };
+-  //   return (
+-  //     <div className="flex justify-around p-6">
+-  //       <div className="w-full lg:w-1/2 p-4 bg-white shadow-md rounded-lg">
+-  //         <h2 className="text-2xl font-semibold mb-4">Create or Edit Question</h2>
+-  //         <form onSubmit={handleSubmit}>
+-  //           <div className="mb-4">
+-  //             <label htmlFor="questionText" className="block text-lg font-medium">
+-  //               Question Text:
+-  //             </label>
+-  //             <input
+-  //               type="text"
+-  //               id="questionText"
+-  //               value={questionData.questionText}
+-  //               onChange={(e) =>
+-  //                 setQuestionData({
+-  //                   ...questionData,
+-  //                   questionText: e.target.value,
+-  //                 })
+-  //               }
+-  //               className="w-full p-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+-  //             />
+-  //           </div>
+-  //           <div className="mb-4">
+-  //             <label className="block text-lg font-medium">Options:</label>
+-  //             {questionData.options.map((option, index) => (
+-  //               <div key={index} className="mb-2">
+-  //                 <input
+-  //                   type="text"
+-  //                   value={option}
+-  //                   onChange={(e) => {
+-  //                     const newOptions = [...questionData.options];
+-  //                     newOptions[index] = e.target.value;
+-  //                     setQuestionData({
+-  //                       ...questionData,
+-  //                       options: newOptions,
+-  //                     });
+-  //                   }}
+-  //                   className="w-full p-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+-  //                 />
+-  //               </div>
+-  //             ))}
+-  //           </div>
+-  //           <div className="mb-4">
+-  //             <label htmlFor="timeLimit" className="block text-lg font-medium">
+-  //               Time Limit:
+-  //             </label>
+-  //             <input
+-  //               type="number"
+-  //               id="timeLimit"
+-  //               value={timeLimit}
+-  //               readOnly
+-  //               className="w-full p-2 border rounded-md bg-gray-100 cursor-not-allowed"
+-  //             />
+-  //           </div>
+-  //           <div className="mb-4">
+-  //             <label htmlFor="title" className="block text-lg font-medium">
+-  //               Title:
+-  //             </label>
+-  //             <input
+-  //               type="text"
+-  //               id="title"
+-  //               value={title}
+-  //               readOnly
+-  //               className="w-full p-2 border rounded-md bg-gray-100 cursor-not-allowed"
+-  //             />
+-  //           </div>
+-  //           <div className="mb-4">
+-  //             <label
+-  //               htmlFor="correctAnswer"
+-  //               className="block text-lg font-medium"
+-  //             >
+-  //               Correct Answer:
+-  //             </label>
+-  //             <input
+-  //               type="text"
+-  //               id="correctAnswer"
+-  //               value={questionData.correctAnswer}
+-  //               onChange={(e) =>
+-  //                 setQuestionData({
+-  //                   ...questionData,
+-  //                   correctAnswer: e.target.value,
+-  //                 })
+-  //               }
+-  //               className="w-full p-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+-  //               placeholder="Enter correct answer"
+-  //             />
+-  //           </div>
+-  //           <button
+-  //             type="submit"
+-  //             className="w-full bg-blue-500 text-white p-2 rounded-md hover:bg-blue-600 transition duration-300"
+-  //           >
+-  //             Create Question
+-  //           </button>
+-  //         </form>
+-  //         <button
+-  //           onClick={() => {
+-  //             handlePublish();
+-  //           }}
+-  //         >
+-  //           publish
+-  //         </button>
+-  //       </div>
+-  //       <div>
+-  //         <h2 className="text-4xl font-semibold text-gray-800 text-center mb-8">
+-  //           Created Questions
+-  //         </h2>
+-  //         <ul>
+-  //           {questions.map((question, index) => (
+-  //             <li key={question._id}>
+-  //               {" "}
+-  //               <div className="text-xl font-bold text-gray-700">
+-  //                 <span className="font-semibold">Q{index + 1}:</span>{" "}
+-  //                 {question.questionText}
+-  //               </div>
+-  //               <div className="mt-3">
+-  //                 <strong>Options:</strong>
+-  //                 <ul>
+-  //                   {Array.isArray(question.options) &&
+-  //                   question.options.length > 0 ? (
+-  //                     question.options.map((option, optionIndex) => (
+-  //                       <li key={optionIndex}>{option}</li>
+-  //                     ))
+-  //                   ) : (
+-  //                     <li>No options available</li> // Handle the case where options are not available
+-  //                   )}
+-  //                 </ul>
+-  //               </div>
+-  //               <div className="mt-3">
+-  //                 <strong>Correct Answer:</strong> {question.correctAnswer}
+-  //               </div>
+-  //               <div className="flex gap-4">
+-  //                 <button
+-  //                   onClick={() => handleRemove(question._id, question.examId)}
+-  //                   className="flex items-center px-4 py-2 bg-red-600 text-white font-medium rounded-md hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-red-500 transition duration-300"
+-  //                 >
+-  //                   <FaTrashAlt className="mr-2" /> Remove
+-  //                 </button>
+-  //                 <button
+-  //                   onClick={() => {
+-  //                     setEditModal(true);
+-  //                     setEditedData(question);
+-  //                   }}
+-  //                   className="flex items-center px-4 py-2 bg-blue-600 text-white font-medium rounded-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 transition duration-300"
+-  //                 >
+-  //                   ✏️ <span className="ml-2">Edit Question</span>
+-  //                 </button>
+-  //               </div>
+-  //             </li>
+-  //           ))}
+-  //         </ul>
+-  //       </div>
+-  //     </div>
+-  //   );
+-  // };
+-  // export default Continue;
+-}
++
+ 
+ import React, { useEffect, useState } from "react";
+ import { useLocation, useNavigate } from "react-router-dom";
+diff --git a/user/src/components/teacher/CreateExamBySubject.jsx b/user/src/components/teacher/CreateExamBySubject.jsx
+index d6bb896..13ce555 100644
+--- a/user/src/components/teacher/CreateExamBySubject.jsx
++++ b/user/src/components/teacher/CreateExamBySubject.jsx
+@@ -330,7 +330,7 @@ const CreateExamBySubject = () => {
+         {/* Publish Exam Button */}
+ 
+         {/* Right Side - Created Questions with All Details */}
+-        <div className="flex-1 h-full overflow-scroll  bg-white p-8 rounded-xl shadow-lg space-y-6">
++        <div className="flex-1 h-full   bg-white p-8 rounded-xl shadow-lg space-y-6">
+           <h2 className="text-4xl font-semibold text-gray-800 text-center mb-8">
+             Created Questions
+           </h2>
+diff --git a/user/src/components/teacher/SavedExams.jsx b/user/src/components/teacher/SavedExams.jsx
+index d09f80a..d1c7ae2 100644
+--- a/user/src/components/teacher/SavedExams.jsx
++++ b/user/src/components/teacher/SavedExams.jsx
+@@ -1,16 +1,16 @@
+ import React, { useEffect, useState } from "react";
+ import { getSavedExam } from "../../utils/api";
+-import { Outlet, useNavigate } from "react-router-dom"; // Import the useNavigate hook
++import { Outlet, useNavigate } from "react-router-dom";
+ 
+ const SavedExams = () => {
+   const [exams, setExams] = useState([]);
+-  const navigate = useNavigate(); // Initialize navigate
++  const navigate = useNavigate();
+ 
+   useEffect(() => {
+     const savedExam = async () => {
+       const res = await getSavedExam();
+-      // Log the response to check data structure
+-      setExams(res.data); // Set the data in the state
++
++      if (res.data) setExams(res.data);
+     };
+     savedExam();
+   }, []);
+diff --git a/user/src/components/teacher/ViewExams.jsx b/user/src/components/teacher/ViewExams.jsx
+index ff65f60..3974479 100644
+--- a/user/src/components/teacher/ViewExams.jsx
++++ b/user/src/components/teacher/ViewExams.jsx
+@@ -48,7 +48,7 @@ const ViewExams = () => {
+         exams.map((exam) => (
+           <div
+             key={exam._id}
+-            className="bg-white p-6 rounded-lg shadow-lg mb-6 transition-all duration-300"
++            className="bg-white p-6 rounded-lg shadow-lg mb-6 transition-all duration-300  "
+           >
+             <h2 className="text-2xl font-semibold text-gray-800">
+               {exam.title} - {exam.subject}
+@@ -61,7 +61,7 @@ const ViewExams = () => {
+             </p>
+ 
+             {/* Toggle Questions Section */}
+-            <div className="mt-6">
++            <div className="mt-6 ">
+               <button
+                 onClick={() => toggleQuestions(exam._id)}
+                 className="flex items-center text-xl font-semibold text-blue-500 hover:text-blue-700"
+@@ -76,14 +76,14 @@ const ViewExams = () => {
+                   : "Show Questions"}
+               </button>
+               <div
+-                className={`transition-all duration-300 overflow-hidden mt-4 ${
+-                  expandedQuestions[exam._id] ? "max-h-screen" : "max-h-0"
++                className={` overflow-scroll  transition-all duration-300  mt-4 ${
++                  expandedQuestions[exam._id] ? "max-h-screen " : "max-h-0"
+                 }`}
+               >
+                 {expandedQuestions[exam._id] && (
+-                  <div className="bg-gray-100 p-6 rounded-lg shadow-md">
++                  <div className="bg-gray-100 p-6 rounded-lg shadow-md ">
+                     <h3 className="text-xl font-semibold mb-4 text-gray-700">
+-                      Questions
++                      Questions {console.log(exam.questions)}
+                     </h3>
+                     {exam.questions.map((question) => (
+                       <div
+diff --git a/user/src/utils/api.js b/user/src/utils/api.js
+index 5ffeb72..9238524 100644
+--- a/user/src/utils/api.js
++++ b/user/src/utils/api.js
+@@ -133,15 +133,20 @@ export const saveExam = (examId) => {
+     throw error;
+   }
+ };
+-export const getSavedExam = () => {
++export const getSavedExam = async () => {
+   try {
+-    const response = axios.get(`${API_URL}/teacher/getSavedExam`, {
++    const response = await axios.get(`${API_URL}/teacher/getSavedExam`, {
+       withCredentials: true,
+       headers: {
+         "Content-Type": "application/json",
+       },
+     });
+-    return response;
++
++    if (response.status === 200) {
++      return response;
++    } else {
++      return "No saved exam";
++    }
+   } catch (error) {
+     console.error("Error during fetching saved exam:", error);
+     throw error;
+@@ -336,8 +341,6 @@ export const submitExams = async (answers, examId) => {
+ 
+ export const getYearAndSemester = async (username) => {
+   try {
+-    console.log("do");
+-
+     const response = axios.post(
+       `${API_URL}/student/getYearAndSemester`,
+       { userName: username },

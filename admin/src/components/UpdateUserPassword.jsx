@@ -3,6 +3,8 @@ import {
   getAllStudents,
   getAllTeachers,
   updateUserPassword,
+  getStudentWithPasswordResetRequest,
+  getTeacherWithPasswordResetRequest,
 } from "../utils/api";
 
 const UpdateUserPassword = () => {
@@ -76,7 +78,12 @@ const UpdateUserPassword = () => {
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
         {/* Teachers Section */}
         <div className="bg-white rounded-lg shadow-md p-6">
-          <h2 className="text-xl font-semibold text-gray-700 mb-4">Teachers</h2>
+          <h2
+            onClick={getTeacherWithPasswordResetRequest}
+            className="text-xl  font-semibold text-gray-700 mb-4"
+          >
+            Teachers (click here for log)
+          </h2>
           {teachers.length === 0 ? (
             <p className="text-gray-500">No teachers available.</p>
           ) : (
@@ -104,7 +111,12 @@ const UpdateUserPassword = () => {
 
         {/* Students Section */}
         <div className="bg-white rounded-lg shadow-md p-6">
-          <h2 className="text-xl font-semibold text-gray-700 mb-4">Students</h2>
+          <h2
+            onClick={getStudentWithPasswordResetRequest}
+            className="text-xl font-semibold text-gray-700 mb-4"
+          >
+            Students (click here for log)
+          </h2>
           {students.length === 0 ? (
             <p className="text-gray-500">No students available.</p>
           ) : (
@@ -119,6 +131,7 @@ const UpdateUserPassword = () => {
                   </p>
                   <p className="text-gray-600 text-sm">{student.userName}</p>
                 </div>
+
                 <button
                   className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600"
                   onClick={() => setSelectedUser(student)}
@@ -173,7 +186,11 @@ const UpdateUserPassword = () => {
                 <button
                   type="button"
                   className="bg-gray-300 text-gray-800 px-4 py-2 rounded hover:bg-gray-400 mr-2"
-                  onClick={() => setSelectedUser(null)}
+                  onClick={() => {
+                    console.log("check");
+                    setSelectedUser(null);
+                    setNewPassword("");
+                  }}
                 >
                   Cancel
                 </button>

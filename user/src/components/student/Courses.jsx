@@ -9,9 +9,7 @@ import Subject from "../Subject";
 import { getYearAndSemester } from "../../utils/api";
 const Courses = () => {
   const [subjects, setSubjects] = useState([]);
-  const [selectedSubject, setSelectedSubject] = useState(null);
-  const [availableSemesters, setAvailableSemesters] = useState([]);
-  const [availableSubjects, setAvailableSubjects] = useState([]);
+
   const navigate = useNavigate();
   const token = localStorage.getItem("login_token");
   useEffect(() => {
@@ -20,16 +18,13 @@ const Courses = () => {
       const response = await getYearAndSemester(
         localStorage.getItem("username")
       );
-      console.log(response.data, "data");
-      // console.log(response.data, "response");
-      const subjects = subjectsData.filter(
-        (subject) =>
+
+      const subjects = subjectsData.filter((subject) => {
+        return (
           subject.year === response.data.year &&
           subject.semester === response.data.semester
-
-        // subject._id === response.data.subjectId
-      );
-      console.log(subjects, "subjectsas");
+        );
+      });
       setSubjects(subjects);
     };
     getStudent();

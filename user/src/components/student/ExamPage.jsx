@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { getExamQuestion, submitExams } from "../../utils/api";
+
 import { useNavigate } from "react-router-dom";
 
 const ExamPage = () => {
@@ -20,19 +21,22 @@ const ExamPage = () => {
   const examId = window.location.pathname.split("/").pop();
 
   const fetchExam = async () => {
-    try {
-      const response = await getExamQuestion(examId);
-      const exam = response.data.exam;
-      setExamDetails({
-        title: exam.title,
-        timeLimit: exam.timeLimit * 60,
-        questions: exam.questions,
-      });
-      setTimeLeft(exam.timeLimit * 60);
-    } catch (error) {
-      console.error("Error fetching exam:", error);
-      alert("Failed to load exam details");
-    }
+    //   try {
+    const response = await getExamQuestion(examId);
+    const exam = response.data;
+    console.log(exam[0].title, exam[0].timeLimit * 60, exam[0].questions);
+    console.log(exam);
+    //     setExamDetails({
+    //       title: exam[0].title,
+    //       timeLimit: exam[0].timeLimit * 60,
+    //       questions: exam[0].questions,
+    //     });
+
+    //     setTimeLeft(exam.timeLimit * 60);
+    //   } catch (error) {
+    //     console.error("Error fetching exam:", error);
+    //     alert("Failed to load exam details");
+    //   }
   };
 
   useEffect(() => {
@@ -187,9 +191,7 @@ const ExamPage = () => {
                             Please select an answer for this question
                           </span>
                         )}
-                    </div>
-                    <p className="mb-4 text-gray-700">{question.question}</p>
-                    <div className="space-y-3">
+
                       {question.options.map((option, optIndex) => (
                         <div key={optIndex} className="flex items-center">
                           <input

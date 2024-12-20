@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { getExamsForTeacher } from "../../utils/api";
+import { deleteExam, getExamsForTeacher } from "../../utils/api";
 import { FaChevronDown, FaChevronUp } from "react-icons/fa";
 
 const ViewExams = () => {
@@ -32,7 +32,13 @@ const ViewExams = () => {
       [examId]: !prev[examId],
     }));
   };
-
+  const handleDeleteExam = async (examId) => {
+    const res = await deleteExam(examId);
+    if (res.statusText) {
+      alert("Exam deleted successfully");
+      setExams(exams.filter((e) => e._id !== examId));
+    }
+  };
   return (
     <div className="p-6">
       <h1 className="text-3xl font-semibold mb-6">View Exams</h1>
@@ -42,7 +48,7 @@ const ViewExams = () => {
         exams.map((exam) => (
           <div
             key={exam._id}
-            className="bg-white p-6 rounded-lg shadow-lg mb-6 transition-all duration-300"
+            className="bg-white p-6 rounded-lg shadow-lg mb-6 transition-all duration-300  "
           >
             <h2 className="text-2xl font-semibold text-gray-800">
               {exam.title} - {exam.subject}
@@ -55,7 +61,7 @@ const ViewExams = () => {
             </p>
 
             {/* Toggle Questions Section */}
-            <div className="mt-6">
+            <div className="mt-6 ">
               <button
                 onClick={() => toggleQuestions(exam._id)}
                 className="flex items-center text-xl font-semibold text-blue-500 hover:text-blue-700"
@@ -70,14 +76,14 @@ const ViewExams = () => {
                   : "Show Questions"}
               </button>
               <div
-                className={`transition-all duration-300 overflow-hidden mt-4 ${
-                  expandedQuestions[exam._id] ? "max-h-screen" : "max-h-0"
+                className={` overflow-scroll  transition-all duration-300  mt-4 ${
+                  expandedQuestions[exam._id] ? "max-h-screen " : "max-h-0"
                 }`}
               >
                 {expandedQuestions[exam._id] && (
-                  <div className="bg-gray-100 p-6 rounded-lg shadow-md">
+                  <div className="bg-gray-100 p-6 rounded-lg shadow-md ">
                     <h3 className="text-xl font-semibold mb-4 text-gray-700">
-                      Questions
+                      Questions {console.log(exam.questions)}
                     </h3>
                     {exam.questions.map((question) => (
                       <div
@@ -162,6 +168,20 @@ const ViewExams = () => {
                 )}
               </div>
             </div>
+
+            {/* Delete Exam Button */}
+            <button
+              onClick={() => {
+                if (
+                  window.confirm("Are you sure you want to delete this exam?")
+                ) {
+                  handleDeleteExam(exam._id);
+                }
+              }}
+              className="mt-6 bg-red-500 hover:bg-red-700 text-white font-semibold py-2 px-4 rounded-lg"
+            >
+              Delete Exam
+            </button>
           </div>
         ))
       )}

@@ -82,11 +82,11 @@ export const getTeacherDetails = async () => {
   }
 };
 
-export const createExam = (title, questions, timeLimit, subject) => {
+export const createExam = (subject) => {
   try {
     const response = axios.post(
       `${API_URL}/teacher/createExam/${subject}`,
-      { title, questions, timeLimit },
+      {},
       {
         withCredentials: true,
         headers: {
@@ -97,6 +97,160 @@ export const createExam = (title, questions, timeLimit, subject) => {
     return response;
   } catch (error) {
     console.error("Error during creating exam:", error);
+    throw error;
+  }
+};
+
+export const deleteExam = (examId) => {
+  try {
+    const response = axios.delete(`${API_URL}/teacher/deleteExam/${examId}`, {
+      withCredentials: true,
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
+    return response;
+  } catch (error) {
+    console.error("Error during deleting exam:", error);
+    throw error;
+  }
+};
+export const saveExam = (examId) => {
+  try {
+    const response = axios.post(
+      `${API_URL}/teacher/saveExam/${examId}`,
+      {},
+      {
+        withCredentials: true,
+        headers: {
+          "Content-Type": "application/json",
+        },
+      }
+    );
+    return response;
+  } catch (error) {
+    console.error("Error during saving exam:", error);
+    throw error;
+  }
+};
+export const getSavedExam = async () => {
+  try {
+    const response = await axios.get(`${API_URL}/teacher/getSavedExam`, {
+      withCredentials: true,
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
+
+    if (response.status === 200) {
+      return response;
+    } else {
+      return "No saved exam";
+    }
+  } catch (error) {
+    console.error("Error during fetching saved exam:", error);
+    throw error;
+  }
+};
+export const createQuestion = (
+  examId,
+  title,
+  timeLimit,
+  questionText,
+  options,
+  correctAnswer
+) => {
+  try {
+    console.log("here");
+    const response = axios.post(
+      `${API_URL}/teacher/createQuestions/${examId}`,
+      { title, timeLimit, questionText, options, correctAnswer },
+      {
+        withCredentials: true,
+        headers: {
+          "Content-Type": "application/json",
+        },
+      }
+    );
+    return response;
+  } catch (error) {
+    console.error("Error during creating question:", error);
+    throw error;
+  }
+};
+export const removeQuestions = (questionId, examId) => {
+  try {
+    const response = axios.delete(
+      `${API_URL}/teacher/removeQuestions/${questionId}`,
+      {
+        data: { examId },
+        withCredentials: true,
+        headers: {
+          "Content-Type": "application/json",
+        },
+      }
+    );
+    return response;
+  } catch (error) {
+    console.error("Error during removing question:", error);
+    throw error;
+  }
+};
+
+export const updateQuestion = (
+  questionId,
+  questionText,
+  options,
+  correctAnswer
+) => {
+  try {
+    const response = axios.put(
+      `${API_URL}/teacher/updateQuestion/${questionId}`,
+      { questionText, options, correctAnswer },
+      {
+        withCredentials: true,
+        headers: {
+          "Content-Type": "application/json",
+        },
+      }
+    );
+    return response;
+  } catch (error) {
+    console.error("Error during updating question:", error);
+    throw error;
+  }
+};
+
+export const getExamById = async (examId) => {
+  try {
+    const response = axios.get(`${API_URL}/teacher/getExamById/${examId}`, {
+      withCredentials: true,
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
+    return response;
+  } catch (error) {
+    console.error("Error during fetching exam:", error);
+    throw error;
+  }
+};
+
+export const publishExam = async (examId) => {
+  try {
+    const response = axios.patch(
+      `${API_URL}/teacher/publishExam/${examId}`,
+      {},
+      {
+        withCredentials: true,
+        headers: {
+          "Content-Type": "application/json",
+        },
+      }
+    );
+    return response;
+  } catch (error) {
+    console.error("Error during publishing exam:", error);
     throw error;
   }
 };
@@ -168,12 +322,16 @@ export const submitExams = async (answers, examId) => {
 
 export const getExamQuestion = async (examId) => {
   try {
-    const response = axios.get(`${API_URL}/student/getExamQuestion/${examId}`, {
-      withCredentials: true,
-      headers: {
-        "Content-Type": "application/json",
-      },
-    });
+    const response = await axios.get(
+      `${API_URL}/student/getExamQuestion/${examId}`,
+      {
+        withCredentials: true,
+        headers: {
+          "Content-Type": "application/json",
+        },
+      }
+    );
+
     return response;
   } catch (error) {
     console.error("Error during getting exam:", error);
@@ -183,13 +341,16 @@ export const getExamQuestion = async (examId) => {
 
 export const getYearAndSemester = async (username) => {
   try {
-    const response = axios.post(`${API_URL}/student/getYearAndSemester`, {
-      withCredentials: true,
-      headers: {
-        "Content-Type": "application/json",
-      },
-      username,
-    });
+    const response = axios.post(
+      `${API_URL}/student/getYearAndSemester`,
+      { userName: username },
+      {
+        withCredentials: true,
+        headers: {
+          "Content-Type": "application/json",
+        },
+      }
+    );
 
     return response;
   } catch (error) {

@@ -2,6 +2,7 @@ const authMiddleware = require("../middlewares/authMiddleware");
 const assignsubjectModel = require("../models/assignsubject.model");
 const examModel = require("../models/exam.model");
 const questionModel = require("../models/question.model");
+const savedExamModel = require("../models/savedExam.model");
 const teacherModel = require("../models/teacher.model");
 const handleError = require("../utils/handleError");
 
@@ -19,7 +20,6 @@ const getDetails = async (req, res) => {
 };
 
 const createExam = async (req, res) => {
-  // const { title, timeLimit, questionText, options, correctAnswer } = req.body;
   const { subject } = req.params;
 
   try {
@@ -71,61 +71,6 @@ const createExam = async (req, res) => {
     });
   }
 };
-
-const createQuestions = async (req, res) => {
-  const { examId } = req.params;
-  try {
-    const exam = await examModel.findById(examId);
-    if (!exam) return res.status(404).json({ message: "Exam not found" });
-    const { title, timeLimit, questionText, options, correctAnswer } = req.body;
-    if (!title || !timeLimit || !questionText || !options || !correctAnswer) {
-      return res.status(400).json({
-        message:
-          "Please provide all required fields: title, timeLimit, question details.",
-      });
-    }
-    const newQuestion = new questionModel({
-      examId,
-      subject: exam.subject,
-      questionText,
-      options,
-      correctAnswer,
-    });
-    await newQuestion.save();
-    const updatedExam = await examModel.findByIdAndUpdate(
-      { _id: examId },
-      {
-        $push: { questions: newQuestion._id },
-        $set: { title, timeLimit },
-      },
-      { new: true }
-    );
-    res.json(updatedExam);
-  } catch (error) {
-    handleError(res, error);
-  }
-};
-
-const removeQuestions = async (req, res) => {
-  try {
-    const { questionId } = req.params;
-    const { examId } = req.body;
-    const question = await questionModel.findById(questionId);
-    if (!question) {
-      return res.status(404).json({ message: "Question does not exist." });
-    }
-    await questionModel.findByIdAndDelete(questionId);
-    await examModel.findByIdAndUpdate(
-      { _id: examId },
-      {
-        $pull: { questions: questionId },
-      }
-    );
-    res.json({ message: "Question deleted successfully" });
-  } catch (error) {
-    handleError(res, error);
-  }
-};
 const deleteExam = async (req, res) => {
   try {
     const { examId } = req.params;
@@ -143,6 +88,179 @@ const deleteExam = async (req, res) => {
     handleError(res, error);
   }
 };
+const createQuestions = async (req, res) => {
+  const { examId } = req.params;
+  try {
+    const exam = await examModel.findById(examId);
+    if (!exam) return res.status(404).json({ message: "Exam not found" });
+
+    const { title, timeLimit, questionText, options, correctAnswer } = req.body;
+
+    // Check for required fields
+    if (!questionText || !options || !correctAnswer) {
+      return res.status(400).json({
+        message:
+          "Please provide all required fields: questionText, options, and correctAnswer.",
+      });
+    }
+
+    // If it's the first question, set title and timeLimit
+    if (exam.questions.length === 0) {
+      if (!title || !timeLimit) {
+        return res.status(400).json({
+          message:
+            "Please provide both title and timeLimit for the first question.",
+        });
+      }
+    }
+
+    // Create a new question
+    const newQuestion = new questionModel({
+      examId,
+      subject: exam.subject,
+      questionText,
+      options,
+      correctAnswer,
+    });
+    await newQuestion.save();
+
+    if (exam.questions.length === 0) {
+      await examModel.findByIdAndUpdate(
+        { _id: examId },
+        {
+          $push: { questions: newQuestion._id },
+          $set: { title, timeLimit },
+        },
+        { new: true }
+      );
+    } else {
+      await examModel.findByIdAndUpdate(
+        { _id: examId },
+        {
+          $push: { questions: newQuestion._id },
+        },
+        { new: true }
+      );
+    }
+
+    res.json({ questionId: newQuestion._id, newQuestion });
+  } catch (error) {
+    handleError(res, error);
+  }
+};
+const removeQuestions = async (req, res) => {
+  try {
+    const { questionId } = req.params;
+    const { examId } = req.body;
+    const question = await questionModel.findById(questionId);
+    if (!question) {
+      return res.status(404).json({ message: "Question does not exist." });
+    }
+    await questionModel.findByIdAndDelete(questionId);
+    await examModel
+      .findByIdAndUpdate(
+        { _id: examId },
+        {
+          $pull: { questions: questionId },
+        }
+      )
+      .populate("questions");
+    res.json({
+      message: "Question deleted successfully",
+      question,
+    });
+  } catch (error) {
+    handleError(res, error);
+  }
+};
+const updateQuestion = async (req, res) => {
+  try {
+    const { questionId } = req.params;
+    const { questionText, options, correctAnswer } = req.body;
+    if (!questionText || !options || !correctAnswer) {
+      return res.status(400).json({
+        message:
+          "Please provide all required fields: questionText, options, and correctAnswer.",
+      });
+    }
+    const updatedQuestion = await questionModel.findByIdAndUpdate(
+      { _id: questionId },
+      {
+        $set: { questionText, options, correctAnswer },
+      },
+      { new: true }
+    );
+    res.json({
+      message: "question updated successfully",
+      question: updatedQuestion,
+    });
+  } catch (error) {
+    handleError(res, error);
+  }
+};
+const publishExam = async (req, res) => {
+  try {
+    const { examId } = req.params;
+    const exam = await examModel.findById({ _id: examId });
+
+    if (!exam) return res.status(404).json({ message: "Exam not found" });
+    if (exam.questions.length <= 0) {
+      return res
+        .status(400)
+        .json({ message: "No questions found in the exam." });
+    }
+    if (exam.isPublished) {
+      return res.status(400).json({ message: "Exam is already published." });
+    }
+    await examModel.findByIdAndUpdate(
+      { _id: exam.id },
+      { $set: { isPublished: true } },
+      { new: true }
+    );
+    res.json({ message: "Exam published successfully", exam });
+  } catch (error) {
+    handleError(res, error);
+  }
+};
+
+const saveExam = async (req, res) => {
+  try {
+    const { examId } = req.params;
+    const exam = await examModel.findById(examId);
+    if (exam.isPublished) {
+      return res.status(400).json({ message: "Exam is already published." });
+    }
+    const savedExam = await savedExamModel({
+      examId,
+    });
+    await savedExam.save();
+    res.json(savedExam);
+  } catch (error) {
+    handleError(res, error);
+  }
+};
+const getSavedExam = async (req, res) => {
+  try {
+    const allSavedExam = await savedExamModel.find({}).populate({
+      path: "examId",
+      populate: {
+        path: "questions",
+      },
+    });
+    const savedExam = allSavedExam.filter(
+      (exam) => exam.examId?.isPublished === false
+    );
+
+    // if (savedExam.length == 0) {
+    // return res.status(404).json({ message: "No saved exams found." });
+    // }
+
+    res.json(savedExam);
+  } catch (error) {
+    handleError(res, error);
+  }
+};
+
 const getExamSubmissions = async (req, res) => {
   try {
     const { examId } = req.params;
@@ -157,6 +275,18 @@ const getExamSubmissions = async (req, res) => {
   }
 };
 
+const getExamById = async (req, res) => {
+  try {
+    const { examId } = req.params;
+    if (!examId)
+      return res.status(404).json({ message: "Exam does not exist." });
+    const exam = await examModel.findById(examId).populate("questions");
+    if (!exam) return res.status(404).json({ message: "Exam does not exist." });
+    res.json(exam);
+  } catch (error) {
+    handleError(res, error);
+  }
+};
 const getExams = async (req, res) => {
   try {
     const exams = await examModel
@@ -179,4 +309,9 @@ module.exports = {
   getExams,
   createQuestions,
   removeQuestions,
+  getExamById,
+  publishExam,
+  saveExam,
+  getSavedExam,
+  updateQuestion,
 };
