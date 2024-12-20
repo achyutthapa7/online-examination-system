@@ -330,7 +330,7 @@ const CreateExamBySubject = () => {
         {/* Publish Exam Button */}
 
         {/* Right Side - Created Questions with All Details */}
-        <div className="flex-1 h-full overflow-scroll  bg-white p-8 rounded-xl shadow-lg space-y-6">
+        <div className="flex-1 h-full   bg-white p-8 rounded-xl shadow-lg space-y-6">
           <h2 className="text-4xl font-semibold text-gray-800 text-center mb-8">
             Created Questions
           </h2>

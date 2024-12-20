@@ -250,9 +250,11 @@ const getSavedExam = async (req, res) => {
     const savedExam = allSavedExam.filter(
       (exam) => exam.examId?.isPublished === false
     );
-    if (savedExam.length == 0) {
-      return res.status(404).json({ message: "No saved exams found." });
-    }
+
+    // if (savedExam.length == 0) {
+    // return res.status(404).json({ message: "No saved exams found." });
+    // }
+
     res.json(savedExam);
   } catch (error) {
     handleError(res, error);

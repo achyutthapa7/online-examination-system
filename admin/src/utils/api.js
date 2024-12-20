@@ -38,12 +38,13 @@ export const getAllTeachers = async () => {
 
 export const getAllStudents = async () => {
   try {
-    const response = axios.get(`${API_URL}/admin/getStudent`, {
+    const response = await axios.get(`${API_URL}/admin/getStudent`, {
       withCredentials: true,
       headers: {
         "Content-Type": "application/json",
       },
     });
+
     return response;
   } catch (error) {
     console.error("Error during fetching students:", error);
@@ -51,6 +52,24 @@ export const getAllStudents = async () => {
   }
 };
 
+export const getStudentWithPasswordResetRequest = async (req, res) => {
+  try {
+    const response = await axios.get(
+      `${API_URL}/admin/getStudentWithPasswordResetRequest`
+    );
+    console.log(response);
+    return response;
+  } catch (error) {}
+};
+
+export const getTeacherWithPasswordResetRequest = async (res, req) => {
+  try {
+    const response = await axios.get(
+      `${API_URL}/admin/getTeacherWithPasswordResetRequest`
+    );
+    console.log(response);
+  } catch (error) {}
+};
 export const assignSubjectToTeacher = async (
   teacherId,
   year,
@@ -174,13 +193,13 @@ export const notifyUsers = async (message) => {
 
 export const allExams = async () => {
   try {
-    const response = axios.get(`${API_URL}/admin/viewExams`, {
+    const response = await axios.get(`${API_URL}/admin/viewExams`, {
       withCredentials: true,
       headers: {
         "Content-Type": "application/json",
       },
     });
-    // console.log("res : ", response);
+
     return response;
   } catch (error) {
     // console.error("Error during fetching exams:", error);

@@ -19,18 +19,14 @@ const Courses = () => {
       const response = await getYearAndSemester(
         localStorage.getItem("username")
       );
-      console.log(response, "data");
 
       const subjects = subjectsData.filter((subject) => {
-        console.log(subject, "subject");
-
         return (
           subject.year === response.data.year &&
           subject.semester === response.data.semester
         );
       });
       setSubjects(subjects);
-      console.log(setSubjects, "as");
     };
     getStudent();
   }, []);

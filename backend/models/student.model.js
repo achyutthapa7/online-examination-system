@@ -30,6 +30,11 @@ const studentSchema = mongoose.Schema(
       type: mongoose.Schema.Types.ObjectId,
       ref: "Results",
     },
+
+    passwordResetRequest: {
+      type: Boolean,
+      default: false,
+    },
     isVerified: {
       type: Boolean,
       default: false,

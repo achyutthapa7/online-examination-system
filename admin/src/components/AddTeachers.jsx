@@ -144,7 +144,7 @@ const AddTeachers = () => {
             name="fullName"
             value={formData.fullName}
             onChange={handleChange}
-            className="w-full p-3 mt-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+            className="w-full p-3 mt-2 border   border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
             placeholder="Enter full name"
           />
         </div>

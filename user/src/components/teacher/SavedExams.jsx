@@ -1,16 +1,16 @@
 import React, { useEffect, useState } from "react";
 import { getSavedExam } from "../../utils/api";
-import { Outlet, useNavigate } from "react-router-dom"; // Import the useNavigate hook
+import { Outlet, useNavigate } from "react-router-dom";
 
 const SavedExams = () => {
   const [exams, setExams] = useState([]);
-  const navigate = useNavigate(); // Initialize navigate
+  const navigate = useNavigate();
 
   useEffect(() => {
     const savedExam = async () => {
       const res = await getSavedExam();
-      // Log the response to check data structure
-      setExams(res.data); // Set the data in the state
+
+      if (res.data) setExams(res.data);
     };
     savedExam();
   }, []);

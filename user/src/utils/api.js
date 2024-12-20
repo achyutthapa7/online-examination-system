@@ -133,15 +133,20 @@ export const saveExam = (examId) => {
     throw error;
   }
 };
-export const getSavedExam = () => {
+export const getSavedExam = async () => {
   try {
-    const response = axios.get(`${API_URL}/teacher/getSavedExam`, {
+    const response = await axios.get(`${API_URL}/teacher/getSavedExam`, {
       withCredentials: true,
       headers: {
         "Content-Type": "application/json",
       },
     });
-    return response;
+
+    if (response.status === 200) {
+      return response;
+    } else {
+      return "No saved exam";
+    }
   } catch (error) {
     console.error("Error during fetching saved exam:", error);
     throw error;
@@ -336,8 +341,6 @@ export const submitExams = async (answers, examId) => {
 
 export const getYearAndSemester = async (username) => {
   try {
-    console.log("do");
-
     const response = axios.post(
       `${API_URL}/student/getYearAndSemester`,
       { userName: username },

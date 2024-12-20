@@ -32,11 +32,11 @@ const AllStudents = () => {
           <table className="min-w-full table-auto">
             <thead className="bg-gray-100">
               <tr>
-                <th className="px-4 py-3 text-sm font-semibold text-left text-gray-600">
+                <th className="px-4 py-3 text-sm font-semibold text-left text-gray-600 ">
                   Full Name
                 </th>
                 <th className="px-4 py-3 text-sm font-semibold text-left text-gray-600">
-                  Email
+                  Username
                 </th>
                 <th className="px-4 py-3 text-sm font-semibold text-left text-gray-600">
                   Year
@@ -52,8 +52,8 @@ const AllStudents = () => {
             <tbody>
               {students.map((student) => (
                 <tr key={student._id} className="border-b hover:bg-gray-50">
-                  <td className="px-4 py-3 text-sm text-gray-800">
-                    {student.fullName}
+                  <td className="px-4 py-3 text-sm   text-gray-800">
+                    <span className="cursor-pointer">{student.fullName}</span>
                   </td>
                   <td className="px-4 py-3 text-sm text-gray-800">
                     {student.userName}

@@ -15,6 +15,11 @@ const teacherSchema = new mongoose.Schema(
       required: true,
       unique: true,
     },
+    passwordResetRequest: {
+      type: Boolean,
+      default: false,
+    },
+
     password: {
       type: String,
       required: true,
@@ -33,6 +38,7 @@ const teacherSchema = new mongoose.Schema(
       {
         message: {
           type: String,
+          trim: true,
         },
         date: {
           type: Date,
