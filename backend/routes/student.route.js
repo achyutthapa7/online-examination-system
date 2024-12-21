@@ -1,5 +1,4 @@
 const {
-  getYearAndSemester,
   getExams,
   submitExam,
   getUpcomingExams,
@@ -30,6 +29,5 @@ router.get(
 
 router.get("/calculateExamScore/:examId", authMiddleware, calculateExamScore);
 router.post("/submitExam/:examId", authMiddleware, submitExam);
-router.post("/getYearAndSemester", authMiddleware, getYearAndSemester);
 
 module.exports = router;

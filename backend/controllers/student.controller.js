@@ -248,15 +248,7 @@ const calculateExamScore = async (req, res) => {
   // }
 };
 
-const getYearAndSemester = async (req, res) => {
-  // console.log(req.body.userName, "bdsody");
-  const student = await studentModel.findOne({ userName: req.body.userName });
 
-  res.json({
-    year: student?.year,
-    semester: student?.semester,
-  });
-};
 
 module.exports = {
   getYearAndSemester,
@@ -266,6 +258,5 @@ module.exports = {
   calculateExamScore,
   getAllAnswersForRespectedExam,
   submitExam,
-  getYearAndSemester,
   getExamQuestion,
 };
