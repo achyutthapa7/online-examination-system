@@ -12,6 +12,7 @@ const {
   getTeacherWithPasswordResetRequest,
   startExam,
   viewIndividualExam,
+  editAssignSubjectToTeacher,
   // setDateAndTimeForExams,
 } = require("../controllers/admin.controller");
 
@@ -37,4 +38,8 @@ router.get("/viewExams", viewExams);
 router.get("/viewExams/:subjectId", viewIndividualExam);
 // router.post("/setDateAndTimeForExams/:examId", setDateAndTimeForExams);
 router.patch("/startExam/:examId", startExam);
+router.put(
+  "/editAssignSubjectToTeacher/:assignSubjectId",
+  editAssignSubjectToTeacher
+);
 module.exports = router;

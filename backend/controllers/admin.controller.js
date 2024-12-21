@@ -130,6 +130,30 @@ const assignSubjectToTeacher = async (req, res) => {
     handleError(res, error);
   }
 };
+
+const editAssignSubjectToTeacher = async (req, res) => {
+  try {
+    const { assignSubjectId } = req.params;
+    const { year, semester, subject } = req.body;
+    if (!subject || !year || !semester) {
+      return res.status(400).json({ msuessage: "Missing required fields" });
+    }
+    if (!isValidSemester(year, semester)) {
+      return res.status(400).json({ message: "Invalid year or semester" });
+    }
+    const updatedAssignSubjct = await assignsubjectModel.findByIdAndUpdate(
+      assignSubjectId,
+      {
+        $set: { year, semester, subject },
+      },
+      { new: true }
+    );
+    res.json(updatedAssignSubjct);
+  } catch (error) {
+    handleError(res, error);
+  }
+};
+
 const verifyStudent = async (req, res) => {
   try {
     const { studentId } = req.params;
@@ -266,4 +290,5 @@ module.exports = {
   getStudentWithPasswordResetRequest,
   viewIndividualExam,
   getTeacherWithPasswordResetRequest,
+  editAssignSubjectToTeacher,
 };

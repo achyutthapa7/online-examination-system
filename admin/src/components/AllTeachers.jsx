@@ -3,6 +3,7 @@ import {
   deleteUser,
   getAllTeachers,
   assignSubjectToTeacher,
+  editAssignSubjectToTeacher,
 } from "../utils/api";
 import { subjectsData } from "../utils/subjects";
 
@@ -10,15 +11,22 @@ const AllTeachers = () => {
   const [teachers, setTeachers] = useState([]);
   const [selectedTeacher, setSelectedTeacher] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
-
+  const [editAssignSubjectModal, setEditAssignSubjectModal] = useState(false);
   const [subjectData, setSubjectData] = useState({
     year: "",
     semester: "",
     subject: "",
   });
+
+  const [editedSubjectData, setEditedSubjectData] = useState({
+    editedYear: "",
+    editedSemester: "",
+    editedSubject: "",
+  });
+
   const [availableSemesters, setAvailableSemesters] = useState([]);
   const [availableSubjects, setAvailableSubjects] = useState([]);
-
+  const [assignSubjectId, setAssignSubjectId] = useState("");
   useEffect(() => {
     const getTeacher = async () => {
       try {
@@ -69,21 +77,42 @@ const AllTeachers = () => {
       semester: "",
       subject: "",
     }));
-    const semesters = getSemestersForYear(year);
+    setEditedSubjectData((prevData) => ({
+      ...prevData,
+      editedYear: year,
+      editedSemester: "",
+      editedSubject: "",
+    }));
+    const semesters = getSemestersForYear(year || editedSubjectData.editedYear);
     setAvailableSemesters(semesters);
     setAvailableSubjects([]);
   };
 
   const handleSemesterChange = (e) => {
     const semester = e.target.value;
-    setSubjectData((prevData) => ({ ...prevData, semester, subject: "" }));
-    const subjects = getSubjectsForYearAndSemester(subjectData.year, semester);
+    selectedTeacher &&
+      setSubjectData((prevData) => ({ ...prevData, semester, subject: "" }));
+    editAssignSubjectModal &&
+      setEditedSubjectData((prevData) => ({
+        ...prevData,
+        editedSemester: semester,
+        editedSubject: "",
+      }));
+
+    const subjects = getSubjectsForYearAndSemester(
+      subjectData.year || editedSubjectData.editedYear,
+      semester
+    );
     setAvailableSubjects(subjects);
   };
 
   const handleSubjectChange = (e) => {
     const { value } = e.target;
     setSubjectData((prevData) => ({ ...prevData, subject: value }));
+    setEditedSubjectData((prevData) => ({
+      ...prevData,
+      editedSubject: value,
+    }));
   };
 
   const handleAssignSubject = async () => {
@@ -105,6 +134,7 @@ const AllTeachers = () => {
         setSubjectData({ year: "", semester: "", subject: "" });
         setSelectedTeacher(null);
         setIsLoading(false);
+        window.location.reload();
       } else if (res.status === 401) {
         alert("subject is already assigned!");
         setIsLoading(false);
@@ -117,6 +147,30 @@ const AllTeachers = () => {
     }
   };
 
+  const handleEditAssignSubject = async () => {
+    try {
+      const res = await editAssignSubjectToTeacher(
+        assignSubjectId,
+        parseInt(editedSubjectData.editedYear),
+        parseInt(editedSubjectData.editedSemester),
+        editedSubjectData.editedSubject
+      );
+      if (res.statusText) {
+        alert("Subject edited successfully!");
+        setEditedSubjectData({
+          editedYear: "",
+          editedSemester: "",
+          editedSubject: "",
+        });
+        setEditAssignSubjectModal(false);
+        window.location.reload();
+      }
+      console.log(res.data);
+    } catch (error) {
+      console.error("Error editing assigned subject:", error);
+      alert("Failed to edit assigned subject.");
+    }
+  };
   return (
     <div className="p-8">
       <h1 className="mb-6 text-3xl font-bold">All Teachers</h1>
@@ -157,8 +211,6 @@ const AllTeachers = () => {
               <h3 className="mb-2 text-lg font-semibold text-gray-700">
                 Assigned Subjects
               </h3>
-              <button>Edit Subjects</button>
-
               {teacher.assignedSubjects &&
               teacher.assignedSubjects.length > 0 ? (
                 <ul className="list-disc list-inside">
@@ -166,6 +218,27 @@ const AllTeachers = () => {
                     <li key={sub._id} className="text-sm text-gray-600">
                       <span className="font-medium">{sub.subject}</span> (Year:{" "}
                       {sub.year}, Semester: {sub.semester})
+                      <button
+                        className="ml-2 text-blue-500 underline"
+                        onClick={() => {
+                          setEditedSubjectData({
+                            editedYear: sub.year,
+                            editedSemester: sub.semester,
+                            editedSubject: sub.subject,
+                          });
+                          const semesters = getSemestersForYear(sub.year);
+                          const subjects = getSubjectsForYearAndSemester(
+                            sub.year,
+                            sub.semester
+                          );
+                          setAvailableSemesters(semesters);
+                          setAvailableSubjects(subjects);
+                          setEditAssignSubjectModal(true);
+                          setAssignSubjectId(sub._id);
+                        }}
+                      >
+                        Edit
+                      </button>
                     </li>
                   ))}
                 </ul>
@@ -178,15 +251,21 @@ const AllTeachers = () => {
       )}
 
       {/* Modal */}
-      {selectedTeacher && (
+      {(selectedTeacher || editAssignSubjectModal) && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50">
           <div className="w-1/4 p-6 bg-white rounded shadow-lg">
-            <h2 className="mb-4 text-2xl font-bold">Assign Subject</h2>
+            <h2 className="mb-4 text-2xl font-bold">
+              {selectedTeacher ? "Assign Subject" : "Edit Assign Subject"}
+            </h2>
             <div className="mb-4">
               <label className="block mb-2 font-semibold">Year</label>
               <select
                 className="w-full px-4 py-2 border rounded"
-                value={subjectData.year}
+                value={
+                  selectedTeacher
+                    ? subjectData.year
+                    : editedSubjectData.editedYear
+                }
                 onChange={handleYearChange}
               >
                 <option value="">Select Year</option>
@@ -202,9 +281,13 @@ const AllTeachers = () => {
               <label className="block mb-2 font-semibold">Semester</label>
               <select
                 className="w-full px-4 py-2 border rounded"
-                value={subjectData.semester}
+                value={
+                  selectedTeacher
+                    ? subjectData.semester
+                    : editedSubjectData.editedSemester
+                }
                 onChange={handleSemesterChange}
-                disabled={!subjectData.year}
+                disabled={!subjectData.year || !editedSubjectData.editedYear}
               >
                 <option value="">Select Semester</option>
                 {availableSemesters.map((sem) => (
@@ -219,9 +302,17 @@ const AllTeachers = () => {
               <label className="block mb-2 font-semibold">Subject</label>
               <select
                 className="w-full px-4 py-2 border rounded"
-                value={subjectData.subject}
+                value={
+                  selectedTeacher
+                    ? subjectData.subject
+                    : editedSubjectData.editedSubject
+                }
                 onChange={handleSubjectChange}
-                disabled={!subjectData.semester}
+                disabled={
+                  selectedTeacher
+                    ? !subjectData.semester
+                    : !editedSubjectData.editedSemester
+                }
               >
                 <option value="">Select Subject</option>
                 {availableSubjects.map((sub) => (
@@ -235,16 +326,31 @@ const AllTeachers = () => {
             <div className="flex justify-end">
               <button
                 className="px-4 py-2 mr-2 text-gray-800 bg-gray-300 rounded hover:bg-gray-400"
-                onClick={() => setSelectedTeacher(null)}
+                onClick={() => {
+                  setSelectedTeacher(null);
+                  setEditAssignSubjectModal(false);
+                }}
               >
                 Cancel
               </button>
-              <button
-                className="px-4 py-2 text-white bg-green-500 rounded hover:bg-green-600"
-                onClick={handleAssignSubject}
-              >
-                {isLoading ? "Loading" : "Assign"}
-              </button>
+
+              {selectedTeacher ? (
+                <button
+                  className="px-4 py-2 text-white bg-green-500 rounded hover:bg-green-600"
+                  onClick={handleAssignSubject}
+                >
+                  {isLoading ? "Loading" : "Assign"}
+                </button>
+              ) : (
+                <>
+                  <button
+                    className="px-4 py-2 text-white bg-green-500 rounded hover:bg-green-600"
+                    onClick={handleEditAssignSubject}
+                  >
+                    {isLoading ? "Loading" : "Update"}
+                  </button>
+                </>
+              )}
             </div>
           </div>
         </div>

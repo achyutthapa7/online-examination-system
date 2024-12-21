@@ -221,3 +221,27 @@ export const startExam = async (examId) => {
     throw error;
   }
 };
+
+export const editAssignSubjectToTeacher = async (
+  assignSubjectId,
+  year,
+  semester,
+  subject
+) => {
+  try {
+    const response = axios.put(
+      `${API_URL}/admin/editAssignSubjectToTeacher/${assignSubjectId}`,
+      { year, semester, subject },
+      {
+        withCredentials: true,
+        headers: {
+          "Content-Type": "application/json",
+        },
+      }
+    );
+    return response;
+  } catch (error) {
+    console.error("Error during editing assigned subject to teacher:", error);
+    throw error;
+  }
+};
