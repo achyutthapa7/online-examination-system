@@ -12,7 +12,7 @@ async function sendMail(emailAddress, password, userName) {
   const mailOptions = {
     from: process.env.USERNAME,
     to: emailAddress,
-    subject: "Your Email Credentials",
+    subject: "Your Account Credentials",
     html: `<!DOCTYPE html>
     <html lang="en">
     
@@ -74,18 +74,18 @@ async function sendMail(emailAddress, password, userName) {
     <body>
       <div class="container">
         <div class="header">
-          <h1>Your Email Credentials</h1>
+          <h1>Your Account Credentials</h1>
         </div>
         <div class="content">
           <p>Thank you for registering with us. Below are your credentials:</p>
           <div class="credentials">
-            <p><strong>Email Address:</strong> ${userName}</p>
+            <p><strong>Username:</strong> ${userName}</p>
             <p><strong>Password:</strong> ${password}</p>
           </div>
           <p>If you did not request this, please ignore this email.</p>
         </div>
         <div class="footer">
-          <p>&copy; 2024 Kinbech. All rights reserved.</p>
+          <p>&copy; 2024 EduPortal. All rights reserved.</p>
         </div>
       </div>
     </body>
