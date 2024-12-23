@@ -76,12 +76,25 @@ const AllStudents = () => {
                         Delete
                       </button>
                     ) : (
-                      <button
-                        className="px-4 py-2 text-white bg-blue-500 rounded hover:bg-blue-600"
-                        onClick={() => handleVerify(student._id)}
-                      >
-                        Verify
-                      </button>
+                      <div className="flex  w-fit gap-4">
+                        <button
+                          className="px-4 py-2 text-white bg-blue-500 rounded hover:bg-blue-600"
+                          onClick={() => handleVerify(student._id)}
+                        >
+                          Verify
+                        </button>
+                        <button
+                          className="px-4 py-2 text-white bg-red-500 rounded hover:bg-red-600"
+                          onClick={() => {
+                            if (
+                              window.confirm("Do you want to delete the user?")
+                            )
+                              handleDelete(student._id);
+                          }}
+                        >
+                          Reject
+                        </button>
+                      </div>
                     )}
                   </td>
                 </tr>

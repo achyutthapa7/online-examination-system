@@ -53,17 +53,17 @@ const UpdateUserPassword = () => {
       return;
     }
 
-    if (newPassword.length < 8) {
-      setError("Password must be at least 8 characters long.");
-      return;
-    }
-
     try {
-      // Handle password update logic (API call)
-      await updateUserPassword(selectedUser._id, newPassword);
-      alert("Password updated successfully!");
-      setSelectedUser(null);
-      setNewPassword("");
+      if (
+        window.confirm(
+          `Update New Password of ${selectedUser.fullName} to ${newPassword} ?`
+        )
+      ) {
+        await updateUserPassword(selectedUser._id, newPassword);
+        alert("Password updated successfully!");
+        setSelectedUser(null);
+        setNewPassword("");
+      }
     } catch (err) {
       console.error("Error updating password:", err);
       alert("Failed to update password.");
@@ -100,7 +100,9 @@ const UpdateUserPassword = () => {
                 </div>
                 <button
                   className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600"
-                  onClick={() => setSelectedUser(teacher)}
+                  onClick={() => {
+                    setSelectedUser(teacher);
+                  }}
                 >
                   Update Password
                 </button>
@@ -187,7 +189,6 @@ const UpdateUserPassword = () => {
                   type="button"
                   className="bg-gray-300 text-gray-800 px-4 py-2 rounded hover:bg-gray-400 mr-2"
                   onClick={() => {
-                    console.log("check");
                     setSelectedUser(null);
                     setNewPassword("");
                   }}

@@ -62,6 +62,13 @@ export const login = async (userName, password, role) => {
     );
     return response;
   } catch (error) {
+    //  if (!userName || !password) {
+    //   return res.status(400).json({ message: "Missing required fields" });
+    // }
+    // if (userName !== adminUserName || password !== adminPassword) {
+    //   return res.status(401).json({ message: "Invalid email or password" });
+    // }
+    console.log("h");
     console.error("Error during login:", error);
     throw error;
   }

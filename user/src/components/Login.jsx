@@ -72,18 +72,19 @@ const Login = () => {
           res.data.role === "Teacher"
             ? "/dashboard/teacher"
             : "/dashboard/student";
-      } else if (res.status === 401) {
-        alert("User is not found");
-      } else if (res.status === 402) {
+      }
+    } catch (error) {
+      if (error.status === 401) {
+        alert("User  not found");
+      } else if (error.status === 402) {
         alert("User is not verified");
-      } else if (res.status === 403) {
+      } else if (error.status === 403) {
         alert("Invalid password");
       } else {
         alert(
           "Something went wrong, please try again or check the credentials"
         );
       }
-    } catch (error) {
       console.error("Error logging in:", error);
       alert("There was an error please try again later.");
     }

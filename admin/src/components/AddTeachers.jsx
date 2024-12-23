@@ -263,7 +263,6 @@ const AddTeachers = () => {
   const [isAdded, setIsAdded] = useState(false);
 
   const handleSubmit = async (e) => {
-
     e.preventDefault();
     if (!emailAddress || !userName || !password || !fullName) {
       alert("Please fill in all required fields");
@@ -283,11 +282,10 @@ const AddTeachers = () => {
           fullName: "",
         });
       }
-
-      if (res.status === 400) {
+    } catch (error) {
+      if (error.status === 409) {
         alert("Teacher already exist");
       }
-    } catch (error) {
       console.error("Error adding teacher:", error.message);
     } finally {
       setIsAdded(false);
@@ -468,7 +466,6 @@ const AddTeachers = () => {
         </div> */}
 
         <div className="mb-4">
-
           <button
             disabled={isAdded}
             type="submit"

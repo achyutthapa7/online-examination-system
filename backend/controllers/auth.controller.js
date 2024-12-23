@@ -93,13 +93,13 @@ const loginUser = async (req, res) => {
 
 const loginAdmin = async (req, res) => {
   try {
-    const admiUserName = process.env.ADMIN_USER;
+    const adminUserName = process.env.ADMIN_USER;
     const adminPassword = process.env.ADMIN_PASS;
     const { userName, password } = req.body;
     if (!userName || !password) {
       return res.status(400).json({ message: "Missing required fields" });
     }
-    if (userName !== admiUserName || password !== adminPassword) {
+    if (userName !== adminUserName || password !== adminPassword) {
       return res.status(401).json({ message: "Invalid email or password" });
     }
     const token = await jwt.sign(

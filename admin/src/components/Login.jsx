@@ -26,7 +26,12 @@ const Login = () => {
         setIsLoading(false);
       }
     } catch (error) {
-      console.error(error);
+      if (error.status === 400) {
+        alert("Missing required fields");
+      }
+      if (error.status === 401) {
+        alert("Invalid Credentials");
+      }
     } finally {
       setIsLoading(false);
     }

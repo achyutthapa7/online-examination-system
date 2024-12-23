@@ -57,7 +57,7 @@ export const getStudentWithPasswordResetRequest = async (req, res) => {
     const response = await axios.get(
       `${API_URL}/admin/getStudentWithPasswordResetRequest`
     );
-    console.log(response);
+
     return response;
   } catch (error) {}
 };

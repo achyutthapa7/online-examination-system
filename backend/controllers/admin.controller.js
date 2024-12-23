@@ -18,11 +18,14 @@ const addTeacher = async (req, res) => {
       return res.status(400).json({ message: "Missing required fields" });
     }
 
-    const [existingStudent, existingTeacher] = await Promise.all([
-      studentModel.findOne({ userName }),
-      teacherModel.findOne({ userName }),
-    ]);
-    if (existingStudent || existingTeacher) {
+    const [existingStudent, existingTeacherUsername, existingTeacherEmail] =
+      await Promise.all([
+        studentModel.findOne({ userName }),
+        teacherModel.findOne({ userName }),
+        teacherModel.findOne({ emailAddress }),
+      ]);
+
+    if (existingStudent || existingTeacherUsername || existingTeacherEmail) {
       return res.status(409).json({ message: "username is already taken" });
     }
     const teacher = new teacherModel({
