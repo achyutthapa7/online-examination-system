@@ -1,5 +1,3 @@
-
-
 import React, { useEffect, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import {
@@ -10,7 +8,8 @@ import {
   updateQuestion,
 } from "../../utils/api";
 import { FaPlus, FaTrashAlt } from "react-icons/fa";
-
+import { toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 const Continue = () => {
   const navigate = useNavigate();
   const [editModal, setEditModal] = useState(false);
@@ -96,7 +95,16 @@ const Continue = () => {
         );
         setQuestions(updatedQuestions);
         setEditModal(false);
-        alert("Question updated successfully!");
+        toast.success("Question updated successfully!", {
+          position: "top-right",
+          autoClose: 1350,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: "light",
+        });
       }
     } catch (error) {
       console.error("Error updating question:", error);
@@ -106,10 +114,28 @@ const Continue = () => {
     try {
       const res = await publishExam(state);
       if (res.status === 400) {
-        alert(res.data);
+        toast.success(res.data, {
+          position: "top-right",
+          autoClose: 1350,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: "light",
+        });
       }
       if (res.statusText) {
-        alert("Exam published successfully");
+        toast.success("Exam published successfully", {
+          position: "top-right",
+          autoClose: 1350,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: "light",
+        });
         navigate("/dashboard/teacher");
       }
     } catch (error) {

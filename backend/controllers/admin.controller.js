@@ -62,7 +62,7 @@ const getStudentWithPasswordResetRequest = async (req, res) => {
     });
     console.log(student);
   } catch (error) {
-    console.log(error);
+    console.error(error);
   }
 };
 
@@ -73,7 +73,7 @@ const getTeacherWithPasswordResetRequest = async (req, res) => {
     });
     console.log(teacher);
   } catch (error) {
-    console.log(error);
+    console.error(error);
   }
 };
 
@@ -189,7 +189,7 @@ const updateUserPassword = async (req, res) => {
     const { userId } = req.params;
 
     const { newPassword } = req.body;
-    console.log(userId, newPassword);
+    // console.log(userId, newPassword);
     if (!userId) return res.status(404).json({ message: "User is not found " });
     const student = await studentModel.findByIdAndUpdate(
       userId,

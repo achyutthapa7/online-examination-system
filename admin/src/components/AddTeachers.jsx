@@ -241,7 +241,8 @@
 import React, { useEffect, useState } from "react";
 import { subjectsData } from "../utils/subjects";
 import { addTeacher } from "../utils/api";
-
+import { toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 // Provided subjects JSON data
 const AddTeachers = () => {
   const [formData, setFormData] = useState({
@@ -265,7 +266,16 @@ const AddTeachers = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     if (!emailAddress || !userName || !password || !fullName) {
-      alert("Please fill in all required fields");
+      toast.warn("Please fill in all required fields", {
+        position: "top-right",
+        autoClose: 1350,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+      });
       return;
     }
 
@@ -274,7 +284,16 @@ const AddTeachers = () => {
       const res = await addTeacher(emailAddress, userName, password, fullName);
 
       if (res.statusText) {
-        alert("teacher added successfully");
+        toast.success("teacher added successfully", {
+          position: "top-right",
+          autoClose: 1350,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: "light",
+        });
         setFormData({
           emailAddress: "",
           userName: "",
@@ -284,7 +303,16 @@ const AddTeachers = () => {
       }
     } catch (error) {
       if (error.status === 409) {
-        alert("Teacher already exist");
+        toast.error("Teacher already exist", {
+          position: "top-right",
+          autoClose: 1350,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: "light",
+        });
       }
       console.error("Error adding teacher:", error.message);
     } finally {

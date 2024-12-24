@@ -6,7 +6,8 @@ import {
   editAssignSubjectToTeacher,
 } from "../utils/api";
 import { subjectsData } from "../utils/subjects";
-
+import { toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 const AllTeachers = () => {
   const [teachers, setTeachers] = useState([]);
   const [selectedTeacher, setSelectedTeacher] = useState(null);
@@ -43,11 +44,29 @@ const AllTeachers = () => {
     try {
       const res = await deleteUser(teacherId);
       if (res.status === 200) {
-        alert(res.data.message);
+        toast.success(res.data.message, {
+          position: "top-right",
+          autoClose: 1350,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: "light",
+        });
       }
     } catch (err) {
       console.error("Error deleting teacher:", err);
-      alert("Failed to delete teacher.");
+      toast.error("Failed to delete teacher.", {
+        position: "top-right",
+        autoClose: 1350,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+      });
     }
   };
 
@@ -117,7 +136,16 @@ const AllTeachers = () => {
 
   const handleAssignSubject = async () => {
     if (!subjectData.year || !subjectData.semester || !subjectData.subject) {
-      alert("Please fill out all fields.");
+      toast.warn("Please fill out all fields.", {
+        position: "top-right",
+        autoClose: 1350,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+      });
       return;
     }
 
@@ -130,18 +158,45 @@ const AllTeachers = () => {
         subjectData.subject
       );
       if (res.status === 200) {
-        alert("Subject assigned successfully!");
+        toast.success("Subject assigned successfully!", {
+          position: "top-right",
+          autoClose: 1350,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: "light",
+        });
         setSubjectData({ year: "", semester: "", subject: "" });
         setSelectedTeacher(null);
         setIsLoading(false);
         window.location.reload();
       } else if (res.status === 401) {
-        alert("subject is already assigned!");
+        toast.warn("subject is already assigned!", {
+          position: "top-right",
+          autoClose: 1350,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: "light",
+        });
         setIsLoading(false);
       }
     } catch (err) {
       console.error("Error assigning subject:", err);
-      alert("Failed to assign subject.");
+      toast.error("Failed to assign subject.", {
+        position: "top-right",
+        autoClose: 1350,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+      });
     } finally {
       setIsLoading(false);
     }
@@ -156,7 +211,16 @@ const AllTeachers = () => {
         editedSubjectData.editedSubject
       );
       if (res.statusText) {
-        alert("Subject edited successfully!");
+        toast.success("Subject edited successfully!", {
+          position: "top-right",
+          autoClose: 1350,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: "light",
+        });
         setEditedSubjectData({
           editedYear: "",
           editedSemester: "",
@@ -165,10 +229,19 @@ const AllTeachers = () => {
         setEditAssignSubjectModal(false);
         window.location.reload();
       }
-      console.log(res.data);
+
     } catch (error) {
       console.error("Error editing assigned subject:", error);
-      alert("Failed to edit assigned subject.");
+      toast.error("Failed to edit assigned subject.", {
+        position: "top-right",
+        autoClose: 1350,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+      });
     }
   };
   return (
@@ -224,7 +297,7 @@ const AllTeachers = () => {
                       <button
                         className="ml-2 text-blue-500 underline"
                         onClick={() => {
-                          console.log(sub);
+
                           setEditedSubjectData({
                             editedYear: "",
                             editedSemester: "",

@@ -1,6 +1,8 @@
 import React, { useEffect, useState } from "react";
 import { registration } from "../utils/api";
 import { useNavigate } from "react-router-dom";
+import { toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 const Registration = () => {
   const registration_token = localStorage.getItem("registration_token");
 
@@ -16,7 +18,7 @@ const Registration = () => {
   const [availableSemesters, setAvailableSemesters] = useState([]);
   useEffect(() => {
     if (registration_token) {
-      window.location.href = "/verifying";
+      navigate("/verifying");
     } else {
       setLoading(false);
     }
@@ -48,11 +50,29 @@ const Registration = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     if (!formData.fullName || !formData.userName || !formData.password) {
-      alert("Please fill required fields.");
+      toast.warn("Please fill required fields.", {
+        position: "top-right",
+        autoClose: 1350,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+      });
       return;
     }
     if (!formData.year || !formData.semester) {
-      alert("Please select a valid year and semester.");
+      toast.warn("Please select a valid year and semester.", {
+        position: "top-right",
+        autoClose: 1350,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+      });
       return;
     }
     try {
@@ -64,7 +84,16 @@ const Registration = () => {
         parseInt(formData.semester)
       );
       if (res.statusText) {
-        alert("User registered successfully!");
+        toast.success("User registered successfully!", {
+          position: "top-right",
+          autoClose: 1350,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: "light",
+        });
         setFormData({
           fullName: "",
           userName: "",
@@ -75,13 +104,23 @@ const Registration = () => {
 
         localStorage.setItem("registration_token", res.data.token);
         localStorage.setItem("user", JSON.stringify(res.data.student));
-        window.location.href = "/verifying";
+        navigate("/verifying");
       } else if (res.status === 409) {
-        alert("Username already exists");
+        toast.error("Username already exists");
       }
     } catch (error) {
       console.error("Error registering user:", error);
-      alert("An error occurred while registering user.");
+
+      toast.error(error.response.data.message, {
+        position: "top-right",
+        autoClose: 1350,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+      });
     }
   };
   if (loading) {

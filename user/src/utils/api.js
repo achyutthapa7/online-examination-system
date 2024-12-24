@@ -348,18 +348,19 @@ export const getExamQuestion = async (examId) => {
 
 export const getYearAndSemester = async (username) => {
   try {
-    const response = axios.post(
-      `${API_URL}/student/getYearAndSemester`,
-      { userName: username },
-      {
-        withCredentials: true,
-        headers: {
-          "Content-Type": "application/json",
-        },
-      }
-    );
-
-    return response;
+    if (username) {
+      const response = axios.post(
+        `${API_URL}/student/getYearAndSemester`,
+        { userName: username },
+        {
+          withCredentials: true,
+          headers: {
+            "Content-Type": "application/json",
+          },
+        }
+      );
+      return response;
+    }
   } catch (error) {
     console.error("Error during fetching courses:", error);
     throw error;

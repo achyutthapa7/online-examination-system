@@ -2,7 +2,8 @@ import React, { useEffect, useState } from "react";
 import { allExams, startExam } from "../utils/api";
 import { FaClipboardList } from "react-icons/fa";
 import { useNavigate } from "react-router-dom";
-
+import { toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 const ViewExams = () => {
   const [exams, setExams] = useState([]);
   const navigate = useNavigate();
@@ -25,7 +26,16 @@ const ViewExams = () => {
     try {
       const res = await startExam(examId);
       if (res.statusText === "OK") {
-        alert("Exam started successfully");
+        toast.success("Exam started successfully", {
+          position: "top-right",
+          autoClose: 1350,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: "light",
+        });
 
         // Update the exam status in the state
         setExams((prevExams) =>
@@ -34,11 +44,29 @@ const ViewExams = () => {
           )
         );
       } else {
-        alert("Failed to start the exam");
+        toast.error("Failed to start the exam", {
+          position: "top-right",
+          autoClose: 1350,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: "light",
+        });
       }
     } catch (error) {
       console.error("Error starting exam:", error);
-      alert("Error starting the exam");
+      toast.error("Error starting the exam", {
+        position: "top-right",
+        autoClose: 1350,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+      });
     }
   };
 

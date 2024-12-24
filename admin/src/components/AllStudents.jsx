@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { deleteUser, getAllStudents, verifyStudent } from "../utils/api"; // Assume this fetches student data
-
+import { toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 const AllStudents = () => {
   const [students, setStudents] = useState([]);
 
@@ -13,12 +14,31 @@ const AllStudents = () => {
   }, []);
   const handleVerify = async (studentId) => {
     const res = await verifyStudent(studentId);
-    if (res.statusText) alert("User is verified");
+    if (res.statusText)
+      toast.success("User is verified", {
+        position: "top-right",
+        autoClose: 1350,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+      });
   };
   const handleDelete = async (studentId) => {
     const res = await deleteUser(studentId);
     if (res.statusText) {
-      alert(res.data.message);
+      toast.success(res.data.message, {
+        position: "top-right",
+        autoClose: 1350,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+      });
     }
   };
   return (

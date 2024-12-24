@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import { login, startExam } from "../utils/api";
-
+import { toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 const ExamDetails = () => {
   const { state } = useLocation();
   const navigate = useNavigate();
@@ -14,14 +15,41 @@ const ExamDetails = () => {
     try {
       const res = await startExam(exam._id);
       if (res.statusText === "OK") {
-        alert("Exam started successfully");
+        toast.success("Exam started successfully", {
+          position: "top-right",
+          autoClose: 1350,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: "light",
+        });
         setExam({ ...exam, isApproved: true });
       } else {
-        alert("Failed to start the exam");
+        toast.error("Failed to start the exam", {
+          position: "top-right",
+          autoClose: 1350,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: "light",
+        });
       }
     } catch (error) {
       console.error("Error starting exam:", error);
-      alert("Error starting the exam");
+      toast.error("Error starting the exam", {
+        position: "top-right",
+        autoClose: 1350,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+      });
     }
   };
 

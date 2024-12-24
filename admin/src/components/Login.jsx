@@ -2,6 +2,8 @@ import React, { useEffect, useState } from "react";
 import { login } from "../utils/api";
 import { useNavigate } from "react-router-dom";
 import { isAuthenticated } from "../utils/isAuthenticated";
+import { toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 const Login = () => {
   const [userName, setUsername] = useState("");
   const [password, setPassword] = useState("");
@@ -17,20 +19,56 @@ const Login = () => {
       const res = await login(userName, password);
       if (res.statusText) {
         setIsLoading(false);
-        alert(res.data.message);
+        toast.success(res.data.message, {
+          position: "top-right",
+          autoClose: 1350,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: "light",
+        });
         localStorage.setItem("token", JSON.stringify(res.data.token));
 
         navigate("/admin/dashboard");
       } else {
-        alert("Internal server error");
+        toast.error("Internal server error", {
+          position: "top-right",
+          autoClose: 1350,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: "light",
+        });
         setIsLoading(false);
       }
     } catch (error) {
       if (error.status === 400) {
-        alert("Missing required fields");
+        toast.warn("Missing required fields", {
+          position: "top-right",
+          autoClose: 1350,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: "light",
+        });
       }
       if (error.status === 401) {
-        alert("Invalid Credentials");
+        toast.error("Invalid Credentials", {
+          position: "top-right",
+          autoClose: 1350,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: "light",
+        });
       }
     } finally {
       setIsLoading(false);

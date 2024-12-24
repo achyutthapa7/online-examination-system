@@ -35,7 +35,7 @@ const StudentDashboard = () => {
       localStorage.removeItem("login_token");
       localStorage.removeItem("username");
       localStorage.removeItem("role");
-      window.location.href = "/login";
+      navigate("/login");
     }
   };
 

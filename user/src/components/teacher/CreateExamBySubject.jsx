@@ -9,7 +9,8 @@ import {
 } from "../../utils/api";
 import { useLocation, useNavigate, useParams } from "react-router-dom";
 import { FaPlus, FaTrashAlt } from "react-icons/fa";
-
+import { toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 const CreateExamBySubject = () => {
   const [editModal, setEditModal] = useState(false);
   const [editedData, setEditedData] = useState([]);
@@ -147,10 +148,28 @@ const CreateExamBySubject = () => {
     try {
       const res = await publishExam(examId);
       if (res.status === 400) {
-        alert(res.data);
+        toast.success(res.data, {
+          position: "top-right",
+          autoClose: 1350,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: "light",
+        });
       }
       if (res.statusText) {
-        alert("Exam published successfully");
+        toast.success("Exam published successfully", {
+          position: "top-right",
+          autoClose: 1350,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: "light",
+        });
         navigate("/dashboard/teacher");
       }
     } catch (error) {
@@ -167,7 +186,16 @@ const CreateExamBySubject = () => {
         editedData.correctAnswer
       );
       if (res.statusText) {
-        alert("Question updated successfully");
+        toast.success("Question updated successfully", {
+          position: "top-right",
+          autoClose: 1350,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: "light",
+        });
         setExamData({
           ...examData,
           questions: examData.questions.map((q) =>
@@ -193,7 +221,8 @@ const CreateExamBySubject = () => {
   const handelSave = async () => {
     const res = await saveExam(examId);
     if (res.statusText) {
-      alert("Exam saved successfully");
+      toast.success("Exam saved successfully");
+      navigate("/dashboard/teacher");
     }
     try {
     } catch (error) {

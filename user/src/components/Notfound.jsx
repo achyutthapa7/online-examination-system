@@ -1,6 +1,8 @@
 import React from "react";
+import { useNavigate } from "react-router-dom";
 
 const Notfound = () => {
+  const navigate = useNavigate();
   return (
     <div className="flex flex-col items-center justify-center min-h-screen bg-gray-50 text-center">
       <h1 className="text-8xl font-extrabold text-red-500 mb-4">404</h1>
@@ -11,7 +13,7 @@ const Notfound = () => {
         Sorry, the page you’re looking for doesn’t exist or has been moved.
       </p>
       <button
-        onClick={() => (window.location.href = "/")}
+        onClick={() => navigate("/")}
         className="px-8 py-3 bg-blue-500 text-white font-medium rounded-md hover:bg-blue-600 transition duration-300"
       >
         Go Back Home

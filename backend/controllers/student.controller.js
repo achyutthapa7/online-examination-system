@@ -203,7 +203,7 @@ const getAllAnswersForRespectedExam = async (req, res) => {
 };
 
 const getYearAndSemester = async (req, res) => {
-  const student = await studentModel.findOne({ userName: req.body.username });
+  const student = await studentModel.findOne({ userName: req.body.userName });
 
   res.json({
     year: student?.year,
@@ -247,8 +247,6 @@ const calculateExamScore = async (req, res) => {
   //   res.status(500).json({ message: "Server Error", error: error.message });
   // }
 };
-
-
 
 module.exports = {
   getYearAndSemester,

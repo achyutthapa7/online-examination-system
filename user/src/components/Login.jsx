@@ -2,19 +2,23 @@ import React, { useEffect, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import { checkVerificationStatus } from "../utils/checkVerificationStatus";
 import { login } from "../utils/api";
+import { toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+import { Link } from "react-router-dom";
 
 const Login = () => {
   const registeredUser = JSON.parse(localStorage.getItem("user"));
   const login_token = localStorage.getItem("login_token");
+  const navigate = useNavigate();
+
   const role = localStorage.getItem("role");
   useEffect(() => {
     if (login_token) {
-      if (role === "Teacher") window.location.href = "/dashboard/teacher";
+      if (role === "Teacher") navigate("/dashboard/teacher");
     } else if (login_token) {
-      if (role === "Student") window.location.href = "/dashboard/student";
+      if (role === "Student") navigate("/dashboard/student");
     }
   }, [login_token, role]);
-  const navigate = useNavigate();
   const data = useLocation();
 
   useEffect(() => {
@@ -56,37 +60,56 @@ const Login = () => {
     const { userName, password, role } = credentials;
     try {
       if (!userName || !password || !role) {
-        alert("All fields are required.");
+        toast.warn("All fields are required.", {
+          position: "top-right",
+          autoClose: 1350,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: "light",
+        });
+
         return;
       }
       const res = await login(userName, password, role);
 
       if (res.status === 200) {
-        alert("Login successful");
         localStorage.removeItem("registration_token");
         localStorage.removeItem("user");
         localStorage.setItem("login_token", res.data.token);
         localStorage.setItem("username", res.data.userName);
         localStorage.setItem("role", res.data.role);
-        window.location.href =
-          res.data.role === "Teacher"
-            ? "/dashboard/teacher"
-            : "/dashboard/student";
+        toast.success("Logged In Successfully.", {
+          position: "top-right",
+          autoClose: 1350,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: "light",
+        });
+        if (res.data.role === "Teacher") {
+          navigate("/dashboard/teacher");
+        } else {
+          navigate("/dashboard/student");
+        }
       }
     } catch (error) {
       if (error.status === 401) {
-        alert("User  not found");
+        toast.error("User  not found");
       } else if (error.status === 402) {
-        alert("User is not verified");
+        toast.error("User is not verified");
       } else if (error.status === 403) {
-        alert("Invalid password");
+        toast.error("Invalid password");
       } else {
-        alert(
+        toast.error(
           "Something went wrong, please try again or check the credentials"
         );
       }
       console.error("Error logging in:", error);
-      alert("There was an error please try again later.");
     }
   };
 
@@ -175,12 +198,12 @@ const Login = () => {
         {/* Additional Options */}
         <div className="mt-4 text-center text-sm text-gray-600">
           Don't have an account?{" "}
-          <a
-            href="/register"
+          <Link
+            to="/register"
             className="text-blue-500 hover:text-blue-700 font-semibold"
           >
             Register here
-          </a>
+          </Link>
         </div>
       </div>
     </div>

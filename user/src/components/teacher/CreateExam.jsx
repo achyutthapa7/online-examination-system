@@ -2,6 +2,8 @@ import React, { useState, useEffect } from "react";
 import { createExam, getTeacherDetails } from "../../utils/api";
 import { useNavigate } from "react-router-dom";
 
+import { toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 const CreateExam = () => {
   const navigate = useNavigate();
   const [assignedSubjects, setAssignedSubjects] = useState([]);
@@ -44,7 +46,16 @@ const CreateExam = () => {
       if (res.statusText) {
         navigate(subj.subject, { state: res.data.exam._id });
       } else {
-        alert("Failed to create exam for this subject.");
+        toast.error("Failed to create exam for this subject.", {
+          position: "top-right",
+          autoClose: 1350,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: "light",
+        });
       }
     } catch (error) {
       console.error("Error starting exam:", error);

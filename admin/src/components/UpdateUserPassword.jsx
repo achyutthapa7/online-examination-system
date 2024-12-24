@@ -6,6 +6,8 @@ import {
   getStudentWithPasswordResetRequest,
   getTeacherWithPasswordResetRequest,
 } from "../utils/api";
+import { toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 const UpdateUserPassword = () => {
   const [teachers, setTeachers] = useState([]);
@@ -60,13 +62,31 @@ const UpdateUserPassword = () => {
         )
       ) {
         await updateUserPassword(selectedUser._id, newPassword);
-        alert("Password updated successfully!");
+        toast.success("Password updated successfully!", {
+          position: "top-right",
+          autoClose: 1350,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: "light",
+        });
         setSelectedUser(null);
         setNewPassword("");
       }
     } catch (err) {
       console.error("Error updating password:", err);
-      alert("Failed to update password.");
+      toast.error("Failed to update password.", {
+        position: "top-right",
+        autoClose: 1350,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+      });
     }
   };
 

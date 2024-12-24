@@ -48,7 +48,7 @@ const Dashboard = () => {
       localStorage.removeItem("username");
       localStorage.removeItem("role");
       window.location.reload();
-      window.location.href = "/login";
+      navigate("/login");
     }
   };
   return (

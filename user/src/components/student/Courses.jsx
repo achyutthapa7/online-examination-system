@@ -30,9 +30,11 @@ const Courses = () => {
     getStudent();
   }, []);
   const [courses, setCourses] = useState([]);
-  useEffect(() => {
-    getYearAndSemester().then((res) => setCourses(res.data));
-  }, []);
+  // useEffect(() => {
+  //   getYearAndSemester().then((res) => {
+  //     setCourses(res.data);
+  //   });
+  // }, []);
 
   return subjects.length > 0 ? (
     <div className="w-full h-full p-12 bg-gray-100">

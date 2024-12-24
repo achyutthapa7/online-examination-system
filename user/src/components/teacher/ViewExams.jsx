@@ -2,6 +2,8 @@ import React, { useEffect, useState } from "react";
 import { deleteExam, getExamsForTeacher } from "../../utils/api";
 import { FaChevronDown, FaChevronUp } from "react-icons/fa";
 
+import { toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 const ViewExams = () => {
   const [exams, setExams] = useState([]);
 
@@ -35,7 +37,16 @@ const ViewExams = () => {
   const handleDeleteExam = async (examId) => {
     const res = await deleteExam(examId);
     if (res.statusText) {
-      alert("Exam deleted successfully");
+      toast.success("Exam deleted successfully", {
+        position: "top-right",
+        autoClose: 1350,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+      });
       setExams(exams.filter((e) => e._id !== examId));
     }
   };
