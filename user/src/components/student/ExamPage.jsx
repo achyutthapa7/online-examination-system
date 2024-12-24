@@ -18,7 +18,7 @@ const ExamPage = () => {
     timeLimit: 0,
     questions: [],
   });
-  const [timeLeft, setTimeLeft] = useState(examDetails.timeLimit);
+  const [timeLeft, setTimeLeft] = useState(examDetails.timeLimit || 7200);
   console.log(timeLeft, "left");
 
   const examId = window.location.pathname.split("/").pop();
