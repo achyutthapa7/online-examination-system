@@ -1,3 +1,4 @@
+const z = require("zod");
 const studentModel = require("../models/student.model");
 const jwt = require("jsonwebtoken");
 const teacherModel = require("../models/teacher.model");
@@ -7,6 +8,42 @@ const handleError = (res, error) => {
   res.status(500).send("Server error");
 };
 
+/*
+
+ emailAddress: z
+    .string()
+    .email("Invalid email format")
+    .nonempty("Email address is required"),
+  
+ 
+ 
+
+*/
+const registerStudentSchema = z.object({
+  fullName: z
+    .string()
+    .min(3, "Full name must be at least 3 characters long")
+    .nonempty("Full name is required"),
+  userName: z
+    .string()
+    .min(3, "Username must be at least 3 characters long")
+    .nonempty("Username is required"),
+  password: z
+    .string()
+    .min(6, "Password must be at least 6 characters long")
+    .nonempty("Password is required"),
+  year: z
+    .number()
+    .int("Year must be an integer")
+    .positive("Year must be a positive number")
+    .min(1, "Year must be greater than 0"),
+
+  semester: z
+    .number()
+    .int("Semester must be an integer")
+    .positive("Semester must be a positive number")
+    .min(1, "Semester must be at least 1"),
+});
 // auth for student
 const registerStudent = async (req, res) => {
   try {
@@ -17,6 +54,11 @@ const registerStudent = async (req, res) => {
       return res.status(400).json({ message: "Missing required fields" });
     }
 
+    const { success, error } = registerStudentSchema.safeParse(req.body);
+
+    if (error) {
+      throw new Error(error.issues[0].message);
+    }
     if (!isValidSemester(year, semester)) {
       return res.status(400).json({ message: "Invalid year or semester" });
     }
@@ -59,6 +101,7 @@ const registerStudent = async (req, res) => {
 
 const loginUser = async (req, res) => {
   try {
+    //I feel like the validation not necessary here,might be wrong, don't know for sure...
     const { userName, password, role } = req.body;
     if (!userName || !password || !role) {
       return res.status(400).json({ message: "Missing required fields" });
@@ -96,6 +139,7 @@ const loginAdmin = async (req, res) => {
     const adminUserName = process.env.ADMIN_USER;
     const adminPassword = process.env.ADMIN_PASS;
     const { userName, password } = req.body;
+    //same here, no validation required here neither
     if (!userName || !password) {
       return res.status(400).json({ message: "Missing required fields" });
     }

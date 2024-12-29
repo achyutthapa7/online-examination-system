@@ -35,7 +35,6 @@ const addTeacher = async (req, res) => {
     // }
     const { emailAddress, userName, password, fullName } = req.body;
 
-    // const { success } = addTeacherSchema.parse(req.body);
     const { success, error } = addTeacherSchema.safeParse(req.body);
 
     if (success) {
@@ -241,11 +240,22 @@ const deleteUser = async (req, res) => {
     handleError(res, error);
   }
 };
+const newPasswordSchema = z
+  .string()
+  .min(6, "Password must be at least 6 characters long")
+  .nonempty("Password is required");
+
 const updateUserPassword = async (req, res) => {
   try {
     const { userId } = req.params;
 
     const { newPassword } = req.body;
+
+    const { success, error } = newPasswordSchema.safeParse(newPassword);
+
+    if (error) {
+      throw new Error(error.issues[0].message);
+    }
     // console.log(userId, newPassword);
     if (!userId) return res.status(404).json({ message: "User is not found " });
     const student = await studentModel.findByIdAndUpdate(
@@ -267,9 +277,14 @@ const updateUserPassword = async (req, res) => {
   }
 };
 
+const messageSchema = z
+  .string()
+  .nonempty("Message is required to publish notice");
+
 const notifyUsersForExam = async (req, res) => {
   try {
     const { message } = req.body;
+    const { success, error } = messageSchema.safeParse(message);
     const notification = {
       message,
       date: new Date(), // Explicitly set the current date and time

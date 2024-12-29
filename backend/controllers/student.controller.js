@@ -51,6 +51,14 @@ const getUpcomingExams = async (req, res) => {
   res.json({ exams: upcomingExams });
 };
 
+// only if the selected option is a option index and not an answer, too lazy to double check that right now
+
+// const selectedOptionSchema = z
+//   .number()
+//   .refine((value) => [1, 2, 3].includes(value), {
+//     message: "Value must be 1, 2 or 3",
+//   });
+
 const submitIndividualAnswer = async (req, res) => {
   const { questionId } = req.params;
   const { selectedOption } = req.body;
