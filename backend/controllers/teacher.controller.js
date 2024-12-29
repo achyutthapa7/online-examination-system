@@ -318,14 +318,3 @@ module.exports = {
   getSavedExam,
   updateQuestion,
 };
-
-//! this
-
-//? this
-
-// * this
-
-// todo
-
-// // this is a test comment
-
