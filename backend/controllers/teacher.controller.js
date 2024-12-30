@@ -89,6 +89,26 @@ const deleteExam = async (req, res) => {
     handleError(res, error);
   }
 };
+
+const questionSchema = z.object({
+  questionText: z
+    .string()
+    .max(1000, "Question length cannot exceed 1000 characters")
+    .nonempty("Question text is required"),
+
+  options: z
+    .array(z.string().max(100, "Option cannot exceed 100 characters"))
+    .min(2, "There must be at least 2 options")
+    .max(10, "There can be no more than 10 options")
+    .nonempty("Options are required"),
+
+  correctAnswer: z
+    .string()
+    .min(1, "Correct answer must be specified")
+    .max(10, "Correct answer cannot exceed 10 characters")
+    .nonempty("Correct answer is required"),
+});
+
 const createQuestions = async (req, res) => {
   const { examId } = req.params;
   try {
@@ -97,6 +117,11 @@ const createQuestions = async (req, res) => {
 
     const { title, timeLimit, questionText, options, correctAnswer } = req.body;
 
+    const { success, error } = questionSchema.safeParse(req.body);
+
+    if (error) {
+      throw new Error(error.issues[0].message);
+    }
     // Check for required fields
     if (!questionText || !options || !correctAnswer) {
       return res.status(400).json({
@@ -175,11 +200,18 @@ const removeQuestions = async (req, res) => {
   }
 };
 
-// start from here
+
 const updateQuestion = async (req, res) => {
   try {
     const { questionId } = req.params;
+
     const { questionText, options, correctAnswer } = req.body;
+    const { success, error } = questionSchema.safeParse(req.body);
+
+    if (error) {
+      throw new Error(error.issues[0].message);
+    }
+
     if (!questionText || !options || !correctAnswer) {
       return res.status(400).json({
         message:

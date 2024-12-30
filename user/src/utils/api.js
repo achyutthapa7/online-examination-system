@@ -98,6 +98,7 @@ export const createExam = (subject) => {
         withCredentials: true,
         headers: {
           "Content-Type": "application/json",
+          Authorization: localStorage.getItem("token"),
         },
       }
     );
