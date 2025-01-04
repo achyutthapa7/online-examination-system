@@ -64,7 +64,7 @@ const UpdateUserPassword = () => {
         await updateUserPassword(selectedUser._id, newPassword);
         toast.success("Password updated successfully!", {
           position: "top-right",
-          autoClose: 1350,
+          autoClose: 250,
           hideProgressBar: false,
           closeOnClick: true,
           pauseOnHover: true,
@@ -79,7 +79,7 @@ const UpdateUserPassword = () => {
       console.error("Error updating password:", err);
       toast.error("Failed to update password.", {
         position: "top-right",
-        autoClose: 1350,
+        autoClose: 250,
         hideProgressBar: false,
         closeOnClick: true,
         pauseOnHover: true,

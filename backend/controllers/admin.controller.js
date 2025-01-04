@@ -242,9 +242,17 @@ const viewExams = async (req, res) => {
 };
 
 const viewIndividualExam = async (req, res) => {
-  res.send("here");
+  try {
+    const { examId } = req.params;
+    const exams = await examModel.find({ _id: examId }).populate("questions");
+
+    res.json(exams);
+  } catch (error) {
+    handleError(res, error);
+  }
 };
 
+const getExams = async (req, res) => {};
 // const setDateAndTimeForExams = async (req, res) => {
 //   try {
 //     const { examId } = req.params;

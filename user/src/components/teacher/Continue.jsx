@@ -97,7 +97,7 @@ const Continue = () => {
         setEditModal(false);
         toast.success("Question updated successfully!", {
           position: "top-right",
-          autoClose: 1350,
+          autoClose: 250,
           hideProgressBar: false,
           closeOnClick: true,
           pauseOnHover: true,
@@ -116,7 +116,7 @@ const Continue = () => {
       if (res.status === 400) {
         toast.success(res.data, {
           position: "top-right",
-          autoClose: 1350,
+          autoClose: 250,
           hideProgressBar: false,
           closeOnClick: true,
           pauseOnHover: true,
@@ -128,7 +128,7 @@ const Continue = () => {
       if (res.statusText) {
         toast.success("Exam published successfully", {
           position: "top-right",
-          autoClose: 1350,
+          autoClose: 250,
           hideProgressBar: false,
           closeOnClick: true,
           pauseOnHover: true,

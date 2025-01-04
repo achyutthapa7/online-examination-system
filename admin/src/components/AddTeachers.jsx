@@ -268,7 +268,7 @@ const AddTeachers = () => {
     if (!emailAddress || !userName || !password || !fullName) {
       toast.warn("Please fill in all required fields", {
         position: "top-right",
-        autoClose: 1350,
+        autoClose: 250,
         hideProgressBar: false,
         closeOnClick: true,
         pauseOnHover: true,
@@ -286,7 +286,7 @@ const AddTeachers = () => {
       if (res.statusText) {
         toast.success("teacher added successfully", {
           position: "top-right",
-          autoClose: 1350,
+          autoClose: 250,
           hideProgressBar: false,
           closeOnClick: true,
           pauseOnHover: true,
@@ -305,7 +305,7 @@ const AddTeachers = () => {
       if (error.status === 409) {
         toast.error("Teacher already exist", {
           position: "top-right",
-          autoClose: 1350,
+          autoClose: 250,
           hideProgressBar: false,
           closeOnClick: true,
           pauseOnHover: true,

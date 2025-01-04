@@ -17,7 +17,7 @@ const AllStudents = () => {
     if (res.statusText)
       toast.success("User is verified", {
         position: "top-right",
-        autoClose: 1350,
+        autoClose: 250,
         hideProgressBar: false,
         closeOnClick: true,
         pauseOnHover: true,
@@ -32,7 +32,7 @@ const AllStudents = () => {
     if (res.statusText) {
       toast.success(res.data.message, {
         position: "top-right",
-        autoClose: 1350,
+        autoClose: 250,
         hideProgressBar: false,
         closeOnClick: true,
         pauseOnHover: true,

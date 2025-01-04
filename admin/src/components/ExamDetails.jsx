@@ -3,12 +3,21 @@ import { useLocation, useNavigate } from "react-router-dom";
 import { login, startExam } from "../utils/api";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import { getExamDetails } from "../utils/api";
+
 const ExamDetails = () => {
   const { state } = useLocation();
   const navigate = useNavigate();
   const [exam, setExam] = useState(state);
-
-  // useEffect(() => {}, []);
+  const [questions, setQuestions] = useState([]);
+  const getDetails = async () => {
+    const id = window.location.href.split("/").pop();
+    const response = await getExamDetails(id);
+    setQuestions(response.data);
+  };
+  useEffect(() => {
+    getDetails();
+  }, []);
 
   // Function to handle starting the exam
   const handleStartExam = async () => {
@@ -17,7 +26,7 @@ const ExamDetails = () => {
       if (res.statusText === "OK") {
         toast.success("Exam started successfully", {
           position: "top-right",
-          autoClose: 1350,
+          autoClose: 250,
           hideProgressBar: false,
           closeOnClick: true,
           pauseOnHover: true,
@@ -29,7 +38,7 @@ const ExamDetails = () => {
       } else {
         toast.error("Failed to start the exam", {
           position: "top-right",
-          autoClose: 1350,
+          autoClose: 250,
           hideProgressBar: false,
           closeOnClick: true,
           pauseOnHover: true,
@@ -42,7 +51,7 @@ const ExamDetails = () => {
       console.error("Error starting exam:", error);
       toast.error("Error starting the exam", {
         position: "top-right",
-        autoClose: 1350,
+        autoClose: 250,
         hideProgressBar: false,
         closeOnClick: true,
         pauseOnHover: true,
@@ -88,6 +97,28 @@ const ExamDetails = () => {
       </div>
       <div>
         <h3 className="mb-4 text-2xl font-semibold">Questions</h3>
+        <div className=" p-5 rounded-lg bg-gray-100 ">
+          {questions.map((question, qIndex) => (
+            <div key={qIndex} className=" p-5 rounded-lg  shadow-sm mb-4 ">
+              <p className="font-bold text-gray-800">{question.title}</p>
+              {question.questions.map((elem, index) => (
+                <div className=" p-6 mb-4 rounded-lg shadow-md " key={index}>
+                  <h1>{elem.questionText}</h1>
+                  <ul className="list-disc pl-6 mt-2">
+                    {elem.options.map((option, ind) => (
+                      <li key={ind}>{option}</li>
+                    ))}
+                  </ul>
+
+                  <p className="mt-2 font-medium text-green-600">
+                    <strong>Correct Answer:</strong>{" "}
+                    {elem.options[elem.correctAnswer - 1]}
+                  </p>
+                </div>
+              ))}
+            </div>
+          ))}
+        </div>
       </div>
     </div>
   );

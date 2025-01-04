@@ -39,7 +39,7 @@ const ViewExams = () => {
     if (res.statusText) {
       toast.success("Exam deleted successfully", {
         position: "top-right",
-        autoClose: 1350,
+        autoClose: 250,
         hideProgressBar: false,
         closeOnClick: true,
         pauseOnHover: true,
@@ -94,7 +94,7 @@ const ViewExams = () => {
                 {expandedQuestions[exam._id] && (
                   <div className="bg-gray-100 p-6 rounded-lg shadow-md ">
                     <h3 className="text-xl font-semibold mb-4 text-gray-700">
-                      Questions {console.log(exam.questions)}
+                      Questions {console.log(exam)}
                     </h3>
                     {exam.questions.map((question) => (
                       <div

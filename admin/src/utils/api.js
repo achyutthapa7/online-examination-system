@@ -245,3 +245,19 @@ export const editAssignSubjectToTeacher = async (
     throw error;
   }
 };
+
+export const getExamDetails = async (id) => {
+  try {
+    const response = await axios.get(`${API_URL}/admin/viewExams/${id}`, {
+      withCredentials: true,
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
+    console.log(response);
+    return response;
+  } catch (error) {
+    console.error("Error during fetching teachers:", error);
+    throw error;
+  }
+};

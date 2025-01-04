@@ -46,7 +46,7 @@ const AllTeachers = () => {
       if (res.status === 200) {
         toast.success(res.data.message, {
           position: "top-right",
-          autoClose: 1350,
+          autoClose: 250,
           hideProgressBar: false,
           closeOnClick: true,
           pauseOnHover: true,
@@ -59,7 +59,7 @@ const AllTeachers = () => {
       console.error("Error deleting teacher:", err);
       toast.error("Failed to delete teacher.", {
         position: "top-right",
-        autoClose: 1350,
+        autoClose: 250,
         hideProgressBar: false,
         closeOnClick: true,
         pauseOnHover: true,
@@ -138,7 +138,7 @@ const AllTeachers = () => {
     if (!subjectData.year || !subjectData.semester || !subjectData.subject) {
       toast.warn("Please fill out all fields.", {
         position: "top-right",
-        autoClose: 1350,
+        autoClose: 250,
         hideProgressBar: false,
         closeOnClick: true,
         pauseOnHover: true,
@@ -160,7 +160,7 @@ const AllTeachers = () => {
       if (res.status === 200) {
         toast.success("Subject assigned successfully!", {
           position: "top-right",
-          autoClose: 1350,
+          autoClose: 250,
           hideProgressBar: false,
           closeOnClick: true,
           pauseOnHover: true,
@@ -175,7 +175,7 @@ const AllTeachers = () => {
       } else if (res.status === 401) {
         toast.warn("subject is already assigned!", {
           position: "top-right",
-          autoClose: 1350,
+          autoClose: 250,
           hideProgressBar: false,
           closeOnClick: true,
           pauseOnHover: true,
@@ -189,7 +189,7 @@ const AllTeachers = () => {
       console.error("Error assigning subject:", err);
       toast.error("Failed to assign subject.", {
         position: "top-right",
-        autoClose: 1350,
+        autoClose: 250,
         hideProgressBar: false,
         closeOnClick: true,
         pauseOnHover: true,
@@ -213,7 +213,7 @@ const AllTeachers = () => {
       if (res.statusText) {
         toast.success("Subject edited successfully!", {
           position: "top-right",
-          autoClose: 1350,
+          autoClose: 250,
           hideProgressBar: false,
           closeOnClick: true,
           pauseOnHover: true,
@@ -229,12 +229,11 @@ const AllTeachers = () => {
         setEditAssignSubjectModal(false);
         window.location.reload();
       }
-
     } catch (error) {
       console.error("Error editing assigned subject:", error);
       toast.error("Failed to edit assigned subject.", {
         position: "top-right",
-        autoClose: 1350,
+        autoClose: 250,
         hideProgressBar: false,
         closeOnClick: true,
         pauseOnHover: true,
@@ -297,7 +296,6 @@ const AllTeachers = () => {
                       <button
                         className="ml-2 text-blue-500 underline"
                         onClick={() => {
-
                           setEditedSubjectData({
                             editedYear: "",
                             editedSemester: "",

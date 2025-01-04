@@ -52,7 +52,7 @@ const Registration = () => {
     if (!formData.fullName || !formData.userName || !formData.password) {
       toast.warn("Please fill required fields.", {
         position: "top-right",
-        autoClose: 1350,
+        autoClose: 250,
         hideProgressBar: false,
         closeOnClick: true,
         pauseOnHover: true,
@@ -65,7 +65,7 @@ const Registration = () => {
     if (!formData.year || !formData.semester) {
       toast.warn("Please select a valid year and semester.", {
         position: "top-right",
-        autoClose: 1350,
+        autoClose: 250,
         hideProgressBar: false,
         closeOnClick: true,
         pauseOnHover: true,
@@ -86,7 +86,7 @@ const Registration = () => {
       if (res.statusText) {
         toast.success("User registered successfully!", {
           position: "top-right",
-          autoClose: 1350,
+          autoClose: 250,
           hideProgressBar: false,
           closeOnClick: true,
           pauseOnHover: true,
@@ -113,7 +113,7 @@ const Registration = () => {
 
       toast.error(error.response.data.message, {
         position: "top-right",
-        autoClose: 1350,
+        autoClose: 250,
         hideProgressBar: false,
         closeOnClick: true,
         pauseOnHover: true,

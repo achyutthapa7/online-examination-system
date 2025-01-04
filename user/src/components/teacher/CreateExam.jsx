@@ -48,7 +48,7 @@ const CreateExam = () => {
       } else {
         toast.error("Failed to create exam for this subject.", {
           position: "top-right",
-          autoClose: 1350,
+          autoClose: 250,
           hideProgressBar: false,
           closeOnClick: true,
           pauseOnHover: true,

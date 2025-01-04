@@ -12,7 +12,6 @@ const ViewExams = () => {
     const getExams = async () => {
       try {
         const res = await allExams();
-
         setExams(res.data);
       } catch (error) {
         console.error("Error fetching exams:", error);
@@ -28,7 +27,7 @@ const ViewExams = () => {
       if (res.statusText === "OK") {
         toast.success("Exam started successfully", {
           position: "top-right",
-          autoClose: 1350,
+          autoClose: 250,
           hideProgressBar: false,
           closeOnClick: true,
           pauseOnHover: true,
@@ -46,7 +45,7 @@ const ViewExams = () => {
       } else {
         toast.error("Failed to start the exam", {
           position: "top-right",
-          autoClose: 1350,
+          autoClose: 250,
           hideProgressBar: false,
           closeOnClick: true,
           pauseOnHover: true,
@@ -59,7 +58,7 @@ const ViewExams = () => {
       console.error("Error starting exam:", error);
       toast.error("Error starting the exam", {
         position: "top-right",
-        autoClose: 1350,
+        autoClose: 250,
         hideProgressBar: false,
         closeOnClick: true,
         pauseOnHover: true,
