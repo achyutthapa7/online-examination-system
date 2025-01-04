@@ -11,7 +11,7 @@ const examSchema = new mongoose.Schema(
     ],
     timeLimit: { type: Number, default: null },
     startTime: { type: Date, default: null },
-
+    endTime: { type: Date, default: null },
     createdBy: {
       type: mongoose.Schema.Types.ObjectId,
       ref: "Teachers",
@@ -19,7 +19,7 @@ const examSchema = new mongoose.Schema(
     },
     isApproved: { type: Boolean, default: false },
     isPublished: { type: Boolean, default: false },
-
+    isCompleted: { type: Boolean, default: false },
     submissions: [
       {
         student: { type: mongoose.Schema.Types.ObjectId, ref: "Students" },

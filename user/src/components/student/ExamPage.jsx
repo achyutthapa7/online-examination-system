@@ -1,11 +1,12 @@
 import React, { useEffect, useState } from "react";
+
 import {
   getAnswerOfSpecifiQuestion,
   getExamForStudent,
   submitIndividualAnswer,
   submitExam,
 } from "../../utils/api";
-import { useParams } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
 import axios from "axios";
 
 const ExamPage = () => {
@@ -17,6 +18,7 @@ const ExamPage = () => {
   const [selectedOption, setSelectedOption] = useState(null);
   const [qId, setQId] = useState(null);
   const [examEndTime, setExamEndTime] = useState(null);
+  const navigate = useNavigate();
   const [submittedQuestion, setSubmittedQuestion] = useState([]);
 
   useEffect(() => {
@@ -29,11 +31,12 @@ const ExamPage = () => {
           setExamTitle(res.data.title);
 
           const startTime = new Date(res.data.startTime);
+          console.log(startTime, "h");
           const endTime = new Date(
             startTime.getTime() + res.data.timeLimit * 60000
           ); // Add time limit (in minutes)
           setExamEndTime(endTime);
-
+          console.log(endTime, "e");
           setTimeLeft(Math.floor((endTime - Date.now()) / 1000)); // Set initial remaining time
         }
       } catch (error) {
@@ -111,6 +114,13 @@ const ExamPage = () => {
 
   const handleSubmitExam = async () => {
     try {
+      const currentTime = Date.now();
+
+      if (currentTime > examEndTime) {
+        alert("Time is over");
+        return;
+      }
+
       const res = await submitIndividualAnswer(qId, examId, selectedOption);
       if (res.status === 201 || res.statusText === "OK") {
         const response = await submitExam(examId);
@@ -136,7 +146,7 @@ const ExamPage = () => {
         <h1 className="text-3xl font-extrabold text-gray-900 text-center mb-4">
           Exam: {examTitle}
         </h1>
-        {timeLeft !== null ? (
+        {timeLeft !== null && timeLeft > 0 ? (
           <div
             className={`text-2xl font-bold text-center ${
               timeLeft < 30 ? "text-red-600 animate-pulse" : "text-blue-700"
@@ -152,6 +162,8 @@ const ExamPage = () => {
             Time's up!
           </p>
         )}
+        {timeLeft <= 0 &&
+          (alert("Time's Up!"), navigate("/dashboard/student/take-exam"))}
       </div>
 
       <div className="w-full max-w-4xl mt-6 p-6 bg-white rounded-lg shadow-md">

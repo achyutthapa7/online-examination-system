@@ -22,7 +22,7 @@ const ExamDetails = () => {
   // Function to handle starting the exam
   const handleStartExam = async () => {
     try {
-      const res = await startExam(exam._id);
+      const res = await startExam(exam._id, questions[0].timeLimit);
       if (res.statusText === "OK") {
         toast.success("Exam started successfully", {
           position: "top-right",

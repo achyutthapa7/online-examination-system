@@ -18,6 +18,7 @@ const getExams = async (req, res) => {
     const exams = await examModel.find({}).populate("questions");
 
     const availableExams = exams.filter((exam) => {
+      const isCompleted = exam.isCompleted;
       const isApproved = exam.isApproved;
       const isYearAndSemesterMatch =
         exam.year === req.rootUser.year &&
@@ -25,7 +26,9 @@ const getExams = async (req, res) => {
       const isNotSubmitted = !exam.submissions.some((submission) =>
         submission.student.equals(req.rootUser._id)
       );
-      return isYearAndSemesterMatch && isNotSubmitted && isApproved;
+      return (
+        isYearAndSemesterMatch && isNotSubmitted && isApproved && !isCompleted
+      );
     });
     if (availableExams.length === 0) {
       return res.json({ message: "No available exams for you to take" });
@@ -48,6 +51,7 @@ const getUpcomingExams = async (req, res) => {
   if (upcomingExams.length === 0) {
     return res.status(200).json({ message: "No upcoming exams" });
   }
+
   res.json({ exams: upcomingExams });
 };
 

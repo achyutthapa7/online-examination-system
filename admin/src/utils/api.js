@@ -206,10 +206,11 @@ export const allExams = async () => {
   }
 };
 
-export const startExam = async (examId) => {
+export const startExam = async (examId, timeLimit) => {
   try {
     const response = axios.patch(`${API_URL}/admin/startExam/${examId}`, {
       withCredentials: true,
+      timeLimit,
       headers: {
         "Content-Type": "application/json",
       },

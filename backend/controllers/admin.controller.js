@@ -272,14 +272,43 @@ const getExams = async (req, res) => {};
 //   }
 // };
 
+// ! where to put this to check continuously??
+//! const exam1 = await examModel.find({ _id: examId });
+//! const endTime = exam1.endTime;
+//! if (Date.now() > endTime) {
+//!   console.log("time up");
+//!   await examModel.findByIdAndUpdate(
+//!     examId,
+//!     { $set: { isCompleted: true } },
+//!     { new: true }
+//!   );
+//! }
+
+const checkStatus = async () => {
+  const exam1 = await examModel.find({ _id: examId });
+  const endTime = exam1.endTime;
+  if (Date.now() > endTime) {
+    console.log("time up");
+    await examModel.findByIdAndUpdate(
+      examId,
+      { $set: { isCompleted: true } },
+      { new: true }
+    );
+  }
+};
 const startExam = async (req, res) => {
   try {
     const { examId } = req.params;
+    const { timeLimit } = req.body;
     const exam = await examModel.findByIdAndUpdate(
       examId,
-      { $set: { isApproved: true, startTime: Date.now() } },
+      {
+        $set: { isApproved: true, startTime: Date.now() },
+        endTime: Date.now() + timeLimit * 60000,
+      },
       { new: true }
     );
+
     if (!exam) return res.status(404).json({ message: "Exam not found" });
     res.json(exam);
   } catch (error) {
@@ -296,6 +325,7 @@ module.exports = {
   notifyUsersForExam,
   addTeacher,
   viewExams,
+  checkStatus,
   // setDateAndTimeForExams,
   startExam,
   getStudentWithPasswordResetRequest,

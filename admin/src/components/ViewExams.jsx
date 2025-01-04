@@ -23,7 +23,9 @@ const ViewExams = () => {
   // Function to handle starting the exam
   const handleStartExam = async (examId) => {
     try {
-      const res = await startExam(examId);
+      const exam = exams.filter((exam) => exam._id == examId);
+
+      const res = await startExam(examId, exam[0].timeLimit);
       if (res.statusText === "OK") {
         toast.success("Exam started successfully", {
           position: "top-right",
