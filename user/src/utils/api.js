@@ -366,3 +366,77 @@ export const getYearAndSemester = async (username) => {
     throw error;
   }
 };
+
+export const getExamForStudent = (examId) => {
+  try {
+    const response = axios.get(
+      `${API_URL}/student/getExamForStudent/${examId}`,
+      {
+        withCredentials: true,
+        headers: {
+          "Content-Type": "application/json",
+        },
+      }
+    );
+    return response;
+  } catch (error) {
+    console.error("Error during fetching exam:", error);
+    throw error;
+  }
+};
+
+export const submitIndividualAnswer = (questionId, examId, selectedOption) => {
+  try {
+    const response = axios.post(
+      `${API_URL}/student/submitIndividualAnswer/${questionId}`,
+      { examId, selectedOption },
+      {
+        withCredentials: true,
+        headers: {
+          "Content-Type": "application/json",
+        },
+      }
+    );
+    return response;
+  } catch (error) {
+    console.error("Error during submitting answer:", error);
+    throw error;
+  }
+};
+
+export const submitExam = (examId) => {
+  try {
+    const response = axios.post(
+      `${API_URL}/student/submitExam/${examId}`,
+      {},
+      {
+        withCredentials: true,
+        headers: {
+          "Content-Type": "application/json",
+        },
+      }
+    );
+    return response;
+  } catch (error) {
+    console.error("Error during submitting exam:", error);
+    throw error;
+  }
+};
+
+export const getAnswerOfSpecifiQuestion = (questionId) => {
+  try {
+    const response = axios.get(
+      `${API_URL}/student/getAnswerOfSpecifiQuestion/${questionId}`,
+      {
+        withCredentials: true,
+        headers: {
+          "Content-Type": "application/json",
+        },
+      }
+    );
+    return response;
+  } catch (error) {
+    console.error("Error during submitting answer:", error);
+    throw error;
+  }
+};

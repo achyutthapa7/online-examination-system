@@ -269,7 +269,7 @@ const startExam = async (req, res) => {
     const { examId } = req.params;
     const exam = await examModel.findByIdAndUpdate(
       examId,
-      { $set: { isApproved: true } },
+      { $set: { isApproved: true, startTime: Date.now() } },
       { new: true }
     );
     if (!exam) return res.status(404).json({ message: "Exam not found" });

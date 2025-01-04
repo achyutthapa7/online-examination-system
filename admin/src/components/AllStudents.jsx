@@ -25,6 +25,7 @@ const AllStudents = () => {
         progress: undefined,
         theme: "light",
       });
+    window.location.reload();
   };
   const handleDelete = async (studentId) => {
     const res = await deleteUser(studentId);
@@ -40,11 +41,11 @@ const AllStudents = () => {
         theme: "light",
       });
     }
+    window.location.reload();
   };
   return (
     <div className="p-8">
-      <h1 className="mb-6 text-3xl font-bold">All Students</h1>
-
+      <h1 className="mb-6 text-3xl font-bold">All Students</h1> 
       {students.length === 0 ? (
         <p className="text-xl text-gray-600">No students available</p>
       ) : (
