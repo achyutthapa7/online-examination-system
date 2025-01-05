@@ -55,6 +55,32 @@ const getUpcomingExams = async (req, res) => {
   res.json({ exams: upcomingExams });
 };
 
+const getPastExams = async (req, res) => {
+  const exams = await examModel.find({ isCompleted: true });
+  const pastExams = exams.filter((exam) => {
+    const isApproved = exam.isApproved;
+    const isYearAndSemesterMatch =
+      exam.year === req.rootUser.year &&
+      exam.semester === req.rootUser.semester;
+    return isApproved && isYearAndSemesterMatch;
+  });
+
+  if (pastExams.length === 0) {
+    return res.status(200).json({ message: "No Past exams" });
+  }
+  res.json({ exams: pastExams });
+};
+
+const viewExams = async (req, res) => {
+  const { examId } = req.params;
+  try {
+    const exams = await examModel.find({ _id: examId }).populate("questions");
+    res.json(exams);
+  } catch (error) {
+    handleError(res, error);
+  }
+};
+
 const submitIndividualAnswer = async (req, res) => {
   const { questionId } = req.params;
   const { selectedOption } = req.body;
@@ -285,7 +311,7 @@ const getExamForStudent = async (req, res) => {
   }
 };
 
-const getAnswerOfSpecifiQuestion = async (req, res) => {
+const getAnswerOfSpecificQuestion = async (req, res) => {
   const { questionId } = req.params;
   try {
     const answer = await answerModel.findOne({ questionId });
@@ -307,5 +333,7 @@ module.exports = {
   submitExam,
   getExamQuestion,
   getExamForStudent,
-  getAnswerOfSpecifiQuestion,
+  getAnswerOfSpecificQuestion,
+  getPastExams,
+  viewExams,
 };

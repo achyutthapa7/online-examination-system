@@ -95,6 +95,12 @@ const StudentDashboard = () => {
             link="completed-exam"
             isExpanded={isSidebarOpen}
           />
+          <SidebarItem
+            icon={FaInfoCircle}
+            label="Past Exams"
+            link="past-exams"
+            isExpanded={isSidebarOpen}
+          />
         </nav>
 
         {/* Sidebar Footer */}

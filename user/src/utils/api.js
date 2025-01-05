@@ -308,6 +308,37 @@ export const nextExams = async () => {
   }
 };
 
+export const viewExam = async (id) => {
+  try {
+    const response = await axios.get(`${API_URL}/student/viewExams/${id}`, {
+      withCredentials: true,
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
+    console.log(response, "lkhdsa");
+    return response;
+  } catch (error) {
+    console.error("Error during fetching teachers:", error);
+    throw error;
+  }
+};
+
+export const getPastExams = async () => {
+  try {
+    const response = axios.get(`${API_URL}/student/getPastExams`, {
+      withCredentials: true,
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
+    return response;
+  } catch (error) {
+    console.error("Error during getting exam:", error);
+    throw error;
+  }
+};
+
 export const submitExams = async (answers, examId) => {
   try {
     const response = axios.post(
@@ -423,10 +454,10 @@ export const submitExam = (examId) => {
   }
 };
 
-export const getAnswerOfSpecifiQuestion = (questionId) => {
+export const getAnswerOfSpecificQuestion = (questionId) => {
   try {
     const response = axios.get(
-      `${API_URL}/student/getAnswerOfSpecifiQuestion/${questionId}`,
+      `${API_URL}/student/getAnswerOfSpecificQuestion/${questionId}`,
       {
         withCredentials: true,
         headers: {

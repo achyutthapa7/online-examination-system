@@ -99,7 +99,7 @@ const ViewExams = () => {
 
               <div className="mt-4">
                 <button
-                  onClick={() => navigate(`${exam._id}`, { state: exam })}
+                  onClick={() => navigate(exam._id, { state: exam })}
                   className="px-4 py-2 mr-2 text-white bg-blue-500 rounded hover:bg-blue-600"
                 >
                   View Exam Details
