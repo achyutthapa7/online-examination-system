@@ -18,6 +18,7 @@ const getExams = async (req, res) => {
     const exams = await examModel.find({}).populate("questions");
 
     const availableExams = exams.filter((exam) => {
+      const isCompleted = exam.isCompleted;
       const isApproved = exam.isApproved;
       const isYearAndSemesterMatch =
         exam.year === req.rootUser.year &&
@@ -25,7 +26,9 @@ const getExams = async (req, res) => {
       const isNotSubmitted = !exam.submissions.some((submission) =>
         submission.student.equals(req.rootUser._id)
       );
-      return isYearAndSemesterMatch && isNotSubmitted && isApproved;
+      return (
+        isYearAndSemesterMatch && isNotSubmitted && isApproved && !isCompleted
+      );
     });
     if (availableExams.length === 0) {
       return res.json({ message: "No available exams for you to take" });
@@ -48,20 +51,44 @@ const getUpcomingExams = async (req, res) => {
   if (upcomingExams.length === 0) {
     return res.status(200).json({ message: "No upcoming exams" });
   }
+
   res.json({ exams: upcomingExams });
 };
 
-// only if the selected option is a option index and not an answer, too lazy to double check that right now
 
-// const selectedOptionSchema = z
-//   .number()
-//   .refine((value) => [1, 2, 3].includes(value), {
-//     message: "Value must be 1, 2 or 3",
-//   });
+const getPastExams = async (req, res) => {
+  const exams = await examModel.find({ isCompleted: true });
+  const pastExams = exams.filter((exam) => {
+    const isApproved = exam.isApproved;
+    const isYearAndSemesterMatch =
+      exam.year === req.rootUser.year &&
+      exam.semester === req.rootUser.semester;
+    return isApproved && isYearAndSemesterMatch;
+  });
+
+  if (pastExams.length === 0) {
+    return res.status(200).json({ message: "No Past exams" });
+  }
+  res.json({ exams: pastExams });
+};
+
+const viewExams = async (req, res) => {
+  const { examId } = req.params;
+  try {
+    const exams = await examModel.find({ _id: examId }).populate("questions");
+    res.json(exams);
+  } catch (error) {
+    handleError(res, error);
+  }
+};
+
 
 const submitIndividualAnswer = async (req, res) => {
   const { questionId } = req.params;
   const { selectedOption } = req.body;
+  if (selectedOption > 4 || selectedOption < 1) {
+    return res.status(400).json({ message: "Invalid option selected" });
+  }
   const { examId } = req.body;
   try {
     const question = await questionModel
@@ -78,11 +105,14 @@ const submitIndividualAnswer = async (req, res) => {
     });
 
     if (existingAnswer) {
-      await answerModel.updateOne(
+      const updatedAnswer = await answerModel.findOneAndUpdate(
         { questionId, studentId: req.rootUser._id },
         { $set: { selectedOption } }
       );
-      return res.status(200).json({ message: "Answer updated successfully" });
+      return res.status(200).json({
+        message: "Answer updated successfully",
+        newAnswer: updatedAnswer,
+      });
     } else {
       const newAnswer = new answerModel({
         examId,
@@ -154,8 +184,22 @@ const submitExam = async (req, res) => {
       },
       { new: true }
     );
+    const result = await resultModel({
+      student: req.rootUser._id,
+      exam: examId,
+      score,
+      isPublished: true,
+    });
 
-    res.json({ exam, score });
+    await examModel.findOneAndUpdate(
+      { _id: examId },
+      {
+        $push: {
+          submissions: { student: req.rootUser._id },
+        },
+      }
+    );
+    res.json({ exam, result });
   } catch (error) {
     handleError(res, error);
   }
@@ -256,6 +300,31 @@ const calculateExamScore = async (req, res) => {
   // }
 };
 
+const getExamForStudent = async (req, res) => {
+  try {
+    const { examId } = req.params;
+    if (!examId)
+      return res.status(404).json({ message: "Exam does not exist." });
+    const exam = await examModel.findById(examId).populate("questions");
+    if (!exam) return res.status(404).json({ message: "Exam does not exist." });
+    res.json(exam);
+  } catch (error) {
+    handleError(res, error);
+  }
+};
+
+const getAnswerOfSpecificQuestion = async (req, res) => {
+  const { questionId } = req.params;
+  try {
+    const answer = await answerModel.findOne({ questionId });
+    if (!answer) {
+      return res.status(404).json({ message: " Answer does not exist." });
+    }
+    res.status(200).json({ answer });
+  } catch (error) {
+    handleError(res, error);
+  }
+};
 module.exports = {
   getYearAndSemester,
   getExams,
@@ -265,4 +334,8 @@ module.exports = {
   getAllAnswersForRespectedExam,
   submitExam,
   getExamQuestion,
+  getExamForStudent,
+  getAnswerOfSpecificQuestion,
+  getPastExams,
+  viewExams,
 };

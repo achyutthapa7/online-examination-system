@@ -309,6 +309,37 @@ export const nextExams = async () => {
   }
 };
 
+export const viewExam = async (id) => {
+  try {
+    const response = await axios.get(`${API_URL}/student/viewExams/${id}`, {
+      withCredentials: true,
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
+    console.log(response, "lkhdsa");
+    return response;
+  } catch (error) {
+    console.error("Error during fetching teachers:", error);
+    throw error;
+  }
+};
+
+export const getPastExams = async () => {
+  try {
+    const response = axios.get(`${API_URL}/student/getPastExams`, {
+      withCredentials: true,
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
+    return response;
+  } catch (error) {
+    console.error("Error during getting exam:", error);
+    throw error;
+  }
+};
+
 export const submitExams = async (answers, examId) => {
   try {
     const response = axios.post(
@@ -364,6 +395,80 @@ export const getYearAndSemester = async (username) => {
     }
   } catch (error) {
     console.error("Error during fetching courses:", error);
+    throw error;
+  }
+};
+
+export const getExamForStudent = (examId) => {
+  try {
+    const response = axios.get(
+      `${API_URL}/student/getExamForStudent/${examId}`,
+      {
+        withCredentials: true,
+        headers: {
+          "Content-Type": "application/json",
+        },
+      }
+    );
+    return response;
+  } catch (error) {
+    console.error("Error during fetching exam:", error);
+    throw error;
+  }
+};
+
+export const submitIndividualAnswer = (questionId, examId, selectedOption) => {
+  try {
+    const response = axios.post(
+      `${API_URL}/student/submitIndividualAnswer/${questionId}`,
+      { examId, selectedOption },
+      {
+        withCredentials: true,
+        headers: {
+          "Content-Type": "application/json",
+        },
+      }
+    );
+    return response;
+  } catch (error) {
+    console.error("Error during submitting answer:", error);
+    throw error;
+  }
+};
+
+export const submitExam = (examId) => {
+  try {
+    const response = axios.post(
+      `${API_URL}/student/submitExam/${examId}`,
+      {},
+      {
+        withCredentials: true,
+        headers: {
+          "Content-Type": "application/json",
+        },
+      }
+    );
+    return response;
+  } catch (error) {
+    console.error("Error during submitting exam:", error);
+    throw error;
+  }
+};
+
+export const getAnswerOfSpecificQuestion = (questionId) => {
+  try {
+    const response = axios.get(
+      `${API_URL}/student/getAnswerOfSpecificQuestion/${questionId}`,
+      {
+        withCredentials: true,
+        headers: {
+          "Content-Type": "application/json",
+        },
+      }
+    );
+    return response;
+  } catch (error) {
+    console.error("Error during submitting answer:", error);
     throw error;
   }
 };

@@ -1,6 +1,5 @@
 const mongoose = require("mongoose");
 
-
 const examSchema = new mongoose.Schema(
   {
     title: { type: String, default: "" },
@@ -11,6 +10,8 @@ const examSchema = new mongoose.Schema(
       { type: mongoose.Schema.Types.ObjectId, ref: "question", default: [] },
     ],
     timeLimit: { type: Number, default: null },
+    startTime: { type: Date, default: null },
+    endTime: { type: Date, default: null },
     createdBy: {
       type: mongoose.Schema.Types.ObjectId,
       ref: "Teachers",
@@ -18,12 +19,10 @@ const examSchema = new mongoose.Schema(
     },
     isApproved: { type: Boolean, default: false },
     isPublished: { type: Boolean, default: false },
-    
+    isCompleted: { type: Boolean, default: false },
     submissions: [
       {
         student: { type: mongoose.Schema.Types.ObjectId, ref: "Students" },
-        answers: { type: [String], required: true },
-        score: { type: Number, required: true },
       },
     ],
   },

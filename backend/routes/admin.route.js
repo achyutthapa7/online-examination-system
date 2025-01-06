@@ -35,7 +35,7 @@ router.delete("/deleteUser/:userId", deleteUser);
 router.patch("/updateUserPassword/:userId", updateUserPassword);
 router.patch("/notifyUsersForExam", notifyUsersForExam);
 router.get("/viewExams", viewExams);
-router.get("/viewExams/:subjectId", viewIndividualExam);
+router.get("/viewExams/:examId", viewIndividualExam);
 // router.post("/setDateAndTimeForExams/:examId", setDateAndTimeForExams);
 router.patch("/startExam/:examId", startExam);
 router.put(

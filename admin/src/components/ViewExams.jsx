@@ -12,7 +12,6 @@ const ViewExams = () => {
     const getExams = async () => {
       try {
         const res = await allExams();
-
         setExams(res.data);
       } catch (error) {
         console.error("Error fetching exams:", error);
@@ -24,11 +23,13 @@ const ViewExams = () => {
   // Function to handle starting the exam
   const handleStartExam = async (examId) => {
     try {
-      const res = await startExam(examId);
+      const exam = exams.filter((exam) => exam._id == examId);
+
+      const res = await startExam(examId, exam[0].timeLimit);
       if (res.statusText === "OK") {
         toast.success("Exam started successfully", {
           position: "top-right",
-          autoClose: 1350,
+          autoClose: 250,
           hideProgressBar: false,
           closeOnClick: true,
           pauseOnHover: true,
@@ -46,7 +47,7 @@ const ViewExams = () => {
       } else {
         toast.error("Failed to start the exam", {
           position: "top-right",
-          autoClose: 1350,
+          autoClose: 250,
           hideProgressBar: false,
           closeOnClick: true,
           pauseOnHover: true,
@@ -59,7 +60,7 @@ const ViewExams = () => {
       console.error("Error starting exam:", error);
       toast.error("Error starting the exam", {
         position: "top-right",
-        autoClose: 1350,
+        autoClose: 250,
         hideProgressBar: false,
         closeOnClick: true,
         pauseOnHover: true,
@@ -98,7 +99,7 @@ const ViewExams = () => {
 
               <div className="mt-4">
                 <button
-                  onClick={() => navigate(`${exam._id}`, { state: exam })}
+                  onClick={() => navigate(exam._id, { state: exam })}
                   className="px-4 py-2 mr-2 text-white bg-blue-500 rounded hover:bg-blue-600"
                 >
                   View Exam Details

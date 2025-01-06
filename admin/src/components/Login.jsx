@@ -21,7 +21,7 @@ const Login = () => {
         setIsLoading(false);
         toast.success(res.data.message, {
           position: "top-right",
-          autoClose: 1350,
+          autoClose: 250,
           hideProgressBar: false,
           closeOnClick: true,
           pauseOnHover: true,
@@ -35,7 +35,7 @@ const Login = () => {
       } else {
         toast.error("Internal server error", {
           position: "top-right",
-          autoClose: 1350,
+          autoClose: 250,
           hideProgressBar: false,
           closeOnClick: true,
           pauseOnHover: true,
@@ -49,7 +49,7 @@ const Login = () => {
       if (error.status === 400) {
         toast.warn("Missing required fields", {
           position: "top-right",
-          autoClose: 1350,
+          autoClose: 250,
           hideProgressBar: false,
           closeOnClick: true,
           pauseOnHover: true,
@@ -61,7 +61,7 @@ const Login = () => {
       if (error.status === 401) {
         toast.error("Invalid Credentials", {
           position: "top-right",
-          autoClose: 1350,
+          autoClose: 250,
           hideProgressBar: false,
           closeOnClick: true,
           pauseOnHover: true,

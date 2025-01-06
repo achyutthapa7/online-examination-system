@@ -62,7 +62,7 @@ const Login = () => {
       if (!userName || !password || !role) {
         toast.warn("All fields are required.", {
           position: "top-right",
-          autoClose: 1350,
+          autoClose: 250,
           hideProgressBar: false,
           closeOnClick: true,
           pauseOnHover: true,
@@ -83,7 +83,7 @@ const Login = () => {
         localStorage.setItem("role", res.data.role);
         toast.success("Logged In Successfully.", {
           position: "top-right",
-          autoClose: 1350,
+          autoClose: 250,
           hideProgressBar: false,
           closeOnClick: true,
           pauseOnHover: true,
