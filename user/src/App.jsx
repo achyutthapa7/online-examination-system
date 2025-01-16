@@ -1,4 +1,3 @@
-import React from "react";
 import { Routes, Route } from "react-router-dom";
 import Home from "./components/Home";
 import Login from "./components/Login";
@@ -20,6 +19,7 @@ import Continue from "./components/teacher/Continue";
 import CompletedExams from "./components/student/CompletedExams";
 import PastExams from "./components/student/PastExams";
 import ExamDetails from "./components/student/ExamDetails";
+import ResetPassword from "./components/ResetPassword";
 const App = () => {
   return (
     <div>
@@ -30,6 +30,7 @@ const App = () => {
         <Route path="/student_dashboard" element={<StudentDashboard />} />
         <Route path="/register" element={<Registration />} />
         <Route path="/verifying" element={<Waiting />} />
+        <Route path="/forgot-password" element={<ResetPassword />} />
         <Route path="/dashboard/teacher/" element={<TeacherDashboard />}>
           <Route path="create-exam" element={<CreateExam />} />
           <Route path="view-exams" element={<ViewExams />} />

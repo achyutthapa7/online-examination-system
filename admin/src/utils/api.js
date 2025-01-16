@@ -52,23 +52,27 @@ export const getAllStudents = async () => {
   }
 };
 
-export const getStudentWithPasswordResetRequest = async (req, res) => {
+export const getStudentWithPasswordResetRequest = async () => {
   try {
     const response = await axios.get(
       `${API_URL}/admin/getStudentWithPasswordResetRequest`
     );
 
     return response;
-  } catch (error) {}
+  } catch (error) {
+    console.error(error);
+  }
 };
 
-export const getTeacherWithPasswordResetRequest = async (res, req) => {
+export const getTeacherWithPasswordResetRequest = async () => {
   try {
     const response = await axios.get(
       `${API_URL}/admin/getTeacherWithPasswordResetRequest`
     );
     console.log(response);
-  } catch (error) {}
+  } catch (error) {
+    console.error(error);
+  }
 };
 export const assignSubjectToTeacher = async (
   teacherId,
@@ -202,6 +206,7 @@ export const allExams = async () => {
 
     return response;
   } catch (error) {
+    console.log(error);
     throw error;
   }
 };

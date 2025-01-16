@@ -13,6 +13,7 @@ const {
   startExam,
   viewIndividualExam,
   editAssignSubjectToTeacher,
+  setExamCompleted,
   // setDateAndTimeForExams,
 } = require("../controllers/admin.controller");
 
@@ -42,4 +43,5 @@ router.put(
   "/editAssignSubjectToTeacher/:assignSubjectId",
   editAssignSubjectToTeacher
 );
+router.post("/setExamCompleted/:examId", setExamCompleted);
 module.exports = router;

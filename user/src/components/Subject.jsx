@@ -1,11 +1,6 @@
-import React from "react";
-
-import { useNavigate } from "react-router-dom";
+/* eslint-disable react/prop-types */
 
 const Subject = ({ subject }) => {
-  const navigate = useNavigate();
-  const examId = "675fde6b1c5ea5f765d0c9ff";
-
   return (
     <div className="flex flex-col items-start justify-between px-8 py-4 rounded-lg shadow-md bg-white min-h-[160px] transition hover:shadow-lg">
       <h2 className="mb-2 text-2xl font-semibold ">{subject.subject}</h2>
@@ -16,7 +11,7 @@ const Subject = ({ subject }) => {
           // navigate(`/dashboard/student/take-exam/${examId}`);
         }}
       >
-        Start Exam
+        Details
       </button>
     </div>
   );

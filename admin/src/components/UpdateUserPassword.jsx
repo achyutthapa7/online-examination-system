@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import {
   getAllStudents,
   getAllTeachers,
@@ -29,12 +29,17 @@ const UpdateUserPassword = () => {
     fetchTeachers();
   }, []);
 
-  // Fetch all students
+  // Fetch all students with password reset request
   useEffect(() => {
     const fetchStudents = async () => {
       try {
         const res = await getAllStudents();
-        setStudents(res.data);
+
+        const studentsWithResetRequest = res.data.filter((student) => {
+          console.log(student);
+          return student.passwordResetRequest;
+        });
+        setStudents(studentsWithResetRequest);
       } catch (err) {
         console.error("Error fetching students:", err);
       }
@@ -102,7 +107,7 @@ const UpdateUserPassword = () => {
             onClick={getTeacherWithPasswordResetRequest}
             className="text-xl  font-semibold text-gray-700 mb-4"
           >
-            Teachers (click here for log)
+            Teachers
           </h2>
           {teachers.length === 0 ? (
             <p className="text-gray-500">No teachers available.</p>
@@ -119,7 +124,7 @@ const UpdateUserPassword = () => {
                   <p className="text-gray-600 text-sm">{teacher.userName}</p>
                 </div>
                 <button
-                  className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600"
+                  className="bg-blue-500 text-white px-4 py-2 rounded hover-bg-blue-600"
                   onClick={() => {
                     setSelectedUser(teacher);
                   }}
@@ -137,7 +142,7 @@ const UpdateUserPassword = () => {
             onClick={getStudentWithPasswordResetRequest}
             className="text-xl font-semibold text-gray-700 mb-4"
           >
-            Students (click here for log)
+            Students
           </h2>
           {students.length === 0 ? (
             <p className="text-gray-500">No students available.</p>
@@ -155,7 +160,7 @@ const UpdateUserPassword = () => {
                 </div>
 
                 <button
-                  className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600"
+                  className="bg-blue-500 text-white px-4 py-2 rounded hover-bg-blue-600"
                   onClick={() => setSelectedUser(student)}
                 >
                   Update Password
@@ -191,7 +196,7 @@ const UpdateUserPassword = () => {
                   id="newPassword"
                   value={newPassword}
                   onChange={handleInputChange}
-                  className="w-full border border-gray-300 px-4 py-2 rounded focus:outline-none focus:ring-2 focus:ring-blue-400"
+                  className="w-full border border-gray-300 px-4 py-2 rounded focus-outline-none focus-ring-2 focus-ring-blue-400"
                   placeholder="Enter new password"
                 />
               </div>
@@ -207,7 +212,7 @@ const UpdateUserPassword = () => {
               <div className="flex justify-end">
                 <button
                   type="button"
-                  className="bg-gray-300 text-gray-800 px-4 py-2 rounded hover:bg-gray-400 mr-2"
+                  className="bg-gray-300 text-gray-800 px-4 py-2 rounded hover-bg-gray-400 mr-2"
                   onClick={() => {
                     setSelectedUser(null);
                     setNewPassword("");
@@ -217,7 +222,7 @@ const UpdateUserPassword = () => {
                 </button>
                 <button
                   type="submit"
-                  className="bg-green-500 text-white px-4 py-2 rounded hover:bg-green-600"
+                  className="bg-green-500 text-white px-4 py-2 rounded hover-bg-green-600"
                 >
                   Update Password
                 </button>

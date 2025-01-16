@@ -7,7 +7,7 @@ import {
   saveExam,
   updateQuestion,
 } from "../../utils/api";
-import { useLocation, useNavigate, useParams } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import { FaPlus, FaTrashAlt } from "react-icons/fa";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
@@ -110,7 +110,7 @@ const CreateExamBySubject = () => {
         parseInt(timeLimit),
         questionText,
         options,
-        correctAnswer
+        parseInt(correctAnswer)
       );
       const { newQuestion } = res.data;
       setExamData({

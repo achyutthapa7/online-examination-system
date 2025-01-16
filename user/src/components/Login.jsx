@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import { checkVerificationStatus } from "../utils/checkVerificationStatus";
 import { login } from "../utils/api";
@@ -15,7 +15,6 @@ const Login = () => {
   useEffect(() => {
     if (login_token) {
       if (role === "Teacher") navigate("/dashboard/teacher");
-    } else if (login_token) {
       if (role === "Student") navigate("/dashboard/student");
     }
   }, [login_token, role]);
@@ -197,12 +196,22 @@ const Login = () => {
 
         {/* Additional Options */}
         <div className="mt-4 text-center text-sm text-gray-600">
-          Don't have an account?{" "}
+          Don&apos;t have an account?{" "}
           <Link
             to="/register"
             className="text-blue-500 hover:text-blue-700 font-semibold"
           >
             Register here
+          </Link>
+        </div>
+
+        {/* Forgot Password */}
+        <div className="mt-4 text-center text-sm text-gray-600">
+          <Link
+            to="/forgot-password"
+            className="text-blue-500 hover:text-blue-700 font-semibold"
+          >
+            Forgot  password?{" "}
           </Link>
         </div>
       </div>

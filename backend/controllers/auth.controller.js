@@ -169,6 +169,43 @@ const logout = async (req, res) => {
   }
 };
 
+const forgotPassword = async (req, res) => {
+  try {
+    const { username } = req.body;
+    console.log(username);
+    const student = await studentModel.findOne({
+      userName: username,
+    });
+
+    const teacher = await teacherModel.findOne({
+      userName: username,
+    });
+
+    if (!teacher || !student) {
+      return res.status(404).json({ message: "User not found" });
+    }
+    const user = teacher || student;
+    if (student.passwordResetRequest) {
+      return res.status(400).json({
+        message:
+          "Password reset request already sent. Please wait for verification",
+      });
+    }
+P
+    // update the student's password and reset the password reset request flag
+    await studentModel.findByIdAndUpdate(student._id, {
+      passwordResetRequest: true,
+    });
+
+    // send the password to the student's email address
+    // await sendMail(student.emailAddress, password, student.userName);
+
+    res.status(200).json({
+      message:
+        "Password reset submission successfully. You will be notified by the admins after password reset.",
+    });
+  } catch (error) {}
+};
 const getUserVerificationStatus = async (req, res) => {
   const { studentId } = req.params;
   try {
@@ -187,4 +224,5 @@ module.exports = {
   logout,
   getUserVerificationStatus,
   loginUser,
+  forgotPassword,
 };

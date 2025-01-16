@@ -1,13 +1,10 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { isAuthenticated } from "../utils/isAuthenticated";
 import { Outlet, useNavigate } from "react-router-dom";
 import {
   FaBars,
   FaChalkboardTeacher,
   FaUserGraduate,
-  FaBook,
-  FaUserCheck,
-  FaTrashAlt,
   FaKey,
   FaBell,
   FaPlus,
@@ -16,6 +13,7 @@ import {
 } from "react-icons/fa";
 import { Tooltip as ReactTooltip } from "react-tooltip"; // Importing Tooltip correctly
 
+// eslint-disable-next-line react/prop-types
 const SidebarItem = ({ icon: Icon, label, onClick, isExpanded }) => (
   <button
     className="relative flex items-center w-full px-4 py-3 text-gray-300 transition hover:bg-gray-700 focus:bg-gray-700"

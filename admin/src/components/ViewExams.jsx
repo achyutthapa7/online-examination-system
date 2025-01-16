@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { allExams, startExam } from "../utils/api";
 import { FaClipboardList } from "react-icons/fa";
 import { useNavigate } from "react-router-dom";

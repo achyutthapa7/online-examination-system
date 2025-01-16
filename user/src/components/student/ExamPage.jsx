@@ -1,12 +1,12 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 
 import {
   getExamForStudent,
   submitIndividualAnswer,
   submitExam,
+  setIsCompleted,
 } from "../../utils/api";
-import { useParams, useNavigate } from "react-router-dom";
-import axios from "axios";
+import { useParams } from "react-router-dom";
 
 const ExamPage = () => {
   const { examId } = useParams();
@@ -17,7 +17,6 @@ const ExamPage = () => {
   const [selectedOption, setSelectedOption] = useState(null);
   const [qId, setQId] = useState(null);
   const [examEndTime, setExamEndTime] = useState(null);
-  const navigate = useNavigate();
   const [submittedQuestion, setSubmittedQuestion] = useState([]);
 
   useEffect(() => {
@@ -62,7 +61,10 @@ const ExamPage = () => {
   }, [examId]);
 
   useEffect(() => {
-    if (timeLeft === null || timeLeft <= 0) return;
+    if (timeLeft === null || timeLeft <= 0) {
+      setIsCompleted(examId);
+      console.log("Exampage");
+    }
 
     const timer = setInterval(() => {
       const currentTime = Date.now();
@@ -154,15 +156,15 @@ const ExamPage = () => {
             Time Left: {formatTime(timeLeft)}
           </div>
         ) : (
-          <p className="text-center text-gray-500">Loading timer...</p>
+          <p>Time over</p>
         )}
         {timeLeft === 0 && (
           <p className="mt-4 text-center text-red-600 font-medium">
-            Time's up!
+            Time&apos;s up!
           </p>
         )}
-        {timeLeft <= 0 &&
-          (alert("Time's Up!"), navigate("/dashboard/student/take-exam"))}
+        {/* {timeLeft <= 0 && */}
+        {/* (alert("Time's Up!"), navigate("/dashboard/student/take-exam"))} */}
       </div>
 
       <div className="w-full max-w-4xl mt-6 p-6 bg-white rounded-lg shadow-md">

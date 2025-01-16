@@ -102,11 +102,7 @@ const questionSchema = z.object({
     .max(10, "There can be no more than 10 options")
     .nonempty("Options are required"),
 
-  correctAnswer: z
-    .string()
-    .min(1, "Correct answer must be specified")
-    .max(10, "Correct answer cannot exceed 10 characters")
-    .nonempty("Correct answer is required"),
+  correctAnswer: z.number().min(1).max(4),
 });
 
 const createQuestions = async (req, res) => {
@@ -120,6 +116,7 @@ const createQuestions = async (req, res) => {
     const { success, error } = questionSchema.safeParse(req.body);
 
     if (error) {
+      console.log(error);
       throw new Error(error.issues[0].message);
     }
     // Check for required fields
@@ -199,7 +196,6 @@ const removeQuestions = async (req, res) => {
     handleError(res, error);
   }
 };
-
 
 const updateQuestion = async (req, res) => {
   try {

@@ -196,7 +196,7 @@ const editAssignSubjectToTeacher = async (req, res) => {
       if (!isValidSemester(year, semester)) {
         return res.status(400).json({ message: "Invalid year or semester" });
       }
-      const updatedAssignSubjct = await assignsubjectModel.findByIdAndUpdate(
+      const updatedAssignSubject = await assignsubjectModel.findByIdAndUpdate(
         assignSubjectId,
         {
           $set: { year, semester, subject },
@@ -260,7 +260,7 @@ const updateUserPassword = async (req, res) => {
     if (!userId) return res.status(404).json({ message: "User is not found " });
     const student = await studentModel.findByIdAndUpdate(
       userId,
-      { $set: { password: newPassword } },
+      { $set: { password: newPassword, passwordResetRequest: false } },
       { new: true }
     );
     const teacher = await teacherModel.findByIdAndUpdate(
@@ -368,6 +368,7 @@ const checkStatus = async () => {
     );
   }
 };
+
 const startExam = async (req, res) => {
   try {
     const { examId } = req.params;
@@ -387,6 +388,25 @@ const startExam = async (req, res) => {
     handleError(res, error);
   }
 };
+
+const setExamCompleted = async (req, res) => {
+  console.log("checking");
+  try {
+    const { examId } = req.params;
+    console.log(examId, "admin");
+    const exam = await examModel.findByIdAndUpdate(
+      examId,
+      { $set: { isCompleted: true } },
+      { new: true }
+    );
+
+    if (!exam) return res.status(404).json({ message: "Exam not found" });
+    res.json(exam);
+  } catch (error) {
+    handleError(res, error);
+  }
+};
+
 module.exports = {
   getAllRegisteredTeachers,
   getAllRegisteredStudent,
@@ -404,4 +424,5 @@ module.exports = {
   viewIndividualExam,
   getTeacherWithPasswordResetRequest,
   editAssignSubjectToTeacher,
+  setExamCompleted,
 };

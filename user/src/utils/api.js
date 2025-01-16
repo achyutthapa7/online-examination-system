@@ -169,7 +169,7 @@ export const createQuestion = (
   correctAnswer
 ) => {
   try {
-    console.log("here");
+    console.log(typeof correctAnswer);
     const response = axios.post(
       `${API_URL}/teacher/createQuestions/${examId}`,
       { title, timeLimit, questionText, options, correctAnswer },
@@ -273,7 +273,7 @@ export const getExamsForTeacher = async () => {
     });
     return response;
   } catch (error) {
-    // console.error("Error during fetching exams:", error);
+    console.error("Error during fetching exams:", error);
     throw error;
   }
 };
@@ -289,7 +289,7 @@ export const getStudentExams = async () => {
     // console.log(response);
     return response;
   } catch (error) {
-    // console.error("Error during fetching exams:", error);
+    console.error("Error during fetching exams:", error);
     throw error;
   }
 };
@@ -469,6 +469,47 @@ export const getAnswerOfSpecificQuestion = (questionId) => {
     return response;
   } catch (error) {
     console.error("Error during submitting answer:", error);
+    throw error;
+  }
+};
+
+export const forgotPassword = async (username) => {
+  try {
+    const response = axios.post(
+      `${API_URL}/auth/forgotPassword`,
+      { username },
+      {
+        withCredentials: true,
+        headers: {
+          "Content-Type": "application/json",
+        },
+      }
+    );
+
+    return response;
+  } catch (error) {
+    console.error("Error during forgot password:", error);
+    throw error;
+  }
+};
+
+export const setIsCompleted = async (examId) => {
+  try {
+    console.log("inside try");
+    axios.post(
+      `${API_URL}/admin/setExamCompleted`,
+      { examId },
+      {
+        withCredentials: true,
+        headers: {
+          "Content-Type": "application/json",
+        },
+      }
+    );
+
+    console.log("inside try before last line");
+  } catch (error) {
+    console.error("Server error", error);
     throw error;
   }
 };
