@@ -55,7 +55,6 @@ const getUpcomingExams = async (req, res) => {
   res.json({ exams: upcomingExams });
 };
 
-
 const getPastExams = async (req, res) => {
   const exams = await examModel.find({ isCompleted: true });
   const pastExams = exams.filter((exam) => {
@@ -81,7 +80,6 @@ const viewExams = async (req, res) => {
     handleError(res, error);
   }
 };
-
 
 const submitIndividualAnswer = async (req, res) => {
   const { questionId } = req.params;
@@ -325,7 +323,22 @@ const getAnswerOfSpecificQuestion = async (req, res) => {
     handleError(res, error);
   }
 };
+const showCompletedExams = async (req, res) => {
+  try {
+    const user = await studentModel
+      .findOne({ _id: req.rootUser._id })
+      .populate({
+        path: "completedExams",
+        populate: { path: "exam", populate: { path: "questions" } },
+      });
+    const completedExams = user.completedExams;
+    res.status(200).json({ completedExams });
+  } catch (error) {
+    handleError(res, error);
+  }
+};
 module.exports = {
+  showCompletedExams,
   getYearAndSemester,
   getExams,
   submitIndividualAnswer,

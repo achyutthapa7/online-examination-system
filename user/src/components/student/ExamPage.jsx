@@ -4,9 +4,8 @@ import {
   getExamForStudent,
   submitIndividualAnswer,
   submitExam,
-  setIsCompleted,
 } from "../../utils/api";
-import { useParams } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
 
 const ExamPage = () => {
   const { examId } = useParams();
@@ -17,6 +16,7 @@ const ExamPage = () => {
   const [selectedOption, setSelectedOption] = useState(null);
   const [qId, setQId] = useState(null);
   const [examEndTime, setExamEndTime] = useState(null);
+  const navigate = useNavigate();
   const [submittedQuestion, setSubmittedQuestion] = useState([]);
 
   useEffect(() => {
@@ -27,7 +27,6 @@ const ExamPage = () => {
           setQId(res.data.questions[0]._id);
           setQuestions(res.data.questions);
           setExamTitle(res.data.title);
-
           const startTime = new Date(res.data.startTime);
           console.log(startTime, "h");
           const endTime = new Date(
@@ -61,11 +60,7 @@ const ExamPage = () => {
   }, [examId]);
 
   useEffect(() => {
-    if (timeLeft === null || timeLeft <= 0) {
-      setIsCompleted(examId);
-      console.log("Exampage");
-    }
-
+    if (timeLeft === null) return; // Don't run if timeLeft is not set
     const timer = setInterval(() => {
       const currentTime = Date.now();
       const remainingTime = Math.max(
@@ -76,11 +71,13 @@ const ExamPage = () => {
 
       if (remainingTime <= 0) {
         clearInterval(timer);
+        alert("Time's up! Your answers are submitted automatically.");
+        handleSubmitExam();
       }
     }, 1000);
 
     return () => clearInterval(timer);
-  }, [timeLeft, examEndTime]);
+  }, [examEndTime]); // ✅ Depend only on examEndTime, not timeLeft
 
   const formatTime = (seconds) => {
     const hours = Math.floor(seconds / 3600);
@@ -156,15 +153,15 @@ const ExamPage = () => {
             Time Left: {formatTime(timeLeft)}
           </div>
         ) : (
-          <p>Time over</p>
+          <p className="text-center text-gray-500">Loading timer...</p>
         )}
         {timeLeft === 0 && (
           <p className="mt-4 text-center text-red-600 font-medium">
             Time&apos;s up!
           </p>
         )}
-        {/* {timeLeft <= 0 && */}
-        {/* (alert("Time's Up!"), navigate("/dashboard/student/take-exam"))} */}
+        {timeLeft <= 0 &&
+          (alert("Time's Up!"), navigate("/dashboard/student/take-exam"))}
       </div>
 
       <div className="w-full max-w-4xl mt-6 p-6 bg-white rounded-lg shadow-md">

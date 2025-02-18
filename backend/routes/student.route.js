@@ -11,10 +11,12 @@ const {
   getAnswerOfSpecificQuestion,
   getPastExams,
   viewExams,
+  showCompletedExams,
 } = require("../controllers/student.controller");
 const authMiddleware = require("../middlewares/authMiddleware");
 
 const router = require("express").Router();
+router.get("/showCompletedExams", authMiddleware, showCompletedExams);
 
 router.get("/getExams", authMiddleware, getExams);
 router.get("/getExamQuestion/:examId", authMiddleware, getExamQuestion);
