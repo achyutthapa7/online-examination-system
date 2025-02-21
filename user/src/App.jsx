@@ -20,6 +20,7 @@ import CompletedExams from "./components/student/CompletedExams";
 import PastExams from "./components/student/PastExams";
 import ExamDetails from "./components/student/ExamDetails";
 import ResetPassword from "./components/ResetPassword";
+import Submissions from "./components/teacher/Submissions";
 const App = () => {
   return (
     <div>
@@ -35,6 +36,7 @@ const App = () => {
           <Route path="create-exam" element={<CreateExam />} />
           <Route path="view-exams" element={<ViewExams />} />
           <Route path="saved-exams" element={<SavedExams />} />
+          <Route path="submissions" element={<Submissions />} />
         </Route>
         <Route
           path="/dashboard/teacher/create-exam/:subject"

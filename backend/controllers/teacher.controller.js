@@ -297,10 +297,12 @@ const getExamSubmissions = async (req, res) => {
     const { examId } = req.params;
     if (!examId)
       return res.status(404).json({ message: " Exam does not exist." });
-    const exam = await examModel.findById(examId);
+    const exam = await examModel
+      .findById(examId)
+      .populate("submissions.student");
     if (!exam) return res.status(404).json({ message: "Exam does not exist." });
-    const submissions = await exam.submissions;
-    res.status(200).json({ submissions });
+    // const submissions = await exam.submissions;
+    res.status(200).json({ exam });
   } catch (error) {
     handleError(res, error);
   }

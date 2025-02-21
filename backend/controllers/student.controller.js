@@ -337,6 +337,25 @@ const showCompletedExams = async (req, res) => {
     handleError(res, error);
   }
 };
+
+const getSubmittedQuestions = async (req, res) => {
+  try {
+    const { examId } = req.params;
+    const studentId = req.rootUser._id;
+    const answers = await answerModel.find({
+      studentId,
+      examId,
+    });
+    if (!answers) {
+      return res
+        .status(404)
+        .json({ message: "No answers found for this student" });
+    }
+    res.json({ answers });
+  } catch (error) {
+    handleError(res, error);
+  }
+};
 module.exports = {
   showCompletedExams,
   getYearAndSemester,
@@ -351,4 +370,5 @@ module.exports = {
   getAnswerOfSpecificQuestion,
   getPastExams,
   viewExams,
+  getSubmittedQuestions,
 };

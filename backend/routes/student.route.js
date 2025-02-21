@@ -12,6 +12,7 @@ const {
   getPastExams,
   viewExams,
   showCompletedExams,
+  getSubmittedQuestions,
 } = require("../controllers/student.controller");
 const authMiddleware = require("../middlewares/authMiddleware");
 
@@ -44,4 +45,5 @@ router.get(
   authMiddleware,
   getAnswerOfSpecificQuestion
 );
+router.get("/getSubmittedQuestions/:examId", authMiddleware, getSubmittedQuestions);
 module.exports = router;

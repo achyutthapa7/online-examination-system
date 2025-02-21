@@ -14,7 +14,6 @@ import "react-toastify/dist/ReactToastify.css";
 const CreateExamBySubject = () => {
   const [editModal, setEditModal] = useState(false);
   const [editedData, setEditedData] = useState([]);
-
   const location = useLocation();
   const examId = location.state;
   const navigate = useNavigate();

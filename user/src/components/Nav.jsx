@@ -5,16 +5,16 @@ const Nav = () => {
   const login_token = localStorage.getItem("login_token");
   const userName = localStorage.getItem("username") || "User";
   const role = localStorage.getItem("role");
-  // const handleLogout = () => {
-  //   const confirmLogout = window.confirm("Are you sure you want to log out?");
-  //   if (confirmLogout) {
-  //     localStorage.removeItem("login_token");
-  //     localStorage.removeItem("username");
-  //     localStorage.removeItem("role");
-  //     window.location.reload();
-  //     window.location.href = "/login";
-  //   }
-  // };
+  const handleLogout = () => {
+    const confirmLogout = window.confirm("Are you sure you want to log out?");
+    if (confirmLogout) {
+      localStorage.removeItem("login_token");
+      localStorage.removeItem("username");
+      localStorage.removeItem("role");
+      window.location.reload();
+      window.location.href = "/login";
+    }
+  };
 
   const getInitial = (name) => {
     return name.charAt(0).toUpperCase();
