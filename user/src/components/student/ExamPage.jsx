@@ -17,7 +17,7 @@ const ExamPage = () => {
   const [examEndTime, setExamEndTime] = useState(null);
   const navigate = useNavigate();
   const [submittedQuestion, setSubmittedQuestion] = useState([]);
-  console.log(currentQuestionIndex);
+
   useEffect(() => {
     const getSubmittedQuestion = async () => {
       const res = await fetch(
@@ -105,7 +105,11 @@ const ExamPage = () => {
 
   const handleNext = async () => {
     try {
-      await submitIndividualAnswer(qId, examId, selectedOption);
+      if (selectedOption !== null) {
+        await submitIndividualAnswer(qId, examId, selectedOption);
+        setSubmittedQuestion((prev) => new Map(prev).set(qId, selectedOption));
+      }
+
       const nextIndex = currentQuestionIndex + 1;
       if (nextIndex < questions.length) {
         setCurrentQuestionIndex(nextIndex);
@@ -121,15 +125,12 @@ const ExamPage = () => {
 
   const handleAutoSubmitExam = async () => {
     try {
-      // Submit any unanswered questions
-      for (let i = currentQuestionIndex; i < questions.length; i++) {
+      for (let i = 0; i < questions.length; i++) {
         const questionId = questions[i]._id;
         if (!submittedQuestion.has(questionId)) {
           await submitIndividualAnswer(questionId, examId, null); // Submit unanswered with null
         }
       }
-
-      // Final exam submission
       const response = await submitExam(examId);
       if (response.status === 200 || response.statusText === "OK") {
         alert("Exam is submitted successfully.");
@@ -148,7 +149,10 @@ const ExamPage = () => {
         await handleAutoSubmitExam();
         return;
       }
-      await submitIndividualAnswer(qId, examId, selectedOption);
+
+      if (selectedOption !== null) {
+        await submitIndividualAnswer(qId, examId, selectedOption);
+      }
 
       const response = await submitExam(examId);
 

@@ -16,7 +16,6 @@ const TakeExam = () => {
     refetchOnWindowFocus: true,
     staleTime: 1000 * 60 * 5,
     onSuccess: (data) => {
-      console.log(data);
       setExams(Array.isArray(data.data.exams) ? data.data.exams : []);
     },
   });
@@ -32,7 +31,6 @@ const TakeExam = () => {
     refetchOnWindowFocus: true,
     staleTime: 1000 * 60 * 5,
     onSuccess: (data) => {
-      console.log(data);
       setUpcomingExams(Array.isArray(data.data.exams) ? data.data.exams : []);
     },
   });
