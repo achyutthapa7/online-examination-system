@@ -14,8 +14,10 @@ const CreateExam = () => {
     const fetchTeacherDetails = async () => {
       try {
         const res = await getTeacherDetails();
+        console.log({ res });
         setAssignedSubjects(res.data.user.assignedSubjects || []);
       } catch (err) {
+        console.log(err);
         setError("Failed to fetch assigned subjects.");
       } finally {
         setIsLoading(false);
