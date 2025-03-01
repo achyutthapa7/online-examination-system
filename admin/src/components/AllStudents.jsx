@@ -1,17 +1,37 @@
-import React, { useEffect, useState } from "react";
-import { deleteUser, getAllStudents, verifyStudent } from "../utils/api"; // Assume this fetches student data
+import { useEffect, useState } from "react";
+import { deleteUser, getAllStudents, verifyStudent } from "../utils/api";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+
 const AllStudents = () => {
   const [students, setStudents] = useState([]);
+  const [filteredStudents, setFilteredStudents] = useState([]);
+  const [searchQuery, setSearchQuery] = useState("");
 
   useEffect(() => {
     const fetchStudents = async () => {
       const res = await getAllStudents();
       setStudents(res.data);
+      setFilteredStudents(res.data);
     };
     fetchStudents();
   }, []);
+
+  useEffect(() => {
+    if (searchQuery) {
+      const filtered = students.filter(
+        (student) =>
+          student.fullName.toLowerCase().includes(searchQuery.toLowerCase()) ||
+          student.userName.toLowerCase().includes(searchQuery.toLowerCase()) ||
+          student.year.toString().includes(searchQuery) ||
+          student.semester.toString().includes(searchQuery)
+      );
+      setFilteredStudents(filtered);
+    } else {
+      setFilteredStudents(students);
+    }
+  }, [searchQuery, students]);
+
   const handleVerify = async (studentId) => {
     const res = await verifyStudent(studentId);
     if (res.statusText)
@@ -27,6 +47,7 @@ const AllStudents = () => {
       });
     window.location.reload();
   };
+
   const handleDelete = async (studentId) => {
     const res = await deleteUser(studentId);
     if (res.statusText) {
@@ -43,10 +64,22 @@ const AllStudents = () => {
     }
     window.location.reload();
   };
+
   return (
     <div className="p-8">
-      <h1 className="mb-6 text-3xl font-bold">All Students</h1> 
-      {students.length === 0 ? (
+      <h1 className="mb-6 text-3xl font-bold">All Students</h1>
+
+      <div className="mb-4">
+        <input
+          type="text"
+          value={searchQuery}
+          onChange={(e) => setSearchQuery(e.target.value)}
+          placeholder="Search students..."
+          className="px-4 py-2 border rounded w-full"
+        />
+      </div>
+
+      {filteredStudents.length === 0 ? (
         <p className="text-xl text-gray-600">No students available</p>
       ) : (
         <div className="overflow-x-auto bg-white rounded-lg shadow-md">
@@ -71,9 +104,9 @@ const AllStudents = () => {
               </tr>
             </thead>
             <tbody>
-              {students.map((student) => (
+              {filteredStudents.map((student) => (
                 <tr key={student._id} className="border-b hover:bg-gray-50">
-                  <td className="px-4 py-3 text-sm   text-gray-800">
+                  <td className="px-4 py-3 text-sm text-gray-800">
                     <span className="cursor-pointer">{student.fullName}</span>
                   </td>
                   <td className="px-4 py-3 text-sm text-gray-800">
@@ -97,7 +130,7 @@ const AllStudents = () => {
                         Delete
                       </button>
                     ) : (
-                      <div className="flex  w-fit gap-4">
+                      <div className="flex w-fit gap-4">
                         <button
                           className="px-4 py-2 text-white bg-blue-500 rounded hover:bg-blue-600"
                           onClick={() => handleVerify(student._id)}

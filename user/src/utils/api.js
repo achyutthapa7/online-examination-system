@@ -472,11 +472,11 @@ export const getAnswerOfSpecificQuestion = (questionId) => {
   }
 };
 
-export const forgotPassword = async (username) => {
+export const forgotPassword = async (username, role) => {
   try {
     const response = axios.post(
       `${API_URL}/auth/forgotPassword`,
-      { username },
+      { username, role },
       {
         withCredentials: true,
         headers: {

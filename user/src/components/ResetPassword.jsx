@@ -10,6 +10,7 @@ const ForgotPassword = () => {
   // Changed component name to ForgotPassword
   const [credentials, setCredentials] = useState({
     username: "", // Changed userName to username for forgot password
+    role: "student",
   });
   const [error, setError] = useState("");
   const navigate = useNavigate();
@@ -22,7 +23,9 @@ const ForgotPassword = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    const { username } = credentials;
+    const { username, role } = credentials;
+    console.log(username, role);
+
     try {
       if (!username) {
         toast.warn("username is required.", {
@@ -35,12 +38,10 @@ const ForgotPassword = () => {
           progress: undefined,
           theme: "light",
         });
-
         return;
       }
-      const res = await forgotPassword(username); // Call the API function for forgot password
+      const res = await forgotPassword(username, role); // Call the API function for forgot password
 
-      console.log(res, "response");
       if (res.status === 200) {
         toast.success(res.data.message, {
           position: "top-right",
@@ -58,7 +59,6 @@ const ForgotPassword = () => {
       if (error.status === 404) {
         toast.error("User not found");
       } else if (error.status === 400) {
-        console.log();
         toast.warn(error.response.data.message, {
           position: "top-right",
           autoClose: 1250,
@@ -102,6 +102,24 @@ const ForgotPassword = () => {
             />
           </div>
 
+          <div className="mb-4">
+            <label
+              htmlFor="role"
+              className="block text-sm font-semibold text-gray-700 mb-2"
+            >
+              Role
+            </label>
+            <select
+              id="role"
+              name="role"
+              value={credentials.role}
+              onChange={handleInputChange}
+              className="w-full border border-gray-300 px-4 py-2 rounded focus:outline-none focus:ring-2 focus:ring-blue-400"
+            >
+              <option value="student">Student</option>
+              <option value="teacher">Teacher</option>
+            </select>
+          </div>
           {/* Error Message */}
           {error && (
             <div className="mb-4 text-red-600 text-sm font-semibold">

@@ -238,8 +238,7 @@
 
 // export default AddTeachers;
 
-import React, { useEffect, useState } from "react";
-import { subjectsData } from "../utils/subjects";
+import { useState } from "react";
 import { addTeacher } from "../utils/api";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";

@@ -6,20 +6,19 @@ import {
   FaChalkboardTeacher,
   FaUserGraduate,
   FaKey,
-  FaBell,
   FaPlus,
   FaSignOutAlt,
   FaClipboardList,
 } from "react-icons/fa";
-import { Tooltip as ReactTooltip } from "react-tooltip"; // Importing Tooltip correctly
+import { Tooltip as ReactTooltip } from "react-tooltip";
 
 // eslint-disable-next-line react/prop-types
 const SidebarItem = ({ icon: Icon, label, onClick, isExpanded }) => (
   <button
     className="relative flex items-center w-full px-4 py-3 text-gray-300 transition hover:bg-gray-700 focus:bg-gray-700"
     onClick={onClick}
-    data-tip={label} // Tooltip text
-    data-place="right" // Tooltip position
+    data-tip={label}
+    data-place="right"
   >
     <Icon className="text-xl" />
     {isExpanded && <span className="ml-4 text-sm font-medium">{label}</span>}
@@ -27,7 +26,7 @@ const SidebarItem = ({ icon: Icon, label, onClick, isExpanded }) => (
 );
 
 const DashboardLayout = () => {
-  const [isSidebarOpen, setIsSidebarOpen] = useState(true);
+  const [isSidebarOpen, setIsSidebarOpen] = useState(window.innerWidth > 800);
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -35,6 +34,18 @@ const DashboardLayout = () => {
       navigate("/admin/login");
     }
   }, [navigate]);
+
+  useEffect(() => {
+    const handleResize = () => {
+      if (window.innerWidth <= 800) {
+        setIsSidebarOpen(false);
+      } else {
+        setIsSidebarOpen(true);
+      }
+    };
+    window.addEventListener("resize", handleResize);
+    return () => window.removeEventListener("resize", handleResize);
+  }, []);
 
   const handleLogout = () => {
     localStorage.removeItem("token");
@@ -44,11 +55,10 @@ const DashboardLayout = () => {
   return (
     <div className="flex min-h-screen bg-gray-100">
       <aside
-        className={`bg-gray-800  text-white ${
+        className={`bg-gray-800 text-white ${
           isSidebarOpen ? "w-64" : "w-16"
         } transition-all duration-300 ease-in-out`}
       >
-        {/* Sidebar Header */}
         <div
           className={`flex items-center p-4 ${
             isSidebarOpen ? "justify-between" : "justify-center"
@@ -62,16 +72,17 @@ const DashboardLayout = () => {
               Admin
             </h2>
           )}
-          <button
-            onClick={() => setIsSidebarOpen(!isSidebarOpen)}
-            className="text-2xl text-white focus:outline-none"
-            data-tip={isSidebarOpen ? "Collapse" : "Expand"} // Tooltip for sidebar toggle
-          >
-            <FaBars />
-          </button>
+          {window.innerWidth > 800 && (
+            <button
+              onClick={() => setIsSidebarOpen(!isSidebarOpen)}
+              className="text-2xl text-white focus:outline-none"
+              data-tip={isSidebarOpen ? "Collapse" : "Expand"}
+            >
+              <FaBars />
+            </button>
+          )}
         </div>
 
-        {/* Sidebar Navigation */}
         <nav className="mt-4">
           <ul className="space-y-2">
             <li>
@@ -90,27 +101,11 @@ const DashboardLayout = () => {
                 isExpanded={isSidebarOpen}
               />
             </li>
-            {/* <li>
-              <SidebarItem
-                icon={FaBook}
-                label="Assign Subject"
-                onClick={() => navigate("/admin/assign-subject")}
-                isExpanded={isSidebarOpen}
-              />
-            </li> */}
             <li>
               <SidebarItem
                 icon={FaKey}
                 label="Update Password"
                 onClick={() => navigate("/admin/update-user-password")}
-                isExpanded={isSidebarOpen}
-              />
-            </li>
-            <li>
-              <SidebarItem
-                icon={FaBell}
-                label="Notify Users"
-                onClick={() => navigate("/admin/notify-user")}
                 isExpanded={isSidebarOpen}
               />
             </li>
@@ -122,7 +117,6 @@ const DashboardLayout = () => {
                 isExpanded={isSidebarOpen}
               />
             </li>
-
             <li>
               <SidebarItem
                 icon={FaClipboardList}
@@ -134,7 +128,6 @@ const DashboardLayout = () => {
           </ul>
         </nav>
 
-        {/* Sidebar Footer */}
         <div className="p-4">
           <button
             onClick={() => {
@@ -156,12 +149,10 @@ const DashboardLayout = () => {
         </div>
       </aside>
 
-      {/* Main Content */}
       <main className="flex-1 p-8">
         <Outlet />
       </main>
 
-      {/* Initialize Tooltip here */}
       <ReactTooltip effect="solid" place="right" />
     </div>
   );

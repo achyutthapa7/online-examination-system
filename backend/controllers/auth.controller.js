@@ -171,35 +171,44 @@ const logout = async (req, res) => {
 
 const forgotPassword = async (req, res) => {
   try {
-    const { username } = req.body;
-    console.log(username);
-    const student = await studentModel.findOne({
-      userName: username,
-    });
+    const { username, role } = req.body;
+    let student, teacher;
 
-    const teacher = await teacherModel.findOne({
-      userName: username,
-    });
+    if (role === "student") {
+      student = await studentModel.findOne({
+        userName: username,
+      });
+    } else if (role === "teacher") {
+      teacher = await teacherModel.findOne({
+        userName: username,
+      });
+    } else {
+      return res.json({ message: "Invalid role" });
+    }
 
-    if (!teacher || !student) {
+    if (!(teacher || student)) {
       return res.status(404).json({ message: "User not found" });
     }
-    const user = teacher || student;
-    if (student.passwordResetRequest) {
+
+    if (student?.passwordResetRequest || teacher?.passwordResetRequest) {
+      console.log("Password reset request sent");
+
       return res.status(400).json({
         message:
           "Password reset request already sent. Please wait for verification",
       });
     }
-    P;
-    // update the student's password and reset the password reset request flag
-    await studentModel.findByIdAndUpdate(student._id, {
-      passwordResetRequest: true,
-    });
+    console.log("Password reset request sent");
 
-    // send the password to the student's email address
-    // await sendMail(student.emailAddress, password, student.userName);
-
+    if (role === "student") {
+      await studentModel.findByIdAndUpdate(student._id, {
+        passwordResetRequest: true,
+      });
+    } else {
+      await teacherModel.findByIdAndUpdate(teacher._id, {
+        passwordResetRequest: true,
+      });
+    }
     res.status(200).json({
       message:
         "Password reset submission successfully. You will be notified by the admins after password reset.",

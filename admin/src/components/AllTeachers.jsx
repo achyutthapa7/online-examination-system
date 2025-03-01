@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import {
   deleteUser,
   getAllTeachers,
@@ -8,8 +8,12 @@ import {
 import { subjectsData } from "../utils/subjects";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+
 const AllTeachers = () => {
   const [teachers, setTeachers] = useState([]);
+  const [filteredTeachers, setFilteredTeachers] = useState([]);
+  const [searchQuery, setSearchQuery] = useState("");
+
   const [selectedTeacher, setSelectedTeacher] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
   const [editAssignSubjectModal, setEditAssignSubjectModal] = useState(false);
@@ -28,17 +32,33 @@ const AllTeachers = () => {
   const [availableSemesters, setAvailableSemesters] = useState([]);
   const [availableSubjects, setAvailableSubjects] = useState([]);
   const [assignSubjectId, setAssignSubjectId] = useState("");
+
   useEffect(() => {
     const getTeacher = async () => {
       try {
         const res = await getAllTeachers();
         setTeachers(res.data);
+        setFilteredTeachers(res.data); // Initially show all teachers
       } catch (err) {
         console.error("Error fetching teachers:", err);
       }
     };
     getTeacher();
   }, []);
+
+  useEffect(() => {
+    if (searchQuery) {
+      const filtered = teachers.filter(
+        (teacher) =>
+          teacher.fullName.toLowerCase().includes(searchQuery.toLowerCase()) ||
+          teacher.userName.toLowerCase().includes(searchQuery.toLowerCase()) ||
+          teacher.role.toLowerCase().includes(searchQuery.toLowerCase())
+      );
+      setFilteredTeachers(filtered);
+    } else {
+      setFilteredTeachers(teachers); // Reset the filtered list when searchQuery is empty
+    }
+  }, [searchQuery, teachers]);
 
   const handleDelete = async (teacherId) => {
     try {
@@ -173,7 +193,7 @@ const AllTeachers = () => {
         setIsLoading(false);
         window.location.reload();
       } else if (res.status === 401) {
-        toast.warn("subject is already assigned!", {
+        toast.warn("Subject is already assigned!", {
           position: "top-right",
           autoClose: 250,
           hideProgressBar: false,
@@ -243,14 +263,25 @@ const AllTeachers = () => {
       });
     }
   };
+
   return (
     <div className="p-8">
       <h1 className="mb-6 text-3xl font-bold">All Teachers</h1>
 
-      {teachers.length === 0 ? (
+      <div className="mb-4">
+        <input
+          type="text"
+          placeholder="Search by name, username, or role"
+          className="w-full px-4 py-2 border rounded"
+          value={searchQuery}
+          onChange={(e) => setSearchQuery(e.target.value)}
+        />
+      </div>
+
+      {filteredTeachers.length === 0 ? (
         <p className="text-xl text-gray-600">No teachers available</p>
       ) : (
-        teachers.map((teacher) => (
+        filteredTeachers.map((teacher) => (
           <div
             key={teacher._id}
             className="flex flex-col items-start p-4 mb-8 bg-white rounded-lg shadow-md md:flex-row"

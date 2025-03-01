@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import {
   createQuestion,
@@ -10,6 +10,7 @@ import {
 import { FaPlus, FaTrashAlt } from "react-icons/fa";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+
 const Continue = () => {
   const navigate = useNavigate();
   const [editModal, setEditModal] = useState(false);
@@ -110,6 +111,7 @@ const Continue = () => {
       console.error("Error updating question:", error);
     }
   };
+
   const handlePublish = async () => {
     try {
       const res = await publishExam(state);
@@ -142,44 +144,55 @@ const Continue = () => {
       console.error("Error publishing exam:", error);
     }
   };
+
   return (
-    <div className="flex w-full min-h-screen p-6">
+    <div className="flex w-full min-h-screen p-8 bg-gray-50">
       {/* Left Section: Create New Question */}
-      <div className="w-1/3 border border-gray-300 p-4 bg-white shadow-md">
-        <h2 className="text-2xl font-bold mb-4">Create New Question</h2>
+      <div className="w-full md:w-1/3 border border-gray-300 p-6 bg-white shadow-lg rounded-lg">
+        <h2 className="text-2xl font-semibold mb-4 text-gray-800">
+          Create New Question
+        </h2>
 
         <div className="mb-4">
-          <label className="block font-medium">Title:</label>
+          <label className="block text-lg font-medium text-gray-600">
+            Title:
+          </label>
           <input
             type="text"
             value={title}
             readOnly
-            className="w-full p-2 border rounded"
+            className="w-full p-3 border border-gray-300 rounded-md bg-gray-100"
           />
         </div>
         <div className="mb-4">
-          <label className="block font-medium">Time Limit(in minutes):</label>
+          <label className="block text-lg font-medium text-gray-600">
+            Time Limit (minutes):
+          </label>
           <input
             type="text"
             value={timeLimit}
             readOnly
-            className="w-full p-2 border rounded"
+            className="w-full p-3 border border-gray-300 rounded-md bg-gray-100"
           />
         </div>
         <div className="mb-4">
-          <label className="block font-medium">Question Text:</label>
+          <label className="block text-lg font-medium text-gray-600">
+            Question Text:
+          </label>
           <input
             type="text"
             value={formData.questionText}
             onChange={(e) =>
               setFormData({ ...formData, questionText: e.target.value })
             }
-            className="w-full p-2 border rounded"
+            className="w-full p-3 border border-gray-300 rounded-md"
           />
         </div>
 
         <div className="mb-4">
-          <label className="block font-medium">Options:</label>
+          <label className="block text-lg font-medium text-gray-600">
+            Options:
+          </label>
           {formData.options.map((option, index) => (
             <input
               key={index}
@@ -190,48 +203,50 @@ const Continue = () => {
                 newOptions[index] = e.target.value;
                 setFormData({ ...formData, options: newOptions });
               }}
-              className="w-full p-2 border rounded mb-2"
+              className="w-full p-3 border border-gray-300 rounded-md mb-3"
               placeholder={`Option ${index + 1}`}
             />
           ))}
         </div>
 
         <div className="mb-4">
-          <label className="block font-medium">Correct Answer:</label>
+          <label className="block text-lg font-medium text-gray-600">
+            Correct Answer:
+          </label>
           <input
             type="text"
             value={formData.correctAnswer}
             onChange={(e) =>
               setFormData({ ...formData, correctAnswer: e.target.value })
             }
-            className="w-full p-2 border rounded"
+            className="w-full p-3 border border-gray-300 rounded-md"
           />
         </div>
-        <div className="flex gap-4">
+        <div className="flex gap-4 mt-6">
           <button
             onClick={handleCreate}
-            className="w-full bg-blue-500 text-white p-2 rounded hover:bg-blue-600 transition"
+            className="flex items-center justify-center w-full bg-blue-500 text-white p-3 rounded-md hover:bg-blue-600 transition"
           >
-            <FaPlus className="inline mr-2" />
+            <FaPlus className="mr-2" />
             Add Question
           </button>
           <button
             onClick={handlePublish}
-            className="w-full bg-blue-500 text-white p-2 rounded hover:bg-blue-600 transition"
+            className="flex items-center justify-center w-full bg-green-500 text-white p-3 rounded-md hover:bg-green-600 transition"
           >
-            <FaPlus className="inline mr-2" />
+            <FaPlus className="mr-2" />
             Publish Exam
           </button>
         </div>
       </div>
 
       {/* Right Div for Questions */}
-      <div className="w-2/3 border border-gray-300 p-6">
-        <h2 className="text-2xl font-bold mb-4">Questions</h2>
+      <div className="w-full md:w-2/3 border border-gray-300 p-6 bg-white shadow-lg rounded-lg ml-4">
+        <h2 className="text-2xl font-semibold mb-4 text-gray-800">Questions</h2>
         <ul className="space-y-4">
           {questions.map((question, index) => (
             <li key={index} className="border-b pb-4">
-              <p className="font-medium">
+              <p className="text-lg font-medium text-gray-800">
                 <strong>Q{index + 1}:</strong> {question.questionText}
               </p>
               <ul className="list-disc pl-6 mt-2">
@@ -243,7 +258,7 @@ const Continue = () => {
                 <div className="mt-3">
                   <strong>Correct Answer:</strong> {question.correctAnswer}
                 </div>
-                <div className="flex gap-3">
+                <div className="flex gap-3 mt-4">
                   <button
                     onClick={() => handleRemove(question._id, question.examId)}
                     className="flex items-center px-4 py-2 bg-red-600 text-white font-medium rounded-md hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-red-500 transition duration-300"
@@ -265,6 +280,8 @@ const Continue = () => {
           ))}
         </ul>
       </div>
+
+      {/* Edit Modal */}
       <div
         className={`fixed inset-0 flex items-center justify-center bg-black bg-opacity-25 backdrop-blur-sm transition-opacity duration-300 ${
           editModal ? "opacity-100" : "opacity-0 pointer-events-none"
@@ -290,7 +307,7 @@ const Continue = () => {
               onChange={(e) =>
                 setEditedData({ ...editedData, questionText: e.target.value })
               }
-              className="w-full p-3 border   border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500"
+              className="w-full p-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500"
               rows="4"
               required
             />
@@ -300,26 +317,24 @@ const Continue = () => {
             <label className="block text-lg font-medium mb-2 text-gray-700">
               Options
             </label>
-
             {editedData.options ? (
               <>
                 {editedData.options.map((o, index) => (
-                  <>
-                    <input
-                      type="text"
-                      className="border-2"
-                      value={o}
-                      onChange={(e) => {
-                        const newOptions = [...editedData.options];
-                        newOptions[index] = e.target.value; // Update the specific option
-                        setEditedData({ ...editedData, options: newOptions }); // Update the state
-                      }}
-                    />
-                  </>
+                  <input
+                    key={index}
+                    type="text"
+                    className="border-2 p-3 rounded-md mb-3 w-full"
+                    value={o}
+                    onChange={(e) => {
+                      const newOptions = [...editedData.options];
+                      newOptions[index] = e.target.value;
+                      setEditedData({ ...editedData, options: newOptions });
+                    }}
+                  />
                 ))}
               </>
             ) : (
-              <>n</>
+              <>No Options</>
             )}
           </div>
 
@@ -340,8 +355,12 @@ const Continue = () => {
             />
           </div>
           <div className="mt-4 text-center text-gray-600">
-            <button onClick={() => handleUpdate()}>Update</button>
-            <p>Add your editing form or content here.</p>
+            <button
+              onClick={() => handleUpdate()}
+              className="bg-blue-600 text-white px-4 py-2 rounded-md hover:bg-blue-700"
+            >
+              Update
+            </button>
           </div>
         </div>
       </div>

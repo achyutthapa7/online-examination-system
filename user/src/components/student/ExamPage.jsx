@@ -17,7 +17,7 @@ const ExamPage = () => {
   const [examEndTime, setExamEndTime] = useState(null);
   const navigate = useNavigate();
   const [submittedQuestion, setSubmittedQuestion] = useState([]);
-  console.log(currentQuestionIndex);
+
   useEffect(() => {
     const getSubmittedQuestion = async () => {
       const res = await fetch(
@@ -97,7 +97,7 @@ const ExamPage = () => {
     }, 1000);
 
     return () => clearInterval(timer);
-  }, [examEndTime]);
+  }, [timeLeft]);
 
   const handleOptionChange = (optionIndex) => {
     setSelectedOption(optionIndex + 1);
