@@ -84,9 +84,7 @@ const viewExams = async (req, res) => {
 const submitIndividualAnswer = async (req, res) => {
   const { questionId } = req.params;
   const { selectedOption } = req.body;
-  if (selectedOption > 4 || selectedOption < 1) {
-    return res.status(400).json({ message: "Invalid option selected" });
-  }
+
   const { examId } = req.body;
   try {
     const question = await questionModel

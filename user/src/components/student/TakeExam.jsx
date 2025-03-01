@@ -1,48 +1,44 @@
 import React, { useEffect, useState } from "react";
 import { getStudentExams, nextExams } from "../../utils/api";
 import { useNavigate } from "react-router-dom";
+import { useQuery } from "@tanstack/react-query";
 
 const TakeExam = () => {
   const [exams, setExams] = useState([]);
   const [upcomingExams, setUpcomingExams] = useState([]);
-  const [loading, setLoading] = useState(true);
 
   const navigate = useNavigate();
 
-  const getExams = async () => {
-    try {
-      const response = await getStudentExams();
-      setExams(Array.isArray(response.data.exams) ? response.data.exams : []);
-    } catch (error) {
-      console.error("Failed to fetch exams:", error);
-    } finally {
-      setLoading(false);
-    }
-  };
+  const { data, isLoading, error } = useQuery({
+    queryKey: ["studentExams"],
+    queryFn: getStudentExams,
+    refetchInterval: 2000,
+    refetchOnWindowFocus: true,
+    staleTime: 1000 * 60 * 5,
+    onSuccess: (data) => {
+      console.log(data);
+      setExams(Array.isArray(data.data.exams) ? data.data.exams : []);
+    },
+  });
 
-  const getUpcomingExams = async () => {
-    try {
-      const response = await nextExams();
-      setUpcomingExams(
-        Array.isArray(response.data.exams) ? response.data.exams : []
-      );
-    } catch (error) {
-      // console.error("Failed to fetch upcoming exams:", error);
-    } finally {
-      setLoading(false);
-    }
-  };
+  const {
+    data: upcomingData,
+    isLoading: isUpcomingLoading,
+    error: upcomingError,
+  } = useQuery({
+    queryKey: ["upcomingExams"],
+    queryFn: nextExams,
+    refetchInterval: 2000,
+    refetchOnWindowFocus: true,
+    staleTime: 1000 * 60 * 5,
+    onSuccess: (data) => {
+      console.log(data);
+      setUpcomingExams(Array.isArray(data.data.exams) ? data.data.exams : []);
+    },
+  });
 
-  useEffect(() => {
-    getExams();
-    getUpcomingExams();
-    // const interval = setInterval(() => {
-    //   getExams();
-    //   getUpcomingExams();
-    // }, 100);
-
-    // return () => clearInterval(interval);
-  }, []);
+  if (isLoading) return <p>Loading...</p>;
+  if (error) return <p>Error: {error.message}</p>;
 
   return (
     <div className="min-h-screen p-8 bg-gray-100">
@@ -50,7 +46,7 @@ const TakeExam = () => {
         Available Exams
       </h1>
 
-      {loading ? (
+      {isLoading ? (
         <div className="text-center text-gray-600">Loading exams...</div>
       ) : exams.length === 0 ? (
         <div className="text-center text-gray-600">No available exams.</div>

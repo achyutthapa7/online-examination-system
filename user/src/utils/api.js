@@ -169,7 +169,6 @@ export const createQuestion = (
   correctAnswer
 ) => {
   try {
-    console.log(typeof correctAnswer);
     const response = axios.post(
       `${API_URL}/teacher/createQuestions/${examId}`,
       { title, timeLimit, questionText, options, correctAnswer },

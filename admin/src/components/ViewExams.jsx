@@ -12,11 +12,13 @@ const ViewExams = () => {
     const getExams = async () => {
       try {
         const res = await allExams();
-        setExams(res.data);
+        const publishedExams = res.data.filter((exam) => exam.isPublished); // Only keep published exams
+        setExams(publishedExams);
       } catch (error) {
         console.error("Error fetching exams:", error);
       }
     };
+
     getExams();
   }, []);
 

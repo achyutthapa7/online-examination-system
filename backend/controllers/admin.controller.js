@@ -373,16 +373,21 @@ const startExam = async (req, res) => {
   try {
     const { examId } = req.params;
     const { timeLimit } = req.body;
-    const exam = await examModel.findByIdAndUpdate(
-      examId,
-      {
-        $set: { isApproved: true, startTime: Date.now() },
-        endTime: Date.now() + timeLimit * 60000,
-      },
-      { new: true }
-    );
 
-    if (!exam) return res.status(404).json({ message: "Exam not found" });
+    const exam = await examModel.findOne({ _id: examId, isPublished: true });
+
+    if (!exam) {
+      return res
+        .status(404)
+        .json({ message: "Exam not found or not published" });
+    }
+
+    // Update the exam (only if it's published)
+    exam.isApproved = true;
+    exam.startTime = Date.now();
+    exam.endTime = Date.now() + timeLimit * 60000;
+    await exam.save();
+
     res.json(exam);
   } catch (error) {
     handleError(res, error);

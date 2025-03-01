@@ -16,7 +16,7 @@ const answerSchema = mongoose.Schema(
       ref: "question",
       required: true,
     },
-    selectedOption: { type: Number, required: true },
+    selectedOption: { type: Number },
   },
   { timestamps: true }
 );

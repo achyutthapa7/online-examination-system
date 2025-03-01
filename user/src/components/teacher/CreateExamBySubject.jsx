@@ -11,6 +11,12 @@ import { useLocation, useNavigate } from "react-router-dom";
 import { FaPlus, FaTrashAlt } from "react-icons/fa";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import {
+  QueryClient,
+  useMutation,
+  useQueryClient,
+} from "@tanstack/react-query";
+const queryClient = new QueryClient();
 const CreateExamBySubject = () => {
   const [editModal, setEditModal] = useState(false);
   const [editedData, setEditedData] = useState([]);
@@ -142,10 +148,9 @@ const CreateExamBySubject = () => {
     }
   };
 
-  const handlePublish = async (e) => {
-    e.preventDefault();
-    try {
-      const res = await publishExam(examId);
+  const { mutate } = useMutation({
+    mutationFn: (id) => publishExam(id),
+    onSuccess: (res) => {
       if (res.status === 400) {
         toast.success(res.data, {
           position: "top-right",
@@ -169,11 +174,61 @@ const CreateExamBySubject = () => {
           progress: undefined,
           theme: "light",
         });
+        queryClient.invalidateQueries({ queryKey: ["upcomingExams"] });
         navigate("/dashboard/teacher");
       }
-    } catch (error) {
+    },
+    onError: (error) => {
       console.error("Error publishing exam:", error);
+    },
+  });
+
+  const handlePublish = async (e) => {
+    e.preventDefault();
+    if (!examId) {
+      toast.error("Invalid exam ID", {
+        position: "top-right",
+        autoClose: 250,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+      });
+      return;
     }
+    mutate(examId);
+    // try {
+    //   const res = await publishExam(examId);
+    //   if (res.status === 400) {
+    //     toast.success(res.data, {
+    //       position: "top-right",
+    //       autoClose: 250,
+    //       hideProgressBar: false,
+    //       closeOnClick: true,
+    //       pauseOnHover: true,
+    //       draggable: true,
+    //       progress: undefined,
+    //       theme: "light",
+    //     });
+    //   }
+    //   if (res.statusText) {
+    //     toast.success("Exam published successfully", {
+    //       position: "top-right",
+    //       autoClose: 250,
+    //       hideProgressBar: false,
+    //       closeOnClick: true,
+    //       pauseOnHover: true,
+    //       draggable: true,
+    //       progress: undefined,
+    //       theme: "light",
+    //     });
+    //     navigate("/dashboard/teacher");
+    //   }
+    // } catch (error) {
+    //   console.error("Error publishing exam:", error);
+    // }
   };
 
   const handleUpdate = async (questionId) => {

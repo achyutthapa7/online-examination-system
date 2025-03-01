@@ -191,7 +191,7 @@ const forgotPassword = async (req, res) => {
           "Password reset request already sent. Please wait for verification",
       });
     }
-P
+    P;
     // update the student's password and reset the password reset request flag
     await studentModel.findByIdAndUpdate(student._id, {
       passwordResetRequest: true,

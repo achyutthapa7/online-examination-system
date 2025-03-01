@@ -2,8 +2,8 @@ import React, { useEffect, useState } from "react";
 
 const Results = () => {
   const [completedExams, setCompletedExams] = useState([]);
-  const passingPercentage = 40; // Set the passing percentage
-
+  const passingPercentage = 40;
+  console.log(completedExams);
   useEffect(() => {
     const fetchResults = async () => {
       try {
@@ -30,14 +30,12 @@ const Results = () => {
         🏆 Exam Results
       </h2>
 
-      {completedExams.length === 0 ? (
+      {completedExams?.length === 0 ? (
         <p className="text-center text-gray-500 text-lg">No results found.</p>
       ) : (
         <div className="bg-white shadow-lg rounded-lg overflow-hidden">
-          {/* Table Container with Fixed Height & Scrollable Body */}
           <div className="max-h-[400px] overflow-y-auto">
             <table className="w-full border-collapse">
-              {/* Sticky Header */}
               <thead className="bg-gray-200 text-gray-700 sticky top-0 z-10">
                 <tr>
                   <th className="p-3 text-left">Exam</th>
@@ -49,10 +47,9 @@ const Results = () => {
                 </tr>
               </thead>
 
-              {/* Scrollable Body */}
               <tbody className="bg-white">
                 {completedExams.map((examData) => {
-                  const totalQuestions = examData.exam.questions.length;
+                  const totalQuestions = examData.exam.questions?.length;
                   const percentage =
                     totalQuestions > 0
                       ? ((examData.score / totalQuestions) * 100).toFixed(2)
