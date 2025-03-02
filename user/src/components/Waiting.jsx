@@ -8,6 +8,7 @@ const Waiting = () => {
   });
   const [isVerified, setIsVerified] = useState(false);
   const [username, setUsername] = useState("");
+  const [userDeleted, setUserDeleted] = useState(false); // State to track if the user is deleted
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -16,29 +17,51 @@ const Waiting = () => {
     } else {
       setUsername(registeredUser.userName);
     }
-  }, [navigate]);
+  }, [navigate, registeredUser]);
 
   useEffect(() => {
     const checkVerification = async () => {
       try {
         const res = await checkVerificationStatus(registeredUser._id);
-        if (res.ok) {
-          const data = await res.json();
-          setRegisteredUser(data.user);
-          setIsVerified(data.user.isVerified);
-        } else {
-          console.error("Failed to check verification status");
+        if (!res.ok) {
+          // Handle user deletion case here
+          if (res.status === 404) {
+            setUserDeleted(true); // Set user as deleted if status is 404
+            // Remove user data from local storage if account is deleted
+            localStorage.removeItem("user"); // Remove the user data
+            localStorage.removeItem("registration_token"); // Optionally remove registration token
+            return;
+          }
+          console.error("Error checking verification status");
+          return;
         }
+
+        const data = await res.json();
+        setRegisteredUser(data.user);
+        setIsVerified(data.user.isVerified);
       } catch (error) {
         console.error("Error checking verification status:", error);
       }
     };
-    checkVerification();
-  }, []);
+
+    if (registeredUser) {
+      checkVerification();
+    }
+  }, [registeredUser]);
 
   return (
     <div className="flex items-center justify-center min-h-screen bg-gray-100">
-      {isVerified ? (
+      {userDeleted ? (
+        <div className="bg-white shadow-md rounded-lg p-8 w-96 text-center">
+          <h2 className="text-2xl font-bold text-red-600 mb-4">
+            Account Deleted
+          </h2>
+          <p className="text-gray-600 mb-4">
+            We're sorry, but your account has been deleted. You are no longer
+            able to access our services.
+          </p>
+        </div>
+      ) : isVerified ? (
         <div className="bg-white shadow-md rounded-lg p-8 w-96 text-center">
           <h2 className="text-2xl font-bold text-green-600 mb-4">
             Welcome, {username}!
@@ -49,7 +72,6 @@ const Waiting = () => {
           </p>
           <button
             onClick={() => {
-              // console.log(registeredUser);
               navigate("/login", { state: registeredUser });
             }}
             className="bg-green-500 text-white py-2 px-4 rounded hover:bg-green-600"

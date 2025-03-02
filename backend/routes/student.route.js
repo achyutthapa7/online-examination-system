@@ -13,6 +13,7 @@ const {
   viewExams,
   showCompletedExams,
   getSubmittedQuestions,
+  me,
 } = require("../controllers/student.controller");
 const authMiddleware = require("../middlewares/authMiddleware");
 
@@ -45,5 +46,10 @@ router.get(
   authMiddleware,
   getAnswerOfSpecificQuestion
 );
-router.get("/getSubmittedQuestions/:examId", authMiddleware, getSubmittedQuestions);
+router.get(
+  "/getSubmittedQuestions/:examId",
+  authMiddleware,
+  getSubmittedQuestions
+);
+router.get("/me", authMiddleware, me);
 module.exports = router;

@@ -354,6 +354,20 @@ const getSubmittedQuestions = async (req, res) => {
     handleError(res, error);
   }
 };
+
+const me = async (req, res) => {
+  try {
+    const user = await studentModel
+      .findOne({ _id: req.rootUser?._id })
+      .select("-password");
+    if (!user) {
+      return res.status(404).json({ message: "User not found" });
+    }
+    res.status(200).json(user);
+  } catch (error) {
+    handleError(res, error);
+  }
+};
 module.exports = {
   showCompletedExams,
   getYearAndSemester,
@@ -369,4 +383,5 @@ module.exports = {
   getPastExams,
   viewExams,
   getSubmittedQuestions,
+  me,
 };

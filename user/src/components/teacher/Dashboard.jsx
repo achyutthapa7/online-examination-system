@@ -92,12 +92,7 @@ const Dashboard = () => {
             link="view-exams"
             isExpanded={isSidebarOpen}
           />
-          <SidebarItem
-            icon={FaTrashAlt}
-            label="Delete Exam"
-            link="delete-exam"
-            isExpanded={isSidebarOpen}
-          />
+
           <SidebarItem
             icon={FaListAlt}
             label="Exam Submissions"
