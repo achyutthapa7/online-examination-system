@@ -1,5 +1,6 @@
 const answerModel = require("../models/answer.model");
 const examModel = require("../models/exam.model");
+const notificationModel = require("../models/notifications.model");
 const questionModel = require("../models/question.model");
 const resultModel = require("../models/result.model");
 const studentModel = require("../models/student.model");
@@ -326,7 +327,8 @@ const me = async (req, res) => {
   try {
     const user = await studentModel
       .findOne({ _id: req.rootUser?._id })
-      .select("-password");
+      .select("-password")
+      .populate("notifications");
     if (!user) {
       return res.status(404).json({ message: "User not found" });
     }
@@ -335,6 +337,7 @@ const me = async (req, res) => {
     handleError(res, error);
   }
 };
+
 module.exports = {
   showCompletedExams,
   getYearAndSemester,

@@ -1,5 +1,6 @@
 const assignsubjectModel = require("../models/assignsubject.model");
 const examModel = require("../models/exam.model");
+const notificationModel = require("../models/notifications.model");
 const studentModel = require("../models/student.model");
 const teacherModel = require("../models/teacher.model");
 const handleError = require("../utils/handleError");
@@ -282,17 +283,18 @@ const notifyUsersForExam = async (req, res) => {
   try {
     const { message } = req.body;
     const { success, error } = messageSchema.safeParse(message);
-    const notification = {
+    const notification = new notificationModel({
       message,
-      date: new Date(), // Explicitly set the current date and time
-    };
+      date: new Date(),
+    });
+    await notification.save();
     await studentModel.updateMany(
       { isVerified: true },
-      { $push: { notifications: notification } }
+      { $push: { notifications: notification._id } }
     );
     await teacherModel.updateMany(
       { isAssigned: true },
-      { $push: { notifications: notification } }
+      { $push: { notifications: notification._id } }
     );
     res.json({ message: "Notifications sent successfully" });
   } catch (error) {

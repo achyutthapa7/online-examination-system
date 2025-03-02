@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { notifyUsers } from "../utils/api"; // Adjust the path as per your project structure
-
+import { toast } from "react-toastify";
 const NotifyUser = () => {
   const [message, setMessage] = useState("");
   const [successMessage, setSuccessMessage] = useState("");
@@ -24,9 +24,8 @@ const NotifyUser = () => {
     try {
       setLoading(true);
       const response = await notifyUsers(message.trim());
-
       if (response.status === 200) {
-        setSuccessMessage("Users notified successfully!");
+        toast.success("Users notified successfully!");
         setMessage("");
       }
     } catch (error) {

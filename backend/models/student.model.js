@@ -41,12 +41,8 @@ const studentSchema = mongoose.Schema(
     },
     notifications: [
       {
-        message: {
-          type: String,
-        },
-        date: {
-          type: String,
-        },
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "Notification",
       },
     ],
     role: {

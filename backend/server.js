@@ -5,6 +5,7 @@ const adminRoute = require("./routes/admin.route");
 const teacherRoute = require("./routes/teacher.route");
 const authRoute = require("./routes/auth.route");
 const studentRoute = require("./routes/student.route");
+const notificationsRoute = require("./routes/notification.route");
 const cors = require("cors");
 const app = express();
 const cookieParser = require("cookie-parser");
@@ -28,6 +29,7 @@ app.use("/api/admin", adminRoute);
 app.use("/api/teacher", teacherRoute);
 app.use("/api/auth/", authRoute);
 app.use("/api/student", studentRoute);
+app.use("/api/notifications", notificationsRoute);
 app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`);
 });

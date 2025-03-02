@@ -36,14 +36,8 @@ const teacherSchema = new mongoose.Schema(
     },
     notifications: [
       {
-        message: {
-          type: String,
-          trim: true,
-        },
-        date: {
-          type: Date,
-          default: Date.now,
-        },
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "Notification",
       },
     ],
     role: {

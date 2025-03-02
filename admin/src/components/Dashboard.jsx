@@ -9,6 +9,7 @@ import {
   FaPlus,
   FaSignOutAlt,
   FaClipboardList,
+  FaBell,
 } from "react-icons/fa";
 import { Tooltip as ReactTooltip } from "react-tooltip";
 
@@ -122,6 +123,13 @@ const DashboardLayout = () => {
                 icon={FaClipboardList}
                 label="View Exams"
                 onClick={() => navigate("/admin/view-exams")}
+                isExpanded={isSidebarOpen}
+              />
+
+              <SidebarItem
+                icon={FaBell}
+                label="Notify users"
+                onClick={() => navigate("/admin/notify-user")}
                 isExpanded={isSidebarOpen}
               />
             </li>

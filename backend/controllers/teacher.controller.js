@@ -339,7 +339,8 @@ const me = async (req, res) => {
   try {
     const user = await teacherModel
       .findOne({ _id: req.rootUser?._id })
-      .select("-password");
+      .select("-password")
+      .populate("notifications");
     if (!user) {
       return res.status(404).json({ message: "User not found" });
     }
