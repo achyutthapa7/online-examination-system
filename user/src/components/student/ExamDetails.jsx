@@ -25,13 +25,6 @@ const ExamDetails = () => {
               <div className=" p-6 mb-4 rounded-lg shadow-md " key={index}>
                 <h1>{elem.questionText}</h1>
 
-                {/* What to do here? show the options or just the correct answer? */}
-
-                {/* <ul className="list-disc pl-6 mt-2">
-                  {elem.options.map((option, ind) => (
-                    <li key={ind}>{option}</li>
-                  ))}
-                </ul> */}
                 <p className="mt-2 font-medium text-gray-700">
                   <strong>Answer:</strong>{" "}
                   {elem.options[elem.correctAnswer - 1]}

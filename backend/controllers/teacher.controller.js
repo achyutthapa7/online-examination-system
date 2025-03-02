@@ -362,5 +362,5 @@ module.exports = {
   saveExam,
   getSavedExam,
   updateQuestion,
-  me
+  me,
 };

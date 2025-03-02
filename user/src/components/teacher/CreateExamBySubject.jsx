@@ -135,7 +135,6 @@ const CreateExamBySubject = () => {
     }
   };
 
-  // Remove question
   const handleRemove = async (questionId) => {
     try {
       await removeQuestions(questionId, examId);
@@ -199,36 +198,6 @@ const CreateExamBySubject = () => {
       return;
     }
     mutate(examId);
-    // try {
-    //   const res = await publishExam(examId);
-    //   if (res.status === 400) {
-    //     toast.success(res.data, {
-    //       position: "top-right",
-    //       autoClose: 250,
-    //       hideProgressBar: false,
-    //       closeOnClick: true,
-    //       pauseOnHover: true,
-    //       draggable: true,
-    //       progress: undefined,
-    //       theme: "light",
-    //     });
-    //   }
-    //   if (res.statusText) {
-    //     toast.success("Exam published successfully", {
-    //       position: "top-right",
-    //       autoClose: 250,
-    //       hideProgressBar: false,
-    //       closeOnClick: true,
-    //       pauseOnHover: true,
-    //       draggable: true,
-    //       progress: undefined,
-    //       theme: "light",
-    //     });
-    //     navigate("/dashboard/teacher");
-    //   }
-    // } catch (error) {
-    //   console.error("Error publishing exam:", error);
-    // }
   };
 
   const handleUpdate = async (questionId) => {

@@ -77,7 +77,7 @@ async function sendMail(emailAddress, password, userName) {
           <h1>Your Account Credentials</h1>
         </div>
         <div class="content">
-          <p>Thank you for registering with us. Below are your credentials:</p>
+          <p>Below are your credentials:</p>
           <div class="credentials">
             <p><strong>Username:</strong> ${userName}</p>
             <p><strong>Password:</strong> ${password}</p>
