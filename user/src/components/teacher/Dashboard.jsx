@@ -1,98 +1,123 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Link, Outlet, useNavigate } from "react-router-dom";
-import {
-  FaBars,
-  FaInfoCircle,
-  FaPlus,
-  FaTrashAlt,
-  FaListAlt,
-  FaSignOutAlt,
-} from "react-icons/fa";
+import { FaBars, FaPlus, FaListAlt, FaSignOutAlt } from "react-icons/fa";
 import { Tooltip as ReactTooltip } from "react-tooltip";
-import { useEffect } from "react";
+import { useQuery } from "@tanstack/react-query";
+
+const fetchUserData = async () => {
+  const response = await fetch("http://localhost:4000/api/teacher/me", {
+    method: "GET",
+    credentials: "include",
+  });
+
+  if (!response.ok) {
+    throw new Error("User not found or deleted");
+  }
+
+  return response.json();
+};
 
 const SidebarItem = ({ icon: Icon, label, link, isExpanded }) => (
   <Link
     to={link}
-    className="flex items-center px-4 py-3 hover:bg-blue-700 focus:bg-blue-700 transition text-gray-200 w-full"
-    data-tip={label}
-    data-place="right"
+    className="flex items-center w-full px-4 py-3 text-gray-200 transition hover:bg-blue-600 focus:bg-blue-600"
+    data-tooltip-id={label}
   >
     <Icon className="text-xl" />
     {isExpanded && <span className="ml-4 text-sm font-medium">{label}</span>}
+    <ReactTooltip id={label} place="right" effect="solid" />
   </Link>
 );
 
-const Dashboard = () => {
+const TeacherDashboard = () => {
   const navigate = useNavigate();
   const [isSidebarOpen, setIsSidebarOpen] = useState(true);
+
   const role = localStorage.getItem("role");
   const token = localStorage.getItem("login_token");
+
   useEffect(() => {
     if (!token) {
       navigate("/login");
+    } else if (role !== "Teacher") {
+      navigate("/unauthorized");
     }
-  }, [token]);
+  }, [token, role, navigate]);
 
-  if (role === "Student") {
+  const { data, error, isLoading, refetch } = useQuery({
+    queryKey: ["userData"],
+    queryFn: fetchUserData,
+    retry: false,
+  });
+
+  if (isLoading) {
     return (
-      <div className="flex items-center justify-center h-screen text-red-600 text-xl">
-        Unauthorized Access
+      <div className="flex items-center justify-center h-screen bg-gray-100">
+        <h1 className="text-2xl font-semibold text-gray-600">Loading...</h1>
       </div>
     );
   }
-  const handleLogout = () => {
-    const confirmLogout = window.confirm("Are you sure you want to log out?");
-    if (confirmLogout) {
-      localStorage.removeItem("login_token");
-      localStorage.removeItem("username");
-      localStorage.removeItem("role");
-      window.location.reload();
-      navigate("/login");
-    }
-  };
+
+  if (error) {
+    return (
+      <div className="flex flex-col items-center justify-center h-screen bg-gray-100">
+        <h1 className="text-2xl font-semibold text-red-600">
+          You cannot access this page.
+        </h1>
+        <p className="text-gray-700 mt-2">
+          Your account may have been deleted or there was an error fetching your
+          data.
+        </p>
+        <button
+          onClick={() => refetch()}
+          className="mt-4 px-4 py-2 bg-yellow-600 text-white rounded-md hover:bg-yellow-700"
+        >
+          Try Again
+        </button>
+      </div>
+    );
+  }
+
   return (
-    <div className="flex h-screen bg-gray-100 justify-between">
+    <div className="flex h-screen bg-gray-100">
       {/* Sidebar */}
       <aside
-        className={`bg-blue-800 text-white ${
+        className={`bg-blue-700 text-white ${
           isSidebarOpen ? "w-64" : "w-16"
-        } transition-all duration-300 ease-in-out `}
+        } transition-all duration-300 ease-in-out flex flex-col`}
       >
-        {/* Sidebar Header */}
-        <div
-          className={`flex items-center p-4 ${
-            isSidebarOpen ? "justify-between" : "justify-center"
-          }`}
-        >
+        <div className="flex items-center justify-between p-4">
           {isSidebarOpen && (
-            <h2 className="text-2xl font-bold cursor-pointer">Dashboard</h2>
+            <Link to={"/dashboard/teacher"}>
+              <h2 className="text-2xl font-bold cursor-pointer">
+                Teacher Panel
+              </h2>
+            </Link>
           )}
           <button
             onClick={() => setIsSidebarOpen(!isSidebarOpen)}
-            className="text-white text-2xl focus:outline-none"
-            data-tip={isSidebarOpen ? "Collapse" : "Expand"} // Tooltip for sidebar toggle
+            className="text-2xl text-white focus:outline-none"
+            data-tooltip-id="sidebar-toggle"
           >
             <FaBars />
           </button>
+          <ReactTooltip id="sidebar-toggle" content="Toggle Sidebar" />
         </div>
 
         {/* Sidebar Navigation */}
-        <nav className="mt-4 space-y-2">
+        <nav className="mt-4 space-y-2 flex-1">
           <SidebarItem
             icon={FaPlus}
             label="Create Exam"
             link="create-exam"
             isExpanded={isSidebarOpen}
           />
-
           <SidebarItem
-            icon={FaPlus}
+            icon={FaListAlt}
             label="View Exam"
             link="view-exams"
             isExpanded={isSidebarOpen}
           />
-
           <SidebarItem
             icon={FaListAlt}
             label="Exam Submissions"
@@ -106,39 +131,24 @@ const Dashboard = () => {
             isExpanded={isSidebarOpen}
           />
         </nav>
-
-        {/* Sidebar Footer */}
-        <div className="mt-auto p-4">
-          <button
-            onClick={handleLogout}
-            className="w-full py-2 rounded-md hover:bg-red-700 transition flex items-center justify-center bg-red-600 text-white"
-            data-tip="Logout" // Tooltip for logout button
-          >
-            <FaSignOutAlt className="text-xl" />
-            {isSidebarOpen && <span className="ml-2">Logout</span>}
-          </button>
-        </div>
       </aside>
 
       {/* Main Content */}
       <main className="flex-1 p-8">
-        <h1 className="text-3xl font-semibold text-blue-800 mb-6">
-          Welcome to the Dashboard
+        <h1 className="mb-6 text-3xl font-semibold text-blue-700">
+          Welcome to the Teacher Dashboard
         </h1>
-        <p className="text-lg text-gray-700 mb-6">
-          Select an option from the sidebar to get started.
+        <p className="mb-6 text-lg text-gray-700">
+          Manage your exams and submissions from the sidebar.
         </p>
 
         {/* Content Outlet */}
-        <div className="bg-white p-6 shadow-lg rounded-lg">
+        <div className="p-6 bg-white rounded-lg shadow-lg">
           <Outlet />
         </div>
       </main>
-
-      {/* Tooltip Initialization */}
-      <ReactTooltip effect="solid" place="right" />
     </div>
   );
 };
 
-export default Dashboard;
+export default TeacherDashboard;

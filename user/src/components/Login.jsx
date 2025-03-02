@@ -92,8 +92,10 @@ const Login = () => {
         });
         if (res.data.role === "Teacher") {
           navigate("/dashboard/teacher");
+          window.location.reload();
         } else {
           navigate("/dashboard/student");
+          window.location.reload();
         }
       }
     } catch (error) {
@@ -211,7 +213,7 @@ const Login = () => {
             to="/forgot-password"
             className="text-blue-500 hover:text-blue-700 font-semibold"
           >
-            Forgot  password?{" "}
+            Forgot password?{" "}
           </Link>
         </div>
       </div>

@@ -1,20 +1,21 @@
 import React from "react";
 import { Link } from "react-router-dom";
 
+const handleLogout = () => {
+  const confirmLogout = window.confirm("Are you sure you want to log out?");
+  if (confirmLogout) {
+    localStorage.removeItem("login_token");
+    localStorage.removeItem("username");
+    localStorage.removeItem("role");
+    window.location.reload();
+    window.location.href = "/login";
+  }
+};
+
 const Nav = () => {
   const login_token = localStorage.getItem("login_token");
   const userName = localStorage.getItem("username") || "User";
   const role = localStorage.getItem("role");
-  const handleLogout = () => {
-    const confirmLogout = window.confirm("Are you sure you want to log out?");
-    if (confirmLogout) {
-      localStorage.removeItem("login_token");
-      localStorage.removeItem("username");
-      localStorage.removeItem("role");
-      window.location.reload();
-      window.location.href = "/login";
-    }
-  };
 
   const getInitial = (name) => {
     return name.charAt(0).toUpperCase();
@@ -39,12 +40,12 @@ const Nav = () => {
                   {getInitial(userName)}
                 </div>
               </Link>
-              {/* <button
+              <button
                 onClick={handleLogout}
-                className="text-blue-500 font-semibold hover:text-blue-700 transition"
+                className=" justify-center w-full py-2 px-4 text-white transition bg-red-600 rounded-md hover:bg-red-700"
               >
                 Logout
-              </button> */}
+              </button>
             </>
           ) : (
             <>
@@ -69,3 +70,4 @@ const Nav = () => {
 };
 
 export default Nav;
+export { handleLogout };

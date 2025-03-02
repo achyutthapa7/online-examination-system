@@ -74,6 +74,7 @@ const AllTeachers = () => {
           progress: undefined,
           theme: "light",
         });
+        window.location.reload();
       }
     } catch (err) {
       console.error("Error deleting teacher:", err);

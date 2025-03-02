@@ -9,13 +9,15 @@ const getExamQuestion = async (req, res) => {
   const { examId } = req.params;
 
   const exams = await examModel.find({ _id: examId });
-  // res.json({ msg: "this " });
   res.json(exams);
 };
 
 const getExams = async (req, res) => {
   try {
-    const exams = await examModel.find({}).populate("questions");
+    const exams = await examModel
+      .find({})
+      .populate("questions")
+      .sort({ createdAt: -1 });
 
     const availableExams = exams.filter((exam) => {
       const isCompleted = exam.isCompleted;
@@ -259,42 +261,7 @@ const getYearAndSemester = async (req, res) => {
   });
 };
 
-const calculateExamScore = async (req, res) => {
-  // const { examId } = req.params;
-  // try {
-  //   const exam = await examModel.findById(examId).populate("questions");
-  //   if (!exam) {
-  //     return res.status(404).json({ message: "Exam not found" });
-  //   }
-  //   const answers = await answerModel.find({
-  //     questionId: { $in: exam.questions.map((q) => q._id) },
-  //     studentId: req.rootUser._id,
-  //   });
-  //   let score = 0;
-  //   exam.questions.forEach((question) => {
-  //     const answer = answers.find((ans) => ans.questionId.equals(question._id));
-  //     if (
-  //       answer &&
-  //       question.options[question.correctAnswer - 1] === answer.selectedOption
-  //     ) {
-  //       score += 1;
-  //     }
-  //   });
-  //   // Save the result in the result model
-  //   const newResult = new resultModel({
-  //     student: req.rootUser._id,
-  //     exam: examId,
-  //     score,
-  //   });
-  //   await newResult.save();
-  //   res.status(200).json({
-  //     message: "Score calculated successfully",
-  //     score,
-  //   });
-  // } catch (error) {
-  //   res.status(500).json({ message: "Server Error", error: error.message });
-  // }
-};
+const calculateExamScore = async (req, res) => {};
 
 const getExamForStudent = async (req, res) => {
   try {

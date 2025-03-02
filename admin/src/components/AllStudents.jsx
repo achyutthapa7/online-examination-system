@@ -61,8 +61,8 @@ const AllStudents = () => {
         progress: undefined,
         theme: "light",
       });
+      window.location.reload();
     }
-    window.location.reload();
   };
 
   return (

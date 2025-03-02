@@ -11,6 +11,7 @@ const {
   saveExam,
   getSavedExam,
   updateQuestion,
+  me,
 } = require("../controllers/teacher.controller");
 const authMiddleware = require("../middlewares/authMiddleware");
 
@@ -28,5 +29,6 @@ router.patch("/publishExam/:examId", authMiddleware, publishExam);
 router.post("/saveExam/:examId", authMiddleware, saveExam);
 router.get("/getSavedExam", authMiddleware, getSavedExam);
 router.put("/updateQuestion/:questionId", authMiddleware, updateQuestion);
+router.get("/me", authMiddleware, me);
 
 module.exports = router;

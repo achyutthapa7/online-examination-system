@@ -6,18 +6,24 @@ import { useQuery } from "@tanstack/react-query";
 const TakeExam = () => {
   const [exams, setExams] = useState([]);
   const [upcomingExams, setUpcomingExams] = useState([]);
-
   const navigate = useNavigate();
+
+  const currentTime = new Date().getTime();
 
   const { data, isLoading, error } = useQuery({
     queryKey: ["studentExams"],
     queryFn: getStudentExams,
-    refetchInterval: 2000,
+    refetchInterval: 1000,
     refetchOnWindowFocus: true,
     staleTime: 1000 * 60 * 5,
     onSuccess: (data) => {
       console.log(data);
-      setExams(Array.isArray(data.data.exams) ? data.data.exams : []);
+      const filteredExams = (data.data.exams || []).filter((exam) => {
+        const startTime = new Date(exam.startTime).getTime();
+        const endTime = new Date(exam.endTime).getTime();
+        return currentTime >= startTime && currentTime <= endTime; // Ongoing exams only
+      });
+      setExams(filteredExams);
     },
   });
 
@@ -33,7 +39,7 @@ const TakeExam = () => {
     staleTime: 1000 * 60 * 5,
     onSuccess: (data) => {
       console.log(data);
-      setUpcomingExams(Array.isArray(data.data.exams) ? data.data.exams : []);
+      setUpcomingExams(data.data.exams || []);
     },
   });
 
@@ -46,9 +52,7 @@ const TakeExam = () => {
         Available Exams
       </h1>
 
-      {isLoading ? (
-        <div className="text-center text-gray-600">Loading exams...</div>
-      ) : exams.length === 0 ? (
+      {exams.length === 0 ? (
         <div className="text-center text-gray-600">No available exams.</div>
       ) : (
         <div className="grid grid-cols-1 gap-6 mb-12 md:grid-cols-2 lg:grid-cols-3">

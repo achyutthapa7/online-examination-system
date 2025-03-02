@@ -28,11 +28,6 @@ const addTeacherSchema = z.object({
 
 const addTeacher = async (req, res) => {
   try {
-    // if (!req.admin) {
-    //   return res
-    //     .status(403)
-    //     .json({ message: "Access denied. You are not admin." });
-    // }
     const { emailAddress, userName, password, fullName } = req.body;
 
     const { success, error } = addTeacherSchema.safeParse(req.body);
@@ -76,7 +71,8 @@ const getAllRegisteredTeachers = async (req, res) => {
     const teachers = await teacherModel
       .find({})
       .select("-notifications")
-      .populate("assignedSubjects");
+      .populate("assignedSubjects")
+      .sort({ createdAt: -1 });
     res.json(teachers);
   } catch (error) {
     handleError(res, error);
@@ -110,7 +106,8 @@ const getAllRegisteredStudent = async (req, res) => {
     const students = await studentModel
       .find({})
       .select("-password")
-      .select("-notification");
+      .select("-notification")
+      .sort({ createdAt: -1 });
     res.json(students);
   } catch (error) {
     handleError(res, error);
@@ -305,7 +302,7 @@ const notifyUsersForExam = async (req, res) => {
 
 const viewExams = async (req, res) => {
   try {
-    const exams = await examModel.find({});
+    const exams = await examModel.find({}).sort({ createdAt: -1 });
 
     res.json(exams);
   } catch (error) {
@@ -325,36 +322,6 @@ const viewIndividualExam = async (req, res) => {
 };
 
 const getExams = async (req, res) => {};
-// const setDateAndTimeForExams = async (req, res) => {
-//   try {
-//     const { examId } = req.params;
-//     const { day, time } = req.body;
-//     if (!examId || !day || !time) {
-//       return res.status(400).json({ message: "Missing required fields" });
-//     }
-//     const exam = await examModel.findByIdAndUpdate(
-//       examId,
-//       { $set: { day, time } },
-//       { new: true }
-//     );
-//     if (!exam) return res.status(404).json({ message: "Exam not found" });
-//     res.json(exam);
-//   } catch (error) {
-//     handleError(res, error);
-//   }
-// };
-
-// ! where to put this to check continuously??
-//! const exam1 = await examModel.find({ _id: examId });
-//! const endTime = exam1.endTime;
-//! if (Date.now() > endTime) {
-//!   console.log("time up");
-//!   await examModel.findByIdAndUpdate(
-//!     examId,
-//!     { $set: { isCompleted: true } },
-//!     { new: true }
-//!   );
-//! }
 
 const checkStatus = async () => {
   const exam1 = await examModel.find({ _id: examId });

@@ -9,8 +9,8 @@ import {
 } from "react-icons/fa";
 import { Tooltip as ReactTooltip } from "react-tooltip";
 import { useQuery } from "@tanstack/react-query";
+import { handleLogout } from "../Nav";
 
-// Fetch user data using React Query
 const fetchUserData = async () => {
   const response = await fetch("http://localhost:4000/api/student/me", {
     method: "GET",
@@ -43,7 +43,6 @@ const StudentDashboard = () => {
   const role = localStorage.getItem("role");
   const token = localStorage.getItem("login_token");
 
-  // Redirect unauthorized users
   useEffect(() => {
     if (!token) {
       navigate("/login");
@@ -52,28 +51,12 @@ const StudentDashboard = () => {
     }
   }, [token, role, navigate]);
 
-  // Use React Query's useQuery to fetch user data
-  const {
-    data,
-    error,
-    isLoading,
-    refetch, // Refetch function for manual re-fetching
-  } = useQuery({
+  const { data, error, isLoading, refetch } = useQuery({
     queryKey: ["userData"],
     queryFn: fetchUserData,
-    retry: false, // Disable retry for this specific request to avoid endless retry loop
+    retry: false,
   });
 
-  const handleLogout = () => {
-    if (window.confirm("Are you sure you want to log out?")) {
-      localStorage.removeItem("login_token");
-      localStorage.removeItem("username");
-      localStorage.removeItem("role");
-      navigate("/login");
-    }
-  };
-
-  // If the query is loading
   if (isLoading) {
     return (
       <div className="flex items-center justify-center h-screen bg-gray-100">
@@ -82,7 +65,6 @@ const StudentDashboard = () => {
     );
   }
 
-  // If there is an error fetching the data (user not found or deleted)
   if (error) {
     return (
       <div className="flex flex-col items-center justify-center h-screen bg-gray-100">
@@ -94,7 +76,7 @@ const StudentDashboard = () => {
           data.
         </p>
         <button
-          onClick={() => refetch()} // Trigger refetch if user wants to try again
+          onClick={() => refetch()}
           className="mt-4 px-4 py-2 bg-yellow-600 text-white rounded-md hover:bg-yellow-700"
         >
           Try Again
@@ -163,16 +145,7 @@ const StudentDashboard = () => {
           />
         </nav>
 
-        {/* Logout Button */}
         <div className="p-4">
-          <button
-            onClick={handleLogout}
-            className="flex items-center justify-center w-full py-2 text-white transition bg-red-600 rounded-md hover:bg-red-700"
-            data-tooltip-id="logout"
-          >
-            <FaSignOutAlt className="text-xl" />
-            {isSidebarOpen && <span className="ml-2">Logout</span>}
-          </button>
           <ReactTooltip id="logout" content="Logout" />
         </div>
       </aside>
