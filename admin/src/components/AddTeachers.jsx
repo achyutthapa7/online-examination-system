@@ -1,4 +1,3 @@
-
 import { useState } from "react";
 import { addTeacher } from "../utils/api";
 import { toast } from "react-toastify";
@@ -22,11 +21,51 @@ const AddTeachers = () => {
     });
   };
   const [isAdded, setIsAdded] = useState(false);
-
+  const emailRegex = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,6}$/;
   const handleSubmit = async (e) => {
     e.preventDefault();
     if (!emailAddress || !userName || !password || !fullName) {
       toast.warn("Please fill in all required fields", {
+        position: "top-right",
+        autoClose: 250,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+      });
+      return;
+    }
+    if (userName.length < 3) {
+      toast.warn("Username must be at least 3 characters", {
+        position: "top-right",
+        autoClose: 250,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+      });
+      return;
+    }
+
+    if (password.length < 6) {
+      toast.warn("Password must be at least 6 characters", {
+        position: "top-right",
+        autoClose: 250,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+      });
+      return;
+    }
+    if (!emailRegex.test(emailAddress)) {
+      toast.warn("Please enter a valid email address", {
         position: "top-right",
         autoClose: 250,
         hideProgressBar: false,

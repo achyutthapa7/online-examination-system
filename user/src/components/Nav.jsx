@@ -71,10 +71,13 @@ const Nav = () => {
     queryFn: fetchNotifications,
   });
 
-  const unreadNotifications = notifications?.filter(
-    (notification) =>
-      notification.viewedBy && !notification.viewedBy[role]?.includes(userName)
-  );
+  const unreadNotifications =
+    notifications.length > 0 &&
+    notifications?.filter(
+      (notification) =>
+        notification.viewedBy &&
+        !notification.viewedBy[role]?.includes(userName)
+    );
 
   const unreadCount = unreadNotifications.length;
 
