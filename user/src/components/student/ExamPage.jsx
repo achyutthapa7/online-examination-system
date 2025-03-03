@@ -129,12 +129,13 @@ const ExamPage = () => {
       for (let i = 0; i < questions.length; i++) {
         const questionId = questions[i]._id;
         if (!submittedQuestion.has(questionId)) {
+          console.log(questionId, examId);
           await submitIndividualAnswer(questionId, examId, null); // Submit unanswered with null
         }
       }
       const response = await submitExam(examId);
       if (response.status === 200 || response.statusText === "OK") {
-        toast.success("Exam is submitted successfully.");
+        alert("Exam is submitted successfully.");
         navigate("/dashboard/student");
       } else {
         console.error("Failed to submit exam:", response.statusText);
@@ -143,11 +144,10 @@ const ExamPage = () => {
       console.error("Error auto-submitting exam:", error.message);
     }
   };
-
   const handleSubmitExam = async () => {
     try {
       if (Date.now() > examEndTime) {
-        toast.error("Time is over");
+        alert("Time is over");
         await handleAutoSubmitExam();
         return;
       }
@@ -159,7 +159,7 @@ const ExamPage = () => {
       const response = await submitExam(examId);
 
       if (response.status === 200 || response.statusText === "OK") {
-        toast.success("Exam is submitted successfully.");
+        alert("Exam is submitted successfully.");
         navigate("/dashboard/student");
       } else {
         console.error("Failed to submit exam:", response.statusText);
