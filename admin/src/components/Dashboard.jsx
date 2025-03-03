@@ -13,7 +13,6 @@ import {
 } from "react-icons/fa";
 import { Tooltip as ReactTooltip } from "react-tooltip";
 
-// eslint-disable-next-line react/prop-types
 const SidebarItem = ({ icon: Icon, label, onClick, isExpanded }) => (
   <button
     className="relative flex items-center w-full px-4 py-3 text-gray-300 transition hover:bg-gray-700 focus:bg-gray-700"

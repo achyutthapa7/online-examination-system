@@ -6,7 +6,6 @@ import {
 } from "../../utils/api";
 import { useParams, useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
-
 const ExamPage = () => {
   const { examId } = useParams();
   const [timeLeft, setTimeLeft] = useState(null);
@@ -92,7 +91,9 @@ const ExamPage = () => {
 
       if (remainingTime <= 0) {
         clearInterval(timer);
-        toast.error("Time's up! Your answers are submitted automatically.");
+
+        alert("Time's up! Your answers are submitted automatically.");
+
         handleSubmitExam();
       }
     }, 1000);
@@ -129,13 +130,12 @@ const ExamPage = () => {
       for (let i = 0; i < questions.length; i++) {
         const questionId = questions[i]._id;
         if (!submittedQuestion.has(questionId)) {
-          console.log(questionId, examId);
           await submitIndividualAnswer(questionId, examId, null); // Submit unanswered with null
         }
       }
       const response = await submitExam(examId);
       if (response.status === 200 || response.statusText === "OK") {
-        alert("Exam is submitted successfully.");
+        toast.success("Exam is submitted successfully");
         navigate("/dashboard/student");
       } else {
         console.error("Failed to submit exam:", response.statusText);
@@ -147,7 +147,7 @@ const ExamPage = () => {
   const handleSubmitExam = async () => {
     try {
       if (Date.now() > examEndTime) {
-        alert("Time is over");
+        toast.error("Time is over");
         await handleAutoSubmitExam();
         return;
       }
@@ -159,7 +159,7 @@ const ExamPage = () => {
       const response = await submitExam(examId);
 
       if (response.status === 200 || response.statusText === "OK") {
-        alert("Exam is submitted successfully.");
+        toast.success("Exam is submitted successfully.");
         navigate("/dashboard/student");
       } else {
         console.error("Failed to submit exam:", response.statusText);
