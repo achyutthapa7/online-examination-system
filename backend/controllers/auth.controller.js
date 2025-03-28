@@ -101,7 +101,6 @@ const registerStudent = async (req, res) => {
 
 const loginUser = async (req, res) => {
   try {
-    //I feel like the validation not necessary here,might be wrong, don't know for sure...
     const { userName, password, role } = req.body;
     if (!userName || !password || !role) {
       return res.status(400).json({ message: "Missing required fields" });
@@ -122,7 +121,12 @@ const loginUser = async (req, res) => {
       return res.status(403).json({ message: "Invalid email or password" });
     }
     const token = await jwt.sign({ _id: rootUser._id }, process.env.SECRET_KEY);
-    res.cookie("login_token", token);
+    res.cookie("login_token", token, {
+      httpOnly: true,
+      sameSite: "none",
+      maxAge: 60 * 60 * 24,
+      secure: true,
+    });
     res.status(200).json({
       message: "login successfull",
       token,
@@ -162,7 +166,10 @@ const loginAdmin = async (req, res) => {
 
 const logout = async (req, res) => {
   try {
-    res.clearCookie("token");
+    res.clearCookie("login_token", {
+      secure: true,
+      sameSite: "none",
+    });
     res.json({ message: "Logged out successfully", currentUser: req.rootUser });
   } catch (error) {
     handleError(res, error);
