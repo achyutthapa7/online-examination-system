@@ -13,7 +13,7 @@ import { handleLogout } from "../Nav";
 import { API_URL } from "../../utils/api";
 
 const fetchUserData = async () => {
-  const response = await fetch(`${API_URL}/api/student/me`, {
+  const response = await fetch(`${API_URL}/student/me`, {
     method: "GET",
     credentials: "include",
   });

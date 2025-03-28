@@ -6,7 +6,7 @@ import { useQuery } from "@tanstack/react-query";
 import { API_URL } from "../../utils/api";
 
 const fetchUserData = async () => {
-  const response = await fetch(`${API_URL}/api/teacher/me`, {
+  const response = await fetch(`${API_URL}/teacher/me`, {
     method: "GET",
     credentials: "include",
   });

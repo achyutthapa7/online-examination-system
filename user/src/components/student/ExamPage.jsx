@@ -22,7 +22,7 @@ const ExamPage = () => {
   useEffect(() => {
     const getSubmittedQuestion = async () => {
       const res = await fetch(
-        `${API_URL}/api/student/getSubmittedQuestions/${examId}`,
+        `${API_URL}/student/getSubmittedQuestions/${examId}`,
         {
           method: "GET",
           credentials: "include",

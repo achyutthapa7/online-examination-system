@@ -8,7 +8,7 @@ const Results = () => {
   useEffect(() => {
     const fetchResults = async () => {
       try {
-        const res = await fetch(`${API_URL}/api/student/showCompletedExams`, {
+        const res = await fetch(`${API_URL}/student/showCompletedExams`, {
           method: "GET",
           credentials: "include",
         });

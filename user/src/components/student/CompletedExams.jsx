@@ -10,7 +10,7 @@ const CompletedExams = () => {
     const fetchCompletedExams = async () => {
       try {
         const res = await fetch(
-          `${API_URL}/api/student/showCompletedExams`,
+          `${API_URL}/student/showCompletedExams`,
           {
             method: "GET",
             credentials: "include",
