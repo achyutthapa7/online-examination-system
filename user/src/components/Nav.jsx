@@ -2,15 +2,15 @@ import React, { useState, useEffect, useRef } from "react";
 import { Link } from "react-router-dom";
 import { FaBell } from "react-icons/fa";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
-
+const API_URL =
+  import.meta.env.MODE === "production"
+    ? import.meta.env.VITE_API_URL_PRODUCTION
+    : import.meta.env.VITE_API_URL_DEVELOPMENT;
 const fetchNotifications = async () => {
-  const response = await fetch(
-    "http://localhost:4000/api/notifications/getNotifications",
-    {
-      method: "GET",
-      credentials: "include",
-    }
-  );
+  const response = await fetch(`${API_URL}/notifications/getNotifications`, {
+    method: "GET",
+    credentials: "include",
+  });
 
   if (!response.ok) {
     throw new Error("Failed to fetch notifications");
@@ -21,7 +21,7 @@ const fetchNotifications = async () => {
 
 const markNotificationsAsRead = async (role, userName) => {
   const response = await fetch(
-    `http://localhost:4000/api/notifications/markNotificationsAsRead/${role}/${userName}`,
+    `${API_URL}/notifications/markNotificationsAsRead/${role}/${userName}`,
     {
       method: "PUT",
       credentials: "include",

@@ -1,6 +1,8 @@
+import { API_URL } from "./api";
+
 export const checkVerificationStatus = async (studentId) => {
   return await fetch(
-    `http://localhost:4000/api/auth/getUserVerificationStatus/${studentId}`,
+    `${API_URL}/api/auth/getUserVerificationStatus/${studentId}`,
     {
       method: "GET",
       headers: {

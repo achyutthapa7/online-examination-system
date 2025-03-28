@@ -143,7 +143,6 @@ const loginAdmin = async (req, res) => {
     const adminUserName = process.env.ADMIN_USER;
     const adminPassword = process.env.ADMIN_PASS;
     const { userName, password } = req.body;
-    //same here, no validation required here neither
     if (!userName || !password) {
       return res.status(400).json({ message: "Missing required fields" });
     }

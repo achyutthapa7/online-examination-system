@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import { API_URL } from "../../utils/api";
 
 const Results = () => {
   const [completedExams, setCompletedExams] = useState([]);
@@ -7,13 +8,10 @@ const Results = () => {
   useEffect(() => {
     const fetchResults = async () => {
       try {
-        const res = await fetch(
-          "http://localhost:4000/api/student/showCompletedExams",
-          {
-            method: "GET",
-            credentials: "include",
-          }
-        );
+        const res = await fetch(`${API_URL}/api/student/showCompletedExams`, {
+          method: "GET",
+          credentials: "include",
+        });
         const data = await res.json();
         setCompletedExams(data.completedExams);
       } catch (error) {

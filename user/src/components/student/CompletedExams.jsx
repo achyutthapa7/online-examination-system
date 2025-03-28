@@ -1,5 +1,8 @@
 import { useEffect, useState } from "react";
-
+const API_URL =
+  import.meta.env.MODE === "production"
+    ? import.meta.env.VITE_API_URL_PRODUCTION
+    : import.meta.env.VITE_API_URL_DEVELOPMENT;
 const CompletedExams = () => {
   const [completedExams, setCompletedExams] = useState([]);
 
@@ -7,7 +10,7 @@ const CompletedExams = () => {
     const fetchCompletedExams = async () => {
       try {
         const res = await fetch(
-          "http://localhost:4000/api/student/showCompletedExams",
+          `${API_URL}/api/student/showCompletedExams`,
           {
             method: "GET",
             credentials: "include",

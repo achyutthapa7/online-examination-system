@@ -3,9 +3,10 @@ import { Link, Outlet, useNavigate } from "react-router-dom";
 import { FaBars, FaPlus, FaListAlt, FaSignOutAlt } from "react-icons/fa";
 import { Tooltip as ReactTooltip } from "react-tooltip";
 import { useQuery } from "@tanstack/react-query";
+import { API_URL } from "../../utils/api";
 
 const fetchUserData = async () => {
-  const response = await fetch("http://localhost:4000/api/teacher/me", {
+  const response = await fetch(`${API_URL}/api/teacher/me`, {
     method: "GET",
     credentials: "include",
   });

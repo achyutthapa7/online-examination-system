@@ -10,9 +10,10 @@ import {
 import { Tooltip as ReactTooltip } from "react-tooltip";
 import { useQuery } from "@tanstack/react-query";
 import { handleLogout } from "../Nav";
+import { API_URL } from "../../utils/api";
 
 const fetchUserData = async () => {
-  const response = await fetch("http://localhost:4000/api/student/me", {
+  const response = await fetch(`${API_URL}/api/student/me`, {
     method: "GET",
     credentials: "include",
   });

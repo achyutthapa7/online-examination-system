@@ -3,6 +3,7 @@ import {
   getExamForStudent,
   submitIndividualAnswer,
   submitExam,
+  API_URL,
 } from "../../utils/api";
 import { useParams, useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
@@ -21,7 +22,7 @@ const ExamPage = () => {
   useEffect(() => {
     const getSubmittedQuestion = async () => {
       const res = await fetch(
-        `http://localhost:4000/api/student/getSubmittedQuestions/${examId}`,
+        `${API_URL}/api/student/getSubmittedQuestions/${examId}`,
         {
           method: "GET",
           credentials: "include",
