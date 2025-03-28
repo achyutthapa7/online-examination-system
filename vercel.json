@@ -1,12 +1,22 @@
 {
-  "rewrites": [
+  "version": 2,
+  "builds": [
     {
-      "source": "/admin/(.*)",
-      "destination": "/admin/index.html"
+      "src": "admin/package.json",
+      "use": "@vercel/node"
     },
     {
-      "source": "/(.*)",
-      "destination": "/index.html"
+      "src": "admin/**",
+      "use": "@vercel/static-build",
+      "config": {
+        "distDir": "admin/dist"
+      }
+    }
+  ],
+  "routes": [
+    {
+      "src": "/(.*)",
+      "dest": "/admin/$1"
     }
   ]
 }

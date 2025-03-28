@@ -25,7 +25,6 @@ const UpdateUserPassword = () => {
       try {
         const res = await getAllTeachers();
         setTeachers(res.data);
-        console.log(res.data);
       } catch (err) {
         console.error("Error fetching teachers:", err);
       }
@@ -38,7 +37,6 @@ const UpdateUserPassword = () => {
       try {
         const res = await getAllStudents();
         setStudents(res.data);
-        console.log(res.data);
       } catch (err) {
         console.error("Error fetching students:", err);
       }
