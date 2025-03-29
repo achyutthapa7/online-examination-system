@@ -14,7 +14,7 @@ const CreateExam = () => {
     const fetchTeacherDetails = async () => {
       try {
         const res = await getTeacherDetails();
-   
+
         setAssignedSubjects(res.data.user.assignedSubjects || []);
       } catch (err) {
         console.log(err);
@@ -44,7 +44,7 @@ const CreateExam = () => {
   const handleExamCreation = async (subj) => {
     try {
       const res = await createExam(subj.subject);
-      if (res.statusText) {
+      if (res.status === 201) {
         navigate(subj.subject, { state: res.data.exam._id });
       } else {
         toast.error("Failed to create exam for this subject.", {

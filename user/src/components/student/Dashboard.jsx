@@ -17,6 +17,7 @@ const fetchUserData = async () => {
     method: "GET",
     credentials: "include",
   });
+
   if (!response.ok) {
     throw new Error("User not found or deleted");
   }
@@ -39,7 +40,6 @@ const SidebarItem = ({ icon: Icon, label, link, isExpanded }) => (
 const StudentDashboard = () => {
   const navigate = useNavigate();
   const [isSidebarOpen, setIsSidebarOpen] = useState(true);
-
   const role = localStorage.getItem("role");
   const token = localStorage.getItem("login_token");
 
@@ -55,8 +55,11 @@ const StudentDashboard = () => {
     queryKey: ["userData"],
     queryFn: fetchUserData,
     retry: false,
+    // staleTime: 0, // Immediately consider the data stale
+    // cacheTime: 1000 * 60 * 5,
+    // refetch: true,
   });
-
+  console.log(error);
   if (isLoading) {
     return (
       <div className="flex items-center justify-center h-screen bg-gray-100">

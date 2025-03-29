@@ -124,8 +124,9 @@ const loginUser = async (req, res) => {
     res.cookie("login_token", token, {
       httpOnly: true,
       sameSite: "none",
-      maxAge: 60 * 60 * 24,
+      maxAge: 60 * 60 * 24 * 1000,
       secure: true,
+      path: "/",
     });
     res.status(200).json({
       message: "login successfull",
@@ -197,7 +198,6 @@ const forgotPassword = async (req, res) => {
     }
 
     if (student?.passwordResetRequest || teacher?.passwordResetRequest) {
-
       return res.status(400).json({
         message:
           "Password reset request already sent. Please wait for verification",

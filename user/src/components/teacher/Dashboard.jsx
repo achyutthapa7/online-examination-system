@@ -8,9 +8,11 @@ import { API_URL } from "../../utils/api";
 const fetchUserData = async () => {
   const response = await fetch(`${API_URL}/teacher/me`, {
     method: "GET",
+    headers: {
+      "Content-Type": "application/json",
+    },
     credentials: "include",
   });
-
   if (!response.ok) {
     throw new Error("User not found or deleted");
   }
@@ -33,7 +35,6 @@ const SidebarItem = ({ icon: Icon, label, link, isExpanded }) => (
 const TeacherDashboard = () => {
   const navigate = useNavigate();
   const [isSidebarOpen, setIsSidebarOpen] = useState(true);
-
   const role = localStorage.getItem("role");
   const token = localStorage.getItem("login_token");
 
