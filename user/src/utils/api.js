@@ -5,7 +5,6 @@ export const API_URL =
   import.meta.env.MODE === "production"
     ? import.meta.env.VITE_API_URL_PRODUCTION
     : import.meta.env.VITE_API_URL_DEVELOPMENT;
-console.log({ API_URL });
 export const registration = async (
   fullName,
   userName,
@@ -72,7 +71,6 @@ export const login = async (userName, password, role) => {
     // if (userName !== adminUserName || password !== adminPassword) {
     //   return res.status(401).json({ message: "Invalid email or password" });
     // }
-    console.log("h");
     console.error("Error during login:", error);
     throw error;
   }
@@ -289,7 +287,6 @@ export const getStudentExams = async () => {
         "Content-Type": "application/json",
       },
     });
-    // console.log(response);
     return response;
   } catch (error) {
     console.error("Error during fetching exams:", error);
@@ -320,7 +317,6 @@ export const viewExam = async (id) => {
         "Content-Type": "application/json",
       },
     });
-    console.log(response, "lkhdsa");
     return response;
   } catch (error) {
     console.error("Error during fetching teachers:", error);
@@ -498,7 +494,6 @@ export const forgotPassword = async (username, role) => {
 
 export const setIsCompleted = async (examId) => {
   try {
-    console.log("inside try");
     axios.post(
       `${API_URL}/admin/setExamCompleted`,
       { examId },
@@ -509,8 +504,6 @@ export const setIsCompleted = async (examId) => {
         },
       }
     );
-
-    console.log("inside try before last line");
   } catch (error) {
     console.error("Server error", error);
     throw error;

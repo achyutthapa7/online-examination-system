@@ -197,14 +197,12 @@ const forgotPassword = async (req, res) => {
     }
 
     if (student?.passwordResetRequest || teacher?.passwordResetRequest) {
-      console.log("Password reset request sent");
 
       return res.status(400).json({
         message:
           "Password reset request already sent. Please wait for verification",
       });
     }
-    console.log("Password reset request sent");
 
     if (role === "student") {
       await studentModel.findByIdAndUpdate(student._id, {

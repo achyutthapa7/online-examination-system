@@ -4,7 +4,6 @@ import { API_URL } from "../../utils/api";
 const Results = () => {
   const [completedExams, setCompletedExams] = useState([]);
   const passingPercentage = 40;
-  console.log(completedExams);
   useEffect(() => {
     const fetchResults = async () => {
       try {

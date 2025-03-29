@@ -7,7 +7,6 @@ const ExamDetails = () => {
   const getDetails = async () => {
     const id = window.location.href.split("/").pop();
     const response = await viewExam(id);
-    console.log(response.data);
     setQuestions(response.data);
   };
   useEffect(() => {

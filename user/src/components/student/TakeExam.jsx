@@ -17,7 +17,6 @@ const TakeExam = () => {
     refetchOnWindowFocus: true,
     staleTime: 1000 * 60 * 5,
     onSuccess: (data) => {
-      console.log(data);
       const filteredExams = (data.data.exams || []).filter((exam) => {
         const startTime = new Date(exam.startTime).getTime();
         const endTime = new Date(exam.endTime).getTime();
@@ -38,7 +37,6 @@ const TakeExam = () => {
     refetchOnWindowFocus: true,
     staleTime: 1000 * 60 * 5,
     onSuccess: (data) => {
-      console.log(data);
       setUpcomingExams(data.data.exams || []);
     },
   });

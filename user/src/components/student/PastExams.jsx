@@ -13,7 +13,6 @@ const PastExams = () => {
   const getExams = async () => {
     try {
       const response = await getPastExams();
-      console.log(response.data);
       setExams(Array.isArray(response.data.exams) ? response.data.exams : []);
     } catch (error) {
       console.error("Failed to fetch exams:", error);

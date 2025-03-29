@@ -94,7 +94,7 @@ const ViewExams = () => {
                 {expandedQuestions[exam._id] && (
                   <div className="bg-gray-100 p-6 rounded-lg shadow-md ">
                     <h3 className="text-xl font-semibold mb-4 text-gray-700">
-                      Questions {console.log(exam)}
+                      Questions
                     </h3>
                     {exam.questions.map((question) => (
                       <div
@@ -155,12 +155,7 @@ const ViewExams = () => {
                           key={submission._id}
                           className="bg-white p-5 rounded-lg shadow-sm mb-4 transition-all duration-200 hover:shadow-lg hover:bg-gray-50"
                         >
-                          {console.log(submission, "Sdsd")}
                           <h4 className="text-lg font-medium text-gray-800">
-                            {console.log(
-                              submission.student.completedExams[0].score,
-                              "jio"
-                            )}
                             Name : {submission.student.fullName}
                           </h4>
                           <p className="text-gray-700">

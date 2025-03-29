@@ -13,7 +13,6 @@ const Courses = () => {
   const navigate = useNavigate();
   const token = localStorage.getItem("login_token");
   useEffect(() => {
-    // console.log(localStorage.getItem("username"));
     const getStudent = async () => {
       const response = await getYearAndSemester(
         localStorage.getItem("username")

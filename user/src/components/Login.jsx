@@ -18,7 +18,9 @@ const Login = () => {
       if (role === "Student") navigate("/dashboard/student");
     }
   }, [login_token, role]);
+
   const data = useLocation();
+  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
     const checkVerification = async () => {
@@ -56,22 +58,17 @@ const Login = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    if (loading) return;
+
+    setLoading(true);
     const { userName, password, role } = credentials;
     try {
       if (!userName || !password || !role) {
-        toast.warn("All fields are required.", {
-          position: "top-right",
-          autoClose: 250,
-          hideProgressBar: false,
-          closeOnClick: true,
-          pauseOnHover: true,
-          draggable: true,
-          progress: undefined,
-          theme: "light",
-        });
-
+        toast.warn("All fields are required.", { autoClose: 250 });
+        setLoading(false);
         return;
       }
+
       const res = await login(userName, password, role);
 
       if (res.status === 200) {
@@ -80,37 +77,22 @@ const Login = () => {
         localStorage.setItem("login_token", res.data.token);
         localStorage.setItem("username", res.data.userName);
         localStorage.setItem("role", res.data.role);
-        toast.success("Logged In Successfully.", {
-          position: "top-right",
-          autoClose: 250,
-          hideProgressBar: false,
-          closeOnClick: true,
-          pauseOnHover: true,
-          draggable: true,
-          progress: undefined,
-          theme: "light",
-        });
+        toast.success("Logged In Successfully.", { autoClose: 250 });
+
         if (res.data.role === "Teacher") {
           navigate("/dashboard/teacher");
-          window.location.reload();
         } else {
           navigate("/dashboard/student");
-          window.location.reload();
         }
+        window.location.reload();
       }
     } catch (error) {
-      if (error.status === 401) {
-        toast.error("User  not found");
-      } else if (error.status === 402) {
-        toast.error("User is not verified");
-      } else if (error.status === 403) {
-        toast.error("Invalid password");
-      } else {
-        toast.error(
-          "Something went wrong, please try again or check the credentials"
-        );
-      }
-      console.error("Error logging in:", error);
+      if (error.status === 401) toast.error("User not found");
+      else if (error.status === 402) toast.error("User is not verified");
+      else if (error.status === 403) toast.error("Invalid password");
+      else toast.error("Something went wrong, please try again");
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -121,7 +103,6 @@ const Login = () => {
           Login
         </h2>
         <form onSubmit={handleSubmit}>
-          {/* Username */}
           <div className="mb-4">
             <label
               htmlFor="userName"
@@ -130,18 +111,17 @@ const Login = () => {
               Username
             </label>
             <input
-              disabled={data.state ? true : false}
+              disabled={!!data.state}
               type="text"
               id="userName"
               name="userName"
               value={credentials.userName}
               onChange={handleInputChange}
-              className="w-full border border-gray-300 px-4 py-2 rounded focus:outline-none focus:ring-2 focus:ring-blue-400"
+              className="w-full border px-4 py-2 rounded focus:ring-2 focus:ring-blue-400"
               placeholder="Enter your username"
             />
           </div>
 
-          {/* Password */}
           <div className="mb-4">
             <label
               htmlFor="password"
@@ -155,12 +135,11 @@ const Login = () => {
               name="password"
               value={credentials.password}
               onChange={handleInputChange}
-              className="w-full border border-gray-300 px-4 py-2 rounded focus:outline-none focus:ring-2 focus:ring-blue-400"
+              className="w-full border px-4 py-2 rounded focus:ring-2 focus:ring-blue-400"
               placeholder="Enter your password"
             />
           </div>
 
-          {/* Role Dropdown */}
           <div className="mb-4">
             <label
               htmlFor="role"
@@ -173,47 +152,38 @@ const Login = () => {
               name="role"
               value={credentials.role}
               onChange={handleInputChange}
-              className="w-full border border-gray-300 px-4 py-2 rounded focus:outline-none focus:ring-2 focus:ring-blue-400"
+              className="w-full border px-4 py-2 rounded focus:ring-2 focus:ring-blue-400"
             >
               <option value="Student">Student</option>
               <option value="Teacher">Teacher</option>
             </select>
           </div>
 
-          {/* Error Message */}
           {error && (
             <div className="mb-4 text-red-600 text-sm font-semibold">
               {error}
             </div>
           )}
 
-          {/* Submit Button */}
           <button
             type="submit"
-            className="w-full bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-400 font-semibold"
+            className="w-full bg-blue-500 text-white px-4 py-2 rounded font-semibold"
+            disabled={loading}
           >
-            Login
+            {loading ? "Logging in..." : "Login"}
           </button>
         </form>
 
-        {/* Additional Options */}
         <div className="mt-4 text-center text-sm text-gray-600">
           Don&apos;t have an account?{" "}
-          <Link
-            to="/register"
-            className="text-blue-500 hover:text-blue-700 font-semibold"
-          >
+          <Link to="/register" className="text-blue-500">
             Register here
           </Link>
         </div>
 
-        {/* Forgot Password */}
         <div className="mt-4 text-center text-sm text-gray-600">
-          <Link
-            to="/forgot-password"
-            className="text-blue-500 hover:text-blue-700 font-semibold"
-          >
-            Forgot password?{" "}
+          <Link to="/forgot-password" className="text-blue-500">
+            Forgot password?
           </Link>
         </div>
       </div>

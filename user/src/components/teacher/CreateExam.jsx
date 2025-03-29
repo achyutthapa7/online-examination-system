@@ -14,7 +14,7 @@ const CreateExam = () => {
     const fetchTeacherDetails = async () => {
       try {
         const res = await getTeacherDetails();
-        console.log({ res });
+   
         setAssignedSubjects(res.data.user.assignedSubjects || []);
       } catch (err) {
         console.log(err);
@@ -44,7 +44,6 @@ const CreateExam = () => {
   const handleExamCreation = async (subj) => {
     try {
       const res = await createExam(subj.subject);
-
       if (res.statusText) {
         navigate(subj.subject, { state: res.data.exam._id });
       } else {

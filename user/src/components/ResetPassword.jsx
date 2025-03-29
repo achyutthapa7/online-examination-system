@@ -24,7 +24,6 @@ const ForgotPassword = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     const { username, role } = credentials;
-    console.log(username, role);
 
     try {
       if (!username) {

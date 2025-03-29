@@ -85,7 +85,6 @@ const getStudentWithPasswordResetRequest = async (req, res) => {
     const student = await studentModel.find({
       passwordResetRequest: true,
     });
-    console.log(student);
   } catch (error) {
     console.error(error);
   }
@@ -96,7 +95,6 @@ const getTeacherWithPasswordResetRequest = async (req, res) => {
     const teacher = await teacherModel.find({
       passwordResetRequest: true,
     });
-    console.log(teacher);
   } catch (error) {
     console.error(error);
   }
@@ -254,7 +252,6 @@ const updateUserPassword = async (req, res) => {
     if (error) {
       throw new Error(error.issues[0].message);
     }
-    // console.log(userId, newPassword);
     if (!userId) return res.status(404).json({ message: "User is not found " });
     const student = await studentModel.findByIdAndUpdate(
       userId,
@@ -329,7 +326,6 @@ const checkStatus = async () => {
   const exam1 = await examModel.find({ _id: examId });
   const endTime = exam1.endTime;
   if (Date.now() > endTime) {
-    console.log("time up");
     await examModel.findByIdAndUpdate(
       examId,
       { $set: { isCompleted: true } },
@@ -364,10 +360,8 @@ const startExam = async (req, res) => {
 };
 
 const setExamCompleted = async (req, res) => {
-  console.log("checking");
   try {
     const { examId } = req.params;
-    console.log(examId, "admin");
     const exam = await examModel.findByIdAndUpdate(
       examId,
       { $set: { isCompleted: true } },

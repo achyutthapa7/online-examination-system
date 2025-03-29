@@ -17,7 +17,6 @@ const fetchUserData = async () => {
     method: "GET",
     credentials: "include",
   });
-  console.log("dashboard", response);
   if (!response.ok) {
     throw new Error("User not found or deleted");
   }

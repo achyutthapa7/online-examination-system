@@ -73,7 +73,6 @@ export const getTeacherWithPasswordResetRequest = async () => {
     const response = await axios.get(
       `${API_URL}/admin/getTeacherWithPasswordResetRequest`
     );
-    console.log(response);
   } catch (error) {
     console.error(error);
   }
@@ -264,7 +263,6 @@ export const getExamDetails = async (id) => {
         "Content-Type": "application/json",
       },
     });
-    console.log(response);
     return response;
   } catch (error) {
     console.error("Error during fetching teachers:", error);
