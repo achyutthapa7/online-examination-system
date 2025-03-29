@@ -6,7 +6,7 @@ import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 const ViewExams = () => {
   const [exams, setExams] = useState([]);
-
+  const [isExamDeleting, setIsExamDeleting] = useState(false);
   // State to manage which sections are expanded
   const [expandedQuestions, setExpandedQuestions] = useState({});
   const [expandedSubmissions, setExpandedSubmissions] = useState({});
@@ -35,6 +35,7 @@ const ViewExams = () => {
     }));
   };
   const handleDeleteExam = async (examId) => {
+    setIsExamDeleting(true);
     const res = await deleteExam(examId);
     if (res.statusText) {
       toast.success("Exam deleted successfully", {
@@ -49,6 +50,7 @@ const ViewExams = () => {
       });
       setExams(exams.filter((e) => e._id !== examId));
     }
+    setIsExamDeleting(false);
   };
   return (
     <div className="p-6">
@@ -178,6 +180,7 @@ const ViewExams = () => {
 
             {/* Delete Exam Button */}
             <button
+              disabled={isExamDeleting}
               onClick={() => {
                 if (
                   window.confirm("Are you sure you want to delete this exam?")
@@ -187,7 +190,7 @@ const ViewExams = () => {
               }}
               className="mt-6 bg-red-500 hover:bg-red-700 text-white font-semibold py-2 px-4 rounded-lg"
             >
-              Delete Exam
+              {isExamDeleting ? "Deleting...." : "Delete Exam"}
             </button>
           </div>
         ))

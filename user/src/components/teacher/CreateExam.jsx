@@ -8,6 +8,7 @@ const CreateExam = () => {
   const navigate = useNavigate();
   const [assignedSubjects, setAssignedSubjects] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
+  const [isExamCreating, setIsExamCreating] = useState(false);
   const [error, setError] = useState(null);
 
   useEffect(() => {
@@ -42,6 +43,7 @@ const CreateExam = () => {
     );
   }
   const handleExamCreation = async (subj) => {
+    setIsExamCreating(true);
     try {
       const res = await createExam(subj.subject);
       if (res.status === 201) {
@@ -57,9 +59,12 @@ const CreateExam = () => {
           progress: undefined,
           theme: "light",
         });
+        setIsExamCreating(false);
       }
     } catch (error) {
       console.error("Error starting exam:", error);
+    } finally {
+      setIsExamCreating(false);
     }
   };
   return (
@@ -80,12 +85,13 @@ const CreateExam = () => {
               <p className="text-gray-600">Semester: {subj.semester}</p>
               <p className="text-gray-600">Year: {subj.year}</p>
               <button
+                disabled={isExamCreating}
                 className="px-4 py-2 w-1/2 mt-4 text-white transition bg-green-600 rounded hover:bg-green-700"
                 onClick={() => {
                   handleExamCreation(subj);
                 }}
               >
-                Create Exam
+                {isExamCreating ? "creating...." : "Create Exam"}
               </button>
             </div>
           ))}
