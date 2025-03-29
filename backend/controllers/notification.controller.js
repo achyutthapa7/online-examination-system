@@ -1,4 +1,5 @@
 const notificationModel = require("../models/notifications.model");
+const handleError = require("../utils/handleError");
 
 const getNotification = async (req, res) => {
   try {
