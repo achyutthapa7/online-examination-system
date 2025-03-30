@@ -231,7 +231,7 @@ const AllTeachers = () => {
         parseInt(editedSubjectData.editedSemester),
         editedSubjectData.editedSubject
       );
-      if (res.statusText) {
+      if (res.status === 200 || res.status === 201) {
         toast.success("Subject edited successfully!", {
           position: "top-right",
           autoClose: 250,

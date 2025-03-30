@@ -55,8 +55,8 @@ const handleLogout = () => {
     window.location.href = "/login";
   }
 };
-
 const Nav = () => {
+  const [isLoggingOut, setIsLoggingOut] = useState(false);
   const [showDropdown, setShowDropdown] = useState(false);
   const dropdownRef = useRef(null);
 
@@ -196,10 +196,17 @@ const Nav = () => {
 
               {/* Logout Button */}
               <button
-                onClick={handleLogout}
+                disabled={isLoggingOut}
+                onClick={() => {
+                  setIsLoggingOut(true);
+                  handleLogout();
+                  setTimeout(() => {
+                    setIsLoggingOut(false);
+                  }, 1000);
+                }}
                 className="py-2 px-4 text-white transition bg-red-600 rounded-md hover:bg-red-700"
               >
-                Logout
+                {isLoggingOut ? "Logging out..." : "Logout"}
               </button>
             </>
           ) : (

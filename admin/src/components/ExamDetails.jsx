@@ -23,7 +23,7 @@ const ExamDetails = () => {
   const handleStartExam = async () => {
     try {
       const res = await startExam(exam._id, questions[0].timeLimit);
-      if (res.statusText === "OK") {
+      if (res.status === 200 || res.status === 201) {
         toast.success("Exam started successfully", {
           position: "top-right",
           autoClose: 250,
@@ -125,4 +125,3 @@ const ExamDetails = () => {
 };
 
 export default ExamDetails;
-

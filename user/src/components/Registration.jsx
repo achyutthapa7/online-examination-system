@@ -61,7 +61,6 @@ const Registration = () => {
     }
 
     setIsSubmitting(true);
-
     try {
       const res = await registration(
         formData.fullName,
@@ -71,11 +70,10 @@ const Registration = () => {
         parseInt(formData.semester)
       );
 
-      if (res.statusText) {
+      if (res.status === 200 || res.status === 201) {
         toast.success("User registered successfully!");
         localStorage.setItem("registration_token", res.data.token);
         localStorage.setItem("user", JSON.stringify(res.data.student));
-
         setFormData({
           fullName: "",
           userName: "",

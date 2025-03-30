@@ -7,9 +7,8 @@ const TakeExam = () => {
   const [exams, setExams] = useState([]);
   const [upcomingExams, setUpcomingExams] = useState([]);
   const navigate = useNavigate();
-
+  const [isStartingExam, setIsStartingExam] = useState(false);
   const currentTime = new Date().getTime();
-
   const { data, isLoading, error } = useQuery({
     queryKey: ["studentExams"],
     queryFn: getStudentExams,
@@ -73,10 +72,14 @@ const TakeExam = () => {
                 <strong>Time Limit:</strong> {exam.timeLimit} minutes
               </p>
               <button
+                disabled={isStartingExam}
                 className="px-4 py-2 mt-4 text-white transition bg-green-600 rounded hover:bg-green-700"
-                onClick={() => navigate(exam._id, { state: exam })}
+                onClick={() => {
+                  setIsStartingExam(true);
+                  navigate(exam._id, { state: exam });
+                }}
               >
-                Start Exam
+                {isStartingExam ? "starting..." : "Start Exam"}
               </button>
             </div>
           ))}

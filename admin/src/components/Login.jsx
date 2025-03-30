@@ -17,7 +17,7 @@ const Login = () => {
     e.preventDefault();
     try {
       const res = await login(userName, password);
-      if (res.statusText) {
+      if (res.status === 200 || res.status === 201) {
         setIsLoading(false);
         toast.success(res.data.message, {
           position: "top-right",

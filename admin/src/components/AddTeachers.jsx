@@ -82,7 +82,7 @@ const AddTeachers = () => {
       setIsAdded(true);
       const res = await addTeacher(emailAddress, userName, password, fullName);
 
-      if (res.statusText) {
+      if (res.status === 200 || res.status === 201) {
         toast.success("teacher added successfully", {
           position: "top-right",
           autoClose: 250,

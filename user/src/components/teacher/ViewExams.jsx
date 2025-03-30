@@ -37,7 +37,7 @@ const ViewExams = () => {
   const handleDeleteExam = async (examId) => {
     setIsExamDeleting(true);
     const res = await deleteExam(examId);
-    if (res.statusText) {
+    if (res.status === 200 || res.status === 201) {
       toast.success("Exam deleted successfully", {
         position: "top-right",
         autoClose: 250,

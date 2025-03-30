@@ -20,6 +20,10 @@ const queryClient = new QueryClient();
 const CreateExamBySubject = () => {
   const [editModal, setEditModal] = useState(false);
   const [editedData, setEditedData] = useState([]);
+  const [isPublishing, setIsPublishing] = useState(false);
+  const [isSaving, setIsSaving] = useState(false);
+  const [isCreatingQuestion, setIsCreatingQuestion] = useState(false);
+  const [isDeletingQuestion, setIsDeletingQuestion] = useState(false);
   const location = useLocation();
   const examId = location.state;
   const navigate = useNavigate();
@@ -104,10 +108,11 @@ const CreateExamBySubject = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+
     if (!validateForm()) {
       return;
     }
-
+    setIsCreatingQuestion(true);
     try {
       const res = await createQuestion(
         examId,
@@ -132,10 +137,13 @@ const CreateExamBySubject = () => {
       });
     } catch (error) {
       console.error("Error creating exam:", error);
+    } finally {
+      setIsCreatingQuestion(false);
     }
   };
 
   const handleRemove = async (questionId) => {
+    setIsDeletingQuestion(true);
     try {
       await removeQuestions(questionId, examId);
       setExamData({
@@ -144,6 +152,8 @@ const CreateExamBySubject = () => {
       });
     } catch (error) {
       console.error("Error deleting question:", error);
+    } finally {
+      setIsDeletingQuestion(false);
     }
   };
 
@@ -162,7 +172,7 @@ const CreateExamBySubject = () => {
           theme: "light",
         });
       }
-      if (res.statusText) {
+      if (res.status === 200 || res.status === 201) {
         toast.success("Exam published successfully", {
           position: "top-right",
           autoClose: 250,
@@ -184,6 +194,7 @@ const CreateExamBySubject = () => {
 
   const handlePublish = async (e) => {
     e.preventDefault();
+    setIsPublishing(true);
     if (!examId) {
       toast.error("Invalid exam ID", {
         position: "top-right",
@@ -198,6 +209,7 @@ const CreateExamBySubject = () => {
       return;
     }
     mutate(examId);
+    setIsPublishing(false);
   };
 
   const handleUpdate = async (questionId) => {
@@ -208,7 +220,7 @@ const CreateExamBySubject = () => {
         editedData.options,
         editedData.correctAnswer
       );
-      if (res.statusText) {
+      if (res.status === 201 || res.status === 200) {
         toast.success("Question updated successfully", {
           position: "top-right",
           autoClose: 250,
@@ -242,14 +254,17 @@ const CreateExamBySubject = () => {
   };
 
   const handelSave = async () => {
+    setIsSaving(true);
     const res = await saveExam(examId);
-    if (res.statusText) {
+    if (res.status === 200 || res.status === 201) {
       toast.success("Exam saved successfully");
       navigate("/dashboard/teacher");
     }
     try {
     } catch (error) {
       console.error("Error saving exam:", error);
+    } finally {
+      setIsSaving(false);
     }
   };
   return (
@@ -356,32 +371,39 @@ const CreateExamBySubject = () => {
 
             {/* Submit Button */}
             <button
+              disabled={isCreatingQuestion}
               type="submit"
               className="w-full p-3 bg-indigo-600 text-white rounded-md hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 transition duration-300 flex items-center justify-center"
             >
-              <FaPlus className="mr-2" /> Create Question
+              {isCreatingQuestion ? (
+                "creating..."
+              ) : (
+                <>
+                  <FaPlus className="mr-2" /> Create Question
+                </>
+              )}
             </button>
             <div className="mt-6">
               <button
+                disabled={isPublishing}
                 onClick={handlePublish}
                 className="w-full p-3 bg-green-600 text-white rounded-md hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-green-500 transition duration-300 flex items-center justify-center"
               >
-                Publish Exam
+                {isPublishing ? "Loading..." : "Publish Exam"}
               </button>
             </div>
             <div className="mt-6">
               <button
+                disabled={isSaving}
                 onClick={handelSave}
                 className="w-full p-3 bg-green-600 text-white rounded-md hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-green-500 transition duration-300 flex items-center justify-center"
               >
-                Save Exam
+                {isSaving ? "loading..." : "Save Exams"}
               </button>
             </div>
           </form>
         </div>
-        {/* Publish Exam Button */}
 
-        {/* Right Side - Created Questions with All Details */}
         <div className="flex-1 h-full   bg-white p-8 rounded-xl shadow-lg space-y-6">
           <h2 className="text-4xl font-semibold text-gray-800 text-center mb-8">
             Created Questions
@@ -411,6 +433,7 @@ const CreateExamBySubject = () => {
                 </div>
                 <div className="mt-3 flex gap-3">
                   <button
+                    disabled={isDeletingQuestion}
                     onClick={() => {
                       if (
                         window.confirm(
@@ -422,7 +445,13 @@ const CreateExamBySubject = () => {
                     }}
                     className="flex items-center px-4 py-2 bg-red-600 text-white font-medium rounded-md hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-red-500 transition duration-300"
                   >
-                    <FaTrashAlt className="mr-2" /> Remove
+                    {isDeletingQuestion ? (
+                      "Deleting..."
+                    ) : (
+                      <>
+                        <FaTrashAlt className="mr-2" /> Remove
+                      </>
+                    )}
                   </button>
 
                   <button
