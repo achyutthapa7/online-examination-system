@@ -59,9 +59,9 @@ export const getAllStudents = async () => {
 export const getStudentWithPasswordResetRequest = async () => {
   try {
     const response = await axios.get(
-      `${API_URL}/admin/getStudentWithPasswordResetRequest`
+      `${API_URL}/admin/getStudentWithPasswordResetRequest`,
+      { withCredentials: true }
     );
-
     return response;
   } catch (error) {
     console.error(error);
@@ -71,7 +71,8 @@ export const getStudentWithPasswordResetRequest = async () => {
 export const getTeacherWithPasswordResetRequest = async () => {
   try {
     const response = await axios.get(
-      `${API_URL}/admin/getTeacherWithPasswordResetRequest`
+      `${API_URL}/admin/getTeacherWithPasswordResetRequest`,
+      { withCredentials: true }
     );
   } catch (error) {
     console.error(error);
@@ -84,7 +85,7 @@ export const assignSubjectToTeacher = async (
   subject
 ) => {
   try {
-    const response = axios.patch(
+    const response = await axios.patch(
       `${API_URL}/admin/assignSubjectToTeacher/${teacherId}`,
       { subject, year, semester },
       {
@@ -108,7 +109,7 @@ export const addTeacher = async (
   fullName
 ) => {
   try {
-    const response = axios.post(
+    const response = await axios.post(
       `${API_URL}/admin/addTeacher`,
       { emailAddress, userName, password, fullName },
       {
@@ -127,7 +128,7 @@ export const addTeacher = async (
 
 export const verifyStudent = async (studentId) => {
   try {
-    const response = axios.patch(
+    const response = await axios.patch(
       `${API_URL}/admin/verifyStudent/${studentId}`,
 
       {
@@ -146,12 +147,15 @@ export const verifyStudent = async (studentId) => {
 
 export const deleteUser = async (userId) => {
   try {
-    const response = axios.delete(`${API_URL}/admin/deleteUser/${userId}`, {
-      withCredentials: true,
-      headers: {
-        "Content-Type": "application/json",
-      },
-    });
+    const response = await axios.delete(
+      `${API_URL}/admin/deleteUser/${userId}`,
+      {
+        withCredentials: true,
+        headers: {
+          "Content-Type": "application/json",
+        },
+      }
+    );
     return response;
   } catch (error) {
     console.error("Error during deleting user:", error);
@@ -161,7 +165,7 @@ export const deleteUser = async (userId) => {
 
 export const updateUserPassword = async (userId, newPassword) => {
   try {
-    const response = axios.patch(
+    const response = await axios.patch(
       `${API_URL}/admin/updateUserPassword/${userId}`,
       { newPassword },
       {
@@ -180,7 +184,7 @@ export const updateUserPassword = async (userId, newPassword) => {
 
 export const notifyUsers = async (message) => {
   try {
-    const response = axios.patch(
+    const response = await axios.patch(
       `${API_URL}/admin/notifyUsersForExam`,
       { message },
       {
@@ -216,7 +220,7 @@ export const allExams = async () => {
 
 export const startExam = async (examId, timeLimit) => {
   try {
-    const response = axios.patch(`${API_URL}/admin/startExam/${examId}`, {
+    const response = await axios.patch(`${API_URL}/admin/startExam/${examId}`, {
       withCredentials: true,
       timeLimit,
       headers: {
@@ -238,7 +242,7 @@ export const editAssignSubjectToTeacher = async (
   subject
 ) => {
   try {
-    const response = axios.put(
+    const response = await axios.put(
       `${API_URL}/admin/editAssignSubjectToTeacher/${assignSubjectId}`,
       { year, semester, subject },
       {
