@@ -12,6 +12,7 @@ const cookieParser = require("cookie-parser");
 const PORT = process.env.PORT || 4000;
 dotenv.config();
 connectDB();
+app.options("*", cors());
 app.use(
   cors({
     credentials: true,
