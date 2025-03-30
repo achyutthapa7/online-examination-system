@@ -24,12 +24,10 @@ const Waiting = () => {
       try {
         const res = await checkVerificationStatus(registeredUser._id);
         if (!res.status === 201 || !res.status === 200) {
-          // Handle user deletion case here
           if (res.status === 404) {
-            setUserDeleted(true); // Set user as deleted if status is 404
-            // Remove user data from local storage if account is deleted
-            localStorage.removeItem("user"); // Remove the user data
-            localStorage.removeItem("registration_token"); // Optionally remove registration token
+            setUserDeleted(true);
+            localStorage.removeItem("user");
+            localStorage.removeItem("registration_token");
             return;
           }
           console.error("Error checking verification status");
