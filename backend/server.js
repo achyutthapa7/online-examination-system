@@ -20,9 +20,11 @@ app.use(
       "http://localhost:5174",
       "http://localhost:4173",
       "http://localhost:4174",
-      "https://online-examination-system-seven-sable.vercel.app/",
-      "https://online-examination-system-eghl.vercel.app/",
+      "https://online-examination-system-seven-sable.vercel.app",
+      "https://online-examination-system-eghl.vercel.app",
     ],
+    methods: ["GET", "POST", "PUT", "DELETE"],
+    allowedHeaders: ["Content-Type", "Authorization"],
   })
 );
 
