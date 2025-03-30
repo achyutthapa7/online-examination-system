@@ -26,7 +26,7 @@ const Login = () => {
     const checkVerification = async () => {
       try {
         const res = await checkVerificationStatus(registeredUser?._id);
-        if (res.ok) {
+        if (res.status === 200 || res.status === 201) {
           const data = await res.json();
           if (data?.user.role === "Student" && !data.user.isVerified) {
             navigate("/verifying");

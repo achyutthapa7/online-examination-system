@@ -23,7 +23,7 @@ const Waiting = () => {
     const checkVerification = async () => {
       try {
         const res = await checkVerificationStatus(registeredUser._id);
-        if (!res.ok) {
+        if (!res.status === 201 || !res.status === 200) {
           // Handle user deletion case here
           if (res.status === 404) {
             setUserDeleted(true); // Set user as deleted if status is 404
