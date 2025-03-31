@@ -237,8 +237,8 @@ const AllStudents = () => {
   };
 
   return (
-    <div className="p-8">
-      <h1 className="mb-6 text-3xl font-bold">All Students</h1>
+    <div className="p-4 sm:p-6 md:p-8">
+      <h1 className="mb-4 text-2xl font-bold sm:text-3xl">All Students</h1>
 
       <div className="mb-4">
         <input
@@ -246,78 +246,80 @@ const AllStudents = () => {
           value={searchQuery}
           onChange={(e) => setSearchQuery(e.target.value)}
           placeholder="Search students..."
-          className="px-4 py-2 border rounded w-full"
+          className="w-full px-4 py-2 text-sm border rounded sm:text-base"
         />
       </div>
 
       {filteredStudents.length === 0 ? (
-        <p className="text-xl text-gray-600">No students available</p>
+        <p className="text-lg text-gray-600 sm:text-xl">
+          No students available
+        </p>
       ) : (
         <div className="overflow-x-auto bg-white rounded-lg shadow-md">
-          <table className="min-w-full table-auto">
+          <table className="min-w-full divide-y divide-gray-200">
             <thead className="bg-gray-100">
               <tr>
-                <th className="px-4 py-3 text-sm font-semibold text-left text-gray-600 ">
+                <th className="px-3 py-2 text-xs font-semibold text-left text-gray-600 sm:px-4 sm:py-3 sm:text-sm">
                   Full Name
                 </th>
-                <th className="px-4 py-3 text-sm font-semibold text-left text-gray-600">
+                <th className="px-3 py-2 text-xs font-semibold text-left text-gray-600 sm:px-4 sm:py-3 sm:text-sm">
                   Username
                 </th>
-                <th className="px-4 py-3 text-sm font-semibold text-left text-gray-600">
+                <th className="px-3 py-2 text-xs font-semibold text-left text-gray-600 sm:px-4 sm:py-3 sm:text-sm">
                   Year
                 </th>
-                <th className="px-4 py-3 text-sm font-semibold text-left text-gray-600">
+                <th className="px-3 py-2 text-xs font-semibold text-left text-gray-600 sm:px-4 sm:py-3 sm:text-sm">
                   Semester
                 </th>
-                <th className="px-4 py-3 text-sm font-semibold text-left text-gray-600">
+                <th className="px-3 py-2 text-xs font-semibold text-left text-gray-600 sm:px-4 sm:py-3 sm:text-sm">
                   Actions
                 </th>
               </tr>
             </thead>
-            <tbody>
+            <tbody className="divide-y divide-gray-200">
               {filteredStudents.map((student) => (
-                <tr key={student._id} className="border-b hover:bg-gray-50">
-                  <td className="px-4 py-3 text-sm text-gray-800">
+                <tr key={student._id} className="hover:bg-gray-50">
+                  <td className="px-3 py-2 text-xs text-gray-800 whitespace-nowrap sm:px-4 sm:py-3 sm:text-sm">
                     <span className="cursor-pointer">{student.fullName}</span>
                   </td>
-                  <td className="px-4 py-3 text-sm text-gray-800">
+                  <td className="px-3 py-2 text-xs text-gray-800 whitespace-nowrap sm:px-4 sm:py-3 sm:text-sm">
                     {student.userName}
                   </td>
-                  <td className="px-4 py-3 text-sm text-gray-800">
+                  <td className="px-3 py-2 text-xs text-gray-800 whitespace-nowrap sm:px-4 sm:py-3 sm:text-sm">
                     {student.year}
                   </td>
-                  <td className="px-4 py-3 text-sm text-gray-800">
+                  <td className="px-3 py-2 text-xs text-gray-800 whitespace-nowrap sm:px-4 sm:py-3 sm:text-sm">
                     {student.semester}
                   </td>
-                  <td className="px-4 py-3 text-sm text-gray-800">
+                  <td className="px-3 py-2 text-xs text-gray-800 whitespace-nowrap sm:px-4 sm:py-3 sm:text-sm">
                     {student.isVerified ? (
                       <button
-                        className="px-4 py-2 text-white bg-red-500 rounded hover:bg-red-600"
+                        className="px-2 py-1 text-xs text-white bg-red-500 rounded hover:bg-red-600 sm:px-3 sm:py-1.5 sm:text-sm"
                         onClick={() => {
                           if (window.confirm("Do you want to delete the user?"))
                             handleDelete(student._id);
                         }}
                       >
                         {loadingDelete === student._id ? (
-                          <div className="spinner-border animate-spin"></div>
+                          <div className="spinner-border animate-spin inline-block w-4 h-4 border-2 rounded-full"></div>
                         ) : (
                           "Delete"
                         )}
                       </button>
                     ) : (
-                      <div className="flex w-fit gap-4">
+                      <div className="flex flex-wrap gap-2">
                         <button
-                          className="px-4 py-2 text-white bg-blue-500 rounded hover:bg-blue-600"
+                          className="px-2 py-1 text-xs text-white bg-blue-500 rounded hover:bg-blue-600 sm:px-3 sm:py-1.5 sm:text-sm"
                           onClick={() => handleVerify(student._id)}
                         >
                           {loadingVerify === student._id ? (
-                            <div className="spinner-border animate-spin"></div>
+                            <div className="spinner-border animate-spin inline-block w-4 h-4 border-2 rounded-full"></div>
                           ) : (
                             "Verify"
                           )}
                         </button>
                         <button
-                          className="px-4 py-2 text-white bg-red-500 rounded hover:bg-red-600"
+                          className="px-2 py-1 text-xs text-white bg-red-500 rounded hover:bg-red-600 sm:px-3 sm:py-1.5 sm:text-sm"
                           onClick={() => {
                             if (
                               window.confirm("Do you want to delete the user?")
@@ -326,7 +328,7 @@ const AllStudents = () => {
                           }}
                         >
                           {loadingDelete === student._id ? (
-                            <div className="spinner-border animate-spin"></div>
+                            <div className="spinner-border animate-spin inline-block w-4 h-4 border-2 rounded-full"></div>
                           ) : (
                             "Reject"
                           )}

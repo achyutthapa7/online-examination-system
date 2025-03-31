@@ -68,36 +68,43 @@ const CreateExam = () => {
     }
   };
   return (
-    <div className="min-h-screen bg-gray-100 py-10 px-10">
-      <h1 className="text-2xl font-bold text-gray-700 mb-6">
+    <div className="min-h-screen bg-gray-100 py-6 px-4 sm:py-8 sm:px-6 md:py-10 md:px-8 lg:px-10">
+      <h1 className="text-xl font-bold text-gray-700 mb-4 sm:text-2xl sm:mb-6">
         Assigned Subjects
       </h1>
+
       {assignedSubjects.length > 0 ? (
-        <div className="grid w-full h-full grid-cols-1 gap-6 mb-12 md:grid-cols-2 lg:grid-cols-3">
+        <div className="grid w-full grid-cols-1 gap-4 mb-8 sm:gap-5 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
           {assignedSubjects.map((subj, index) => (
             <div
               key={index}
-              className="flex flex-col items-start justify-between px-8 py-4 rounded-lg shadow-md bg-white min-h-[160px] transition hover:shadow-lg"
+              className="flex flex-col items-start justify-between p-5 rounded-lg shadow-md bg-white min-h-[140px] transition hover:shadow-lg sm:p-6 sm:min-h-[160px]"
             >
-              <h2 className="text-xl font-semibold text-gray-800">
-                {subj.subject}
-              </h2>
-              <p className="text-gray-600">Semester: {subj.semester}</p>
-              <p className="text-gray-600">Year: {subj.year}</p>
+              <div className="w-full">
+                <h2 className="text-lg font-semibold text-gray-800 sm:text-xl">
+                  {subj.subject}
+                </h2>
+                <p className="text-sm text-gray-600 sm:text-base">
+                  Semester: {subj.semester}
+                </p>
+                <p className="text-sm text-gray-600 sm:text-base">
+                  Year: {subj.year}
+                </p>
+              </div>
               <button
                 disabled={isExamCreating}
-                className="px-4 py-2 w-1/2 mt-4 text-white transition bg-green-600 rounded hover:bg-green-700"
+                className="px-3 py-1.5 w-full mt-3 text-sm text-white transition bg-green-600 rounded hover:bg-green-700 sm:px-4 sm:py-2 sm:text-base sm:mt-4"
                 onClick={() => {
                   handleExamCreation(subj);
                 }}
               >
-                {isExamCreating ? "creating...." : "Create Exam"}
+                {isExamCreating ? "Creating..." : "Create Exam"}
               </button>
             </div>
           ))}
         </div>
       ) : (
-        <p className="text-gray-600 text-center">
+        <p className="text-gray-600 text-center text-sm sm:text-base">
           You are not assigned to any subjects yet.
         </p>
       )}

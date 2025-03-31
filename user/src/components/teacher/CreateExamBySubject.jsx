@@ -269,16 +269,16 @@ const CreateExamBySubject = () => {
   };
   return (
     <div className="relative">
-      <div className="max-w-7xl mx-auto mt-10 p-8 space-x-8 flex">
+      <div className="mx-auto p-4 sm:p-6 md:p-8 lg:max-w-7xl lg:flex lg:space-x-8">
         {/* Left Side - Form */}
-        <div className="flex-1 bg-white p-8 rounded-xl   shadow-lg space-y-6 h-fit">
-          <h2 className="text-4xl font-semibold text-gray-800 text-center mb-8">
+        <div className="bg-white p-4 rounded-xl shadow-lg space-y-4 h-fit mb-6 sm:p-6 sm:space-y-6 lg:flex-1 lg:mb-0">
+          <h2 className="text-2xl font-semibold text-gray-800 text-center mb-4 sm:text-3xl sm:mb-6 md:text-4xl">
             Create Exam
           </h2>
-          <form onSubmit={handleSubmit} className="space-y-6">
+          <form onSubmit={handleSubmit} className="space-y-4 sm:space-y-6">
             {/* Title and Time Limit (Disabled after first question is created) */}
-            <div className="mb-6">
-              <label className="block text-lg font-medium mb-2 text-gray-700">
+            <div className="mb-4 sm:mb-6">
+              <label className="block text-base font-medium mb-1 text-gray-700 sm:text-lg sm:mb-2">
                 Title
               </label>
               <input
@@ -286,14 +286,14 @@ const CreateExamBySubject = () => {
                 name="title"
                 value={formData.title}
                 onChange={handleChange}
-                className="w-full p-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                className="w-full p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500 sm:p-3"
                 required
-                disabled={examData.questions.length > 0} // Disable after first question
+                disabled={examData.questions.length > 0}
               />
             </div>
 
-            <div className="mb-6">
-              <label className="block text-lg font-medium mb-2 text-gray-700">
+            <div className="mb-4 sm:mb-6">
+              <label className="block text-base font-medium mb-1 text-gray-700 sm:text-lg sm:mb-2">
                 Time Limit (in minutes)
               </label>
               <input
@@ -301,36 +301,38 @@ const CreateExamBySubject = () => {
                 name="timeLimit"
                 value={formData.timeLimit}
                 onChange={handleChange}
-                className={`w-full p-3 border ${
+                className={`w-full p-2 border ${
                   errors.timeLimit ? "border-red-500" : "border-gray-300"
-                } rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500`}
+                } rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500 sm:p-3`}
                 min="1"
                 required
-                disabled={examData.questions.length > 0} // Disable after first question
+                disabled={examData.questions.length > 0}
               />
               {errors.timeLimit && (
-                <p className="text-red-500 text-sm mt-1">{errors.timeLimit}</p>
+                <p className="text-red-500 text-xs mt-1 sm:text-sm">
+                  {errors.timeLimit}
+                </p>
               )}
             </div>
 
             {/* Question Text */}
-            <div className="mb-6">
-              <label className="block text-lg font-medium mb-2 text-gray-700">
+            <div className="mb-4 sm:mb-6">
+              <label className="block text-base font-medium mb-1 text-gray-700 sm:text-lg sm:mb-2">
                 Question Text
               </label>
               <textarea
                 name="questionText"
                 value={formData.questionText}
                 onChange={handleChange}
-                className="w-full p-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500"
-                rows="4"
+                className="w-full p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500 sm:p-3"
+                rows="3"
                 required
               />
             </div>
 
             {/* Options */}
-            <div className="mb-6">
-              <label className="block text-lg font-medium mb-2 text-gray-700">
+            <div className="mb-4 sm:mb-6">
+              <label className="block text-base font-medium mb-1 text-gray-700 sm:text-lg sm:mb-2">
                 Options
               </label>
               {formData.options.map((option, index) => (
@@ -340,20 +342,22 @@ const CreateExamBySubject = () => {
                   placeholder={`Option ${index + 1}`}
                   value={option}
                   onChange={(e) => handleOptionChange(index, e.target.value)}
-                  className={`w-full p-3 mb-3 border ${
+                  className={`w-full p-2 mb-2 border ${
                     errors.options ? "border-red-500" : "border-gray-300"
-                  } rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500`}
+                  } rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500 sm:p-3 sm:mb-3`}
                   required
                 />
               ))}
               {errors.options && (
-                <p className="text-red-500 text-sm mt-1">{errors.options}</p>
+                <p className="text-red-500 text-xs mt-1 sm:text-sm">
+                  {errors.options}
+                </p>
               )}
             </div>
 
             {/* Correct Answer */}
-            <div className="mb-6">
-              <label className="block text-lg font-medium mb-2 text-gray-700">
+            <div className="mb-4 sm:mb-6">
+              <label className="block text-base font-medium mb-1 text-gray-700 sm:text-lg sm:mb-2">
                 Correct Answer
               </label>
               <input
@@ -363,7 +367,7 @@ const CreateExamBySubject = () => {
                 max="4"
                 value={formData.correctAnswer}
                 onChange={handleChange}
-                className="w-full p-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                className="w-full p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500 sm:p-3"
                 placeholder="Enter the correct option"
                 required
               />
@@ -373,7 +377,7 @@ const CreateExamBySubject = () => {
             <button
               disabled={isCreatingQuestion}
               type="submit"
-              className="w-full p-3 bg-indigo-600 text-white rounded-md hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 transition duration-300 flex items-center justify-center"
+              className="w-full p-2 bg-indigo-600 text-white rounded-md hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 transition duration-300 flex items-center justify-center sm:p-3"
             >
               {isCreatingQuestion ? (
                 "creating..."
@@ -383,20 +387,20 @@ const CreateExamBySubject = () => {
                 </>
               )}
             </button>
-            <div className="mt-6">
+            <div className="mt-4 sm:mt-6">
               <button
                 disabled={isPublishing}
                 onClick={handlePublish}
-                className="w-full p-3 bg-green-600 text-white rounded-md hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-green-500 transition duration-300 flex items-center justify-center"
+                className="w-full p-2 bg-green-600 text-white rounded-md hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-green-500 transition duration-300 flex items-center justify-center sm:p-3"
               >
                 {isPublishing ? "Loading..." : "Publish Exam"}
               </button>
             </div>
-            <div className="mt-6">
+            <div className="mt-4 sm:mt-6">
               <button
                 disabled={isSaving}
                 onClick={handelSave}
-                className="w-full p-3 bg-green-600 text-white rounded-md hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-green-500 transition duration-300 flex items-center justify-center"
+                className="w-full p-2 bg-green-600 text-white rounded-md hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-green-500 transition duration-300 flex items-center justify-center sm:p-3"
               >
                 {isSaving ? "loading..." : "Save Exams"}
               </button>
@@ -404,34 +408,35 @@ const CreateExamBySubject = () => {
           </form>
         </div>
 
-        <div className="flex-1 h-full   bg-white p-8 rounded-xl shadow-lg space-y-6">
-          <h2 className="text-4xl font-semibold text-gray-800 text-center mb-8">
+        {/* Right Side - Questions List */}
+        <div className="bg-white p-4 rounded-xl shadow-lg space-y-4 sm:p-6 sm:space-y-6 lg:flex-1">
+          <h2 className="text-2xl font-semibold text-gray-800 text-center mb-4 sm:text-3xl sm:mb-6 md:text-4xl">
             Created Questions
           </h2>
-          <ul className="space-y-6">
+          <ul className="space-y-4 sm:space-y-6">
             {examData.questions.map((question, index) => (
-              <li key={question._id} className="border-b pb-6">
-                <div className="text-xl font-bold text-gray-700">
+              <li key={question._id} className="border-b pb-4 sm:pb-6">
+                <div className="text-lg font-bold text-gray-700 sm:text-xl">
                   <span className="font-semibold">Q{index + 1}:</span>{" "}
                   {question.questionText}
                 </div>
-                <div className="mt-3">
-                  <strong>Options:</strong>
-                  <ul>
+                <div className="mt-2 sm:mt-3">
+                  <strong className="text-sm sm:text-base">Options:</strong>
+                  <ul className="text-sm sm:text-base">
                     {Array.isArray(question.options) &&
                     question.options.length > 0 ? (
                       question.options.map((option, optionIndex) => (
                         <li key={optionIndex}>{option}</li>
                       ))
                     ) : (
-                      <li>No options available</li> // Handle the case where options are not available
+                      <li>No options available</li>
                     )}
                   </ul>
                 </div>
-                <div className="mt-3">
+                <div className="mt-2 text-sm sm:mt-3 sm:text-base">
                   <strong>Correct Answer:</strong> {question.correctAnswer}
                 </div>
-                <div className="mt-3 flex gap-3">
+                <div className="mt-2 flex flex-wrap gap-2 sm:mt-3 sm:gap-3">
                   <button
                     disabled={isDeletingQuestion}
                     onClick={() => {
@@ -443,13 +448,13 @@ const CreateExamBySubject = () => {
                         handleRemove(question._id);
                       }
                     }}
-                    className="flex items-center px-4 py-2 bg-red-600 text-white font-medium rounded-md hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-red-500 transition duration-300"
+                    className="flex items-center px-3 py-1 bg-red-600 text-white text-sm font-medium rounded-md hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-red-500 transition duration-300 sm:px-4 sm:py-2 sm:text-base"
                   >
                     {isDeletingQuestion ? (
                       "Deleting..."
                     ) : (
                       <>
-                        <FaTrashAlt className="mr-2" /> Remove
+                        <FaTrashAlt className="mr-1 sm:mr-2" /> Remove
                       </>
                     )}
                   </button>
@@ -459,9 +464,9 @@ const CreateExamBySubject = () => {
                       setEditModal(true);
                       setEditedData(question);
                     }}
-                    className="flex items-center px-4 py-2 bg-blue-600 text-white font-medium rounded-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 transition duration-300"
+                    className="flex items-center px-3 py-1 bg-blue-600 text-white text-sm font-medium rounded-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 transition duration-300 sm:px-4 sm:py-2 sm:text-base"
                   >
-                    ✏️ <span className="ml-2">Edit Question</span>
+                    ✏️ <span className="ml-1 sm:ml-2">Edit Question</span>
                   </button>
                 </div>
               </li>
@@ -470,24 +475,25 @@ const CreateExamBySubject = () => {
         </div>
       </div>
 
+      {/* Edit Modal */}
       <div
         className={`fixed inset-0 flex items-center justify-center bg-black bg-opacity-25 backdrop-blur-sm transition-opacity duration-300 ${
           editModal ? "opacity-100" : "opacity-0 pointer-events-none"
         }`}
       >
-        <div className="relative bg-white p-8 rounded-lg shadow-2xl max-w-lg w-full">
+        <div className="relative bg-white p-4 rounded-lg shadow-2xl w-11/12 max-w-md sm:p-6 md:max-w-lg">
           <button
             onClick={() => setEditModal(false)}
-            className="absolute top-3 right-3 text-gray-500 hover:text-red-600 transition duration-200 text-2xl"
+            className="absolute top-2 right-2 text-gray-500 hover:text-red-600 transition duration-200 text-2xl sm:top-3 sm:right-3"
           >
             &times;
           </button>
-          <h2 className="text-2xl font-bold mb-4 text-center text-gray-800">
+          <h2 className="text-xl font-bold mb-3 text-center text-gray-800 sm:text-2xl sm:mb-4">
             Edit Question
           </h2>
           {/* Question Text */}
-          <div className="mb-6">
-            <label className="block text-lg font-medium mb-2 text-gray-700">
+          <div className="mb-4 sm:mb-6">
+            <label className="block text-base font-medium mb-1 text-gray-700 sm:text-lg sm:mb-2">
               Question Text
             </label>
             <textarea
@@ -496,30 +502,30 @@ const CreateExamBySubject = () => {
               onChange={(e) =>
                 setEditedData({ ...editedData, questionText: e.target.value })
               }
-              className="w-full p-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500"
-              rows="4"
+              className="w-full p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500 sm:p-3"
+              rows="3"
               required
             />
           </div>
 
           {/* Options */}
-          <div className="mb-6">
-            <label className="block text-lg font-medium mb-2 text-gray-700">
+          <div className="mb-4 sm:mb-6">
+            <label className="block text-base font-medium mb-1 text-gray-700 sm:text-lg sm:mb-2">
               Options
             </label>
 
             {editedData.options ? (
-              <div className="grid grid-cols-2 ">
+              <div className="grid grid-cols-1 gap-2 sm:grid-cols-2 sm:gap-3">
                 {editedData.options.map((o, index) => (
-                  <div key={index} className=" p-2 rounded-md">
+                  <div key={index} className="p-1 rounded-md sm:p-2">
                     <input
                       type="text"
-                      className="border-2 px-3 py-1 w-full"
+                      className="border-2 px-2 py-1 w-full text-sm sm:text-base sm:px-3"
                       value={o}
                       onChange={(e) => {
                         const newOptions = [...editedData.options];
-                        newOptions[index] = e.target.value; // Update the specific option
-                        setEditedData({ ...editedData, options: newOptions }); // Update the state
+                        newOptions[index] = e.target.value;
+                        setEditedData({ ...editedData, options: newOptions });
                       }}
                     />
                   </div>
@@ -530,13 +536,15 @@ const CreateExamBySubject = () => {
             )}
 
             {errors.options && (
-              <p className="text-red-500 text-sm mt-1">{errors.options}</p>
+              <p className="text-red-500 text-xs mt-1 sm:text-sm">
+                {errors.options}
+              </p>
             )}
           </div>
 
           {/* Correct Answer */}
-          <div className="mb-6">
-            <label className="block text-lg font-medium mb-2 text-gray-700">
+          <div className="mb-4 sm:mb-6">
+            <label className="block text-base font-medium mb-1 text-gray-700 sm:text-lg sm:mb-2">
               Correct Answer
             </label>
             <input
@@ -546,15 +554,14 @@ const CreateExamBySubject = () => {
               onChange={(e) =>
                 setEditedData({ ...editedData, correctAnswer: e.target.value })
               }
-              className="w-full p-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500"
-              placeholder="Enter the correct optioss"
+              className="w-full p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500 sm:p-3"
+              placeholder="Enter the correct option"
               required
             />
           </div>
-          <div className="mt-4 w-full  text-gray-600">
+          <div className="mt-3 w-full text-gray-600 sm:mt-4">
             <button
-              className="px-4 py-2 w-full  text-white bg-green-500 rounded
-            hover:bg-green-600"
+              className="px-3 py-2 w-full text-white bg-green-500 rounded hover:bg-green-600 sm:px-4"
               onClick={() => handleUpdate()}
             >
               Update
