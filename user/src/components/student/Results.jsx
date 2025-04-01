@@ -195,7 +195,7 @@ const Results = () => {
         ) : (
           <div className="space-y-4">
             {completedExams.map((examData) => {
-              const totalQuestions = examData.exam.questions?.length;
+              const totalQuestions = examData.exam?.questions?.length;
               const percentage =
                 totalQuestions > 0
                   ? ((examData.score / totalQuestions) * 100).toFixed(2)
@@ -261,7 +261,7 @@ const Results = () => {
                         </h4>
 
                         <div className="space-y-4">
-                          {examData.exam.questions.map((question, qIndex) => {
+                          {examData.exam.questions?.map((question, qIndex) => {
                             const isCorrect = examData.correctAnswers?.includes(
                               question._id
                             );
@@ -407,7 +407,7 @@ const Results = () => {
 
                             {expandedQuestions[examData._id] && (
                               <div className="mt-3 space-y-3">
-                                {examData.exam.questions.map(
+                                {examData?.exam?.questions?.map(
                                   (question, qIndex) => {
                                     const isCorrect =
                                       examData.correctAnswers?.includes(
